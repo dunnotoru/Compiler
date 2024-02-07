@@ -1,28 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace IDE
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+
+            App.LanguageChanged += App_LanguageChanged;
+
+            CultureInfo currentLanguage = App.Language;
+
+            lang.Items.Clear();
+            foreach (var item in App.Languages)
+            {
+                MenuItem langItem = new MenuItem();
+                langItem.Header = item.DisplayName;
+                langItem.Tag = item;
+                langItem.IsChecked = item.Equals(currentLanguage);
+                langItem.Click += LangItem_Click;
+                lang.Items.Add(langItem);
+            }
+        }
+
+        private void LangItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = sender as MenuItem;
+            if (mi == null) return;
+
+            CultureInfo lang = mi.Tag as CultureInfo;
+            if (lang == null) return;
+
+            App.Language = lang;
+        }
+
+        private void App_LanguageChanged(object? sender, System.EventArgs e)
+        {
+            CultureInfo currentLanguage = App.Language;
+
+            foreach(MenuItem item in lang.Items)
+            {
+                CultureInfo ci = item.Tag as CultureInfo;
+                item.IsChecked = ci != null && ci.Equals(currentLanguage);
+            }
         }
     }
 }

@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IDE"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        MinHeight="250" MinWidth="350"
+        Height="450" Width="800">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="{DynamicResource file}">
+                <MenuItem Header="{DynamicResource create}"/>
+                <MenuItem Header="{DynamicResource open}"/>
+                <MenuItem Header="{DynamicResource save}"/>
+                <MenuItem Header="{DynamicResource save_as}"/>
+                <MenuItem Header="{DynamicResource exit}"/>
+            </MenuItem>
+            <Menu x:Name="lang">
+                
+            </Menu>
+        </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button>Tool A</Button>
+                <Button>Tool B</Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-    </Grid>
+            <RichTextBox Grid.Row="0" Margin="10"/>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="3"/>
+            <DataGrid Grid.Row="2" Margin="10">
+                
+            </DataGrid>
+        </Grid>
+    </DockPanel>
 </Window>
