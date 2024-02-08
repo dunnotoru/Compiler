@@ -1,11 +1,14 @@
-﻿using System;
+﻿using IDE.Model;
+using IDE.Model.Abstractions;
+using IDE.View;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace IDE
 {
@@ -13,6 +16,7 @@ namespace IDE
     {
         private static List<CultureInfo> _languages = new List<CultureInfo>();
         public static event EventHandler? LanguageChanged;
+        private IServiceProvider _serviceProvider;
 
         public static List<CultureInfo> Languages
         {
@@ -67,7 +71,32 @@ namespace IDE
         {
             _languages.Clear();
             _languages.Add(new CultureInfo("en_US"));
-            _languages.Add(new CultureInfo("ru_RU"));
+
+            
+
+            
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            ResourceDictionary langResources = new ResourceDictionary();
+            langResources.Source = new Uri("Resources/Languages/lang.xaml", UriKind.RelativeOrAbsolute);
+
+            ResourceDictionary styleResourses = new ResourceDictionary();
+            langResources.Source = new Uri("Resources/Styles/Styles.xaml", UriKind.RelativeOrAbsolute);
+            
+            Resources.MergedDictionaries.Add(langResources);
+            Resources.MergedDictionaries.Add(styleResourses);
+
+            IServiceCollection services = new ServiceCollection();
+            services.AddTransient<IDialogService, DialogService>();
+            _serviceProvider = services.BuildServiceProvider();
+
+            ShellWindow window = new ShellWindow();
+            MainWindow = window;
+            MainWindow.Show();
+
+            base.OnStartup(e);
         }
     }
 }
