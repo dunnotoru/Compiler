@@ -72,9 +72,7 @@ namespace IDE
             _languages.Clear();
             _languages.Add(new CultureInfo("en_US"));
 
-            
 
-            
         }
 
         protected override void OnStartup(StartupEventArgs e)
