@@ -77,14 +77,7 @@ namespace IDE
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            ResourceDictionary langResources = new ResourceDictionary();
-            langResources.Source = new Uri("Resources/Languages/lang.xaml", UriKind.RelativeOrAbsolute);
-
-            ResourceDictionary styleResourses = new ResourceDictionary();
-            langResources.Source = new Uri("Resources/Styles/Styles.xaml", UriKind.RelativeOrAbsolute);
             
-            Resources.MergedDictionaries.Add(langResources);
-            Resources.MergedDictionaries.Add(styleResourses);
 
             IServiceCollection services = new ServiceCollection();
             services.AddTransient<IFileService, FileService>();
@@ -98,6 +91,22 @@ namespace IDE
             MainWindow.Show();
 
             base.OnStartup(e);
+        }
+
+        private void LoadResources()
+        {
+            ResourceDictionary lang = new ResourceDictionary();
+            lang.Source = new Uri("Resources/Languages/lang.xaml", UriKind.RelativeOrAbsolute);
+
+            ResourceDictionary styles = new ResourceDictionary();
+            styles.Source = new Uri("Resources/Styles/Styles.xaml", UriKind.RelativeOrAbsolute);
+
+            ResourceDictionary assets = new ResourceDictionary();
+            assets.Source = new Uri("Resources/Assets/Assets.xaml", UriKind.RelativeOrAbsolute);
+
+            Resources.MergedDictionaries.Add(lang);
+            Resources.MergedDictionaries.Add(styles);
+            Resources.MergedDictionaries.Add(assets);
         }
     }
 }
