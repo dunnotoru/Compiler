@@ -76,8 +76,12 @@
                 </Button>
 
                 <Separator/>
+<<<<<<< Updated upstream
                 <Button>
                     <Image Source="../Resources/Assets/UI/copy.png" Style="{StaticResource toolbar_button_image}"/>
+=======
+                <Button Content="{StaticResource img_copy}">
+>>>>>>> Stashed changes
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource copy}"/>
                     </Button.ToolTip>
