@@ -2,8 +2,7 @@
 {
     internal interface IDialogService
     {
-        string FilePath { get; }
-        bool OpenFileDialog();
-        bool SaveFileDialog();
+        string OpenFileDialog();
+        string SaveAsFileDialog(string content);
     }
 }

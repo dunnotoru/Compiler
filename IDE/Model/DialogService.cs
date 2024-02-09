@@ -5,28 +5,33 @@ namespace IDE.Model
 {
     internal class DialogService : IDialogService
     {
-        public string FilePath { get; set; }
+        IFileService _fileService;
 
-        public bool OpenFileDialog()
+        public DialogService(IFileService fileService)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                FilePath = openFileDialog.FileName;
-                return true;
-            }
-            return false;
+            _fileService = fileService;
         }
 
-        public bool SaveFileDialog()
+        public string OpenFileDialog()
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                FilePath = saveFileDialog.FileName;
-                return true;
-            }
-            return false;
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Text Files | *.txt";
+            dialog.DefaultExt = "txt";
+            dialog.ShowDialog();
+
+            return dialog.FileName;
+        }
+
+        public string SaveAsFileDialog(string content)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Text Files | *.txt";
+            dialog.DefaultExt = "txt";
+            dialog.ShowDialog();
+
+            _fileService.SaveFile(dialog.FileName, content);
+
+            return dialog.FileName;
         }
     }
 }

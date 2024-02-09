@@ -1,12 +1,12 @@
 ﻿using IDE.Model;
 using IDE.Model.Abstractions;
 using IDE.View;
+using IDE.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 
@@ -87,11 +87,14 @@ namespace IDE
             Resources.MergedDictionaries.Add(styleResourses);
 
             IServiceCollection services = new ServiceCollection();
+            services.AddTransient<IFileService, FileService>();
             services.AddTransient<IDialogService, DialogService>();
+            services.AddSingleton<ShellWindowViewModel>();
             _serviceProvider = services.BuildServiceProvider();
 
             ShellWindow window = new ShellWindow();
             MainWindow = window;
+            MainWindow.DataContext = _serviceProvider.GetService<ShellWindowViewModel>();
             MainWindow.Show();
 
             base.OnStartup(e);
