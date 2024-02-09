@@ -2,5 +2,18 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:v="clr-namespace:System;assembly=mscorlib">
 
-    <Image x:Key="img_create" Source=""/>
+    <!-- tools -->
+    <Image x:Key="img_create" Source="UI/create.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_open" Source="UI/open.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_save" Source="UI/save.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_undo" Source="UI/undo.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_redo" Source="UI/redo.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_copy" Source="UI/copy.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_cut" Source="UI/cut.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_paste" Source="UI/paste.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_run" Source="UI/run.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_cert" Source="UI/cert.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_info" Source="UI/info.png" Style="{StaticResource toolbar_button_image}"/>
+    
+    <Image x:Key="img_cross" Source="UI/cross.png" Style="{StaticResource close_tab_cross}"/>
 </ResourceDictionary>

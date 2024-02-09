@@ -5,13 +5,6 @@ namespace IDE.Model
 {
     internal class DialogService : IDialogService
     {
-        IFileService _fileService;
-
-        public DialogService(IFileService fileService)
-        {
-            _fileService = fileService;
-        }
-
         public string OpenFileDialog()
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -22,14 +15,12 @@ namespace IDE.Model
             return dialog.FileName;
         }
 
-        public string SaveAsFileDialog(string content)
+        public string SaveAsFileDialog()
         {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "Text Files | *.txt";
             dialog.DefaultExt = "txt";
             dialog.ShowDialog();
-
-            _fileService.SaveFile(dialog.FileName, content);
 
             return dialog.FileName;
         }

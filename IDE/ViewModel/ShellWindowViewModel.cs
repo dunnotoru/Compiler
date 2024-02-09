@@ -3,6 +3,8 @@ using IDE.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Reflection.Metadata;
+using System.Windows.Input;
 
 namespace IDE.ViewModel
 {
@@ -13,9 +15,9 @@ namespace IDE.ViewModel
 
 		private ObservableCollection<TextTabItemViewModel> _tabs;
         private TextTabItemViewModel _selectedTab;
-        public RelayCommand CreateCommand { get; }
-        public RelayCommand SaveCommand { get; }
-        public RelayCommand OpenCommand { get; }
+        public ICommand CreateCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand OpenCommand { get; }
 
         public ShellWindowViewModel(IDialogService dialogService, IFileService fileService)
         {
@@ -31,9 +33,13 @@ namespace IDE.ViewModel
         private void Open(object obj)
         {
             string fileName = _dialogService.OpenFileDialog();
+            if (string.IsNullOrWhiteSpace(fileName)) return;
+            
+            string content = _fileService.LoadFile(fileName);
+
             TextTabItemViewModel tab = new TextTabItemViewModel();
-            tab.Path = fileName;
-            tab.Content = _fileService.LoadFile(fileName);
+            tab.FileName = fileName;
+            tab.Content = content;
             _tabs.Add(tab);
             SelectedTab = tab;
         }
@@ -41,20 +47,23 @@ namespace IDE.ViewModel
         private void Save(object obj)
         {
             if (SelectedTab == null) return;
-            if (SelectedTab.Path == string.Empty)
+            if (SelectedTab.FileName == string.Empty)
             {
                 SaveAs(obj);
                 return;
             }
 
-            _fileService.SaveFile(SelectedTab.Path, SelectedTab.Content);
+            _fileService.SaveFile(SelectedTab.FileName, SelectedTab.Content);
         }
 
         private void SaveAs(object obj)
         {
             if (SelectedTab == null) return;
+            string fileName = _dialogService.SaveAsFileDialog();
+            if (string.IsNullOrWhiteSpace(fileName)) return;
 
-            SelectedTab.Path = _dialogService.SaveAsFileDialog(SelectedTab.Content);
+            SelectedTab.FileName = fileName;
+            _fileService.SaveFile(SelectedTab.FileName, SelectedTab.Content);
         }
 
         private void Create(object obj)

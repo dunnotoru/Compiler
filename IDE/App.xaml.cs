@@ -77,13 +77,8 @@ namespace IDE
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            
-
-            IServiceCollection services = new ServiceCollection();
-            services.AddTransient<IFileService, FileService>();
-            services.AddTransient<IDialogService, DialogService>();
-            services.AddSingleton<ShellWindowViewModel>();
-            _serviceProvider = services.BuildServiceProvider();
+            LoadResources();
+            _serviceProvider = ConfigureServices();
 
             ShellWindow window = new ShellWindow();
             MainWindow = window;
@@ -107,6 +102,17 @@ namespace IDE
             Resources.MergedDictionaries.Add(lang);
             Resources.MergedDictionaries.Add(styles);
             Resources.MergedDictionaries.Add(assets);
+        }
+
+        private IServiceProvider ConfigureServices()
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IDialogService, DialogService>();
+            services.AddSingleton<ShellWindowViewModel>();
+
+
+            return services.BuildServiceProvider();
         }
     }
 }

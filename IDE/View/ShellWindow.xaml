@@ -15,7 +15,16 @@
         </DataTemplate>
 
         <DataTemplate x:Key="templateForTheHeader" DataType="{x:Type TextBox}">
-            <TextBlock Text="amongus"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Header}">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Close"/>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
+                <Button Content="{StaticResource img_cross}" Background="white" BorderThickness="0"/>
+            </StackPanel>
         </DataTemplate>
     </Window.Resources>
     
@@ -53,81 +62,71 @@
         
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Command="{Binding CreateCommand}">
-                    <Image Source="../Resources/Assets/UI/create.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Command="{Binding CreateCommand}" Content="{StaticResource img_create}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource create}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Command="{Binding OpenCommand}">
-                    <Image Source="../Resources/Assets/UI/open.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Command="{Binding OpenCommand}" Content="{StaticResource img_open}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource open}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding SaveCommand}">
-                    <Image Source="../Resources/Assets/UI/save.png" Style="{StaticResource toolbar_button_image}"/>
+                    
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource save}"/>
                     </Button.ToolTip>
                 </Button>
 
                 <Separator/>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/undo.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource img_undo}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource undo}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/redo.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource img_redo}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource redo}"/>
                     </Button.ToolTip>
                 </Button>
 
                 <Separator/>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/copy.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource copy}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource copy}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/cut.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource img_cut}">
+
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource cut}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/paste.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource img_paste}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource paste}"/>
                     </Button.ToolTip>
                 </Button>
 
                 <Separator/>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/run.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource img_run}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource run}"/>
                     </Button.ToolTip>
                 </Button>
 
                 <Separator/>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/cert.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource img_cert}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource certificate}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button>
-                    <Image Source="../Resources/Assets/UI/info.png" Style="{StaticResource toolbar_button_image}"/>
+                <Button Content="{StaticResource img_info}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource about}"/>
                     </Button.ToolTip>
                 </Button>
-                
             </ToolBar>
         </ToolBarTray>
         <Grid>

@@ -21,6 +21,7 @@
     <None Remove="Resources\Assets\UI\cert.png" />
     <None Remove="Resources\Assets\UI\copy.png" />
     <None Remove="Resources\Assets\UI\create.png" />
+    <None Remove="Resources\Assets\UI\cross.png" />
     <None Remove="Resources\Assets\UI\cut.png" />
     <None Remove="Resources\Assets\UI\info.png" />
     <None Remove="Resources\Assets\UI\open.png" />
@@ -39,6 +40,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Assets\UI\create.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\UI\cross.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Assets\UI\cut.png">
