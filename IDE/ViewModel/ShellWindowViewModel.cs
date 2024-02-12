@@ -1,9 +1,6 @@
 ﻿using IDE.Model.Abstractions;
 using IDE.ViewModels;
-using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Reflection.Metadata;
 using System.Windows.Input;
 
 namespace IDE.ViewModel
@@ -40,8 +37,7 @@ namespace IDE.ViewModel
             TextTabItemViewModel tab = new TextTabItemViewModel();
             tab.FileName = fileName;
             tab.Content = content;
-            _tabs.Add(tab);
-            SelectedTab = tab;
+            AddTab(tab);
         }
 
         private void Save(object obj)
@@ -69,8 +65,25 @@ namespace IDE.ViewModel
         private void Create(object obj)
         {
             TextTabItemViewModel tab = new TextTabItemViewModel();
+            AddTab(tab);
+        }
+
+        private void AddTab(TextTabItemViewModel tab)
+        {
             Tabs.Add(tab);
             SelectedTab = tab;
+
+            tab.Close += RemoveTab;
+        }
+
+        private void RemoveTab(object? sender, System.EventArgs e)
+        {
+            if (sender is not TextTabItemViewModel) return;
+
+            TextTabItemViewModel tab = (TextTabItemViewModel)sender;
+
+            tab.Close -= RemoveTab;
+            Tabs.Remove(tab);
         }
 
         public TextTabItemViewModel SelectedTab

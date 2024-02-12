@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local ="clr-namespace:IDE.View"
         xmlns:z ="clr-namespace:IDE"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         MinHeight="250" MinWidth="350"
         Height="450" Width="800">
@@ -12,6 +13,7 @@
     <Window.Resources>
         <DataTemplate x:Key="templateForTheContent" DataType="{x:Type TextBox}">
             <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"/>
+            <RichTextBox />
         </DataTemplate>
 
         <DataTemplate x:Key="templateForTheHeader" DataType="{x:Type TextBox}">
@@ -23,7 +25,8 @@
                         </ContextMenu>
                     </TextBlock.ContextMenu>
                 </TextBlock>
-                <Button Content="{StaticResource img_cross}" Background="white" BorderThickness="0"/>
+                <Button Content="{DynamicResource img_cross}" Background="white" BorderThickness="5" Width="auto" Height="auto"
+                        Command="{Binding CloseCommand}"/>
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
@@ -72,38 +75,38 @@
                         <ToolTip Content="{DynamicResource open}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Command="{Binding SaveCommand}">
-                    
+                <Button Command="{Binding SaveCommand}" Content="{StaticResource img_save}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource save}"/>
                     </Button.ToolTip>
                 </Button>
 
                 <Separator/>
-                <Button Content="{StaticResource img_undo}">
-                    <Button.ToolTip>
+                <Button Content="{StaticResource img_undo}" Command="ApplicationCommands.Undo">
+                    <Button.ToolTip>    
                         <ToolTip Content="{DynamicResource undo}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Content="{StaticResource img_redo}">
+
+                <Button Content="{StaticResource img_redo}" Command="ApplicationCommands.Redo">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource redo}"/>
                     </Button.ToolTip>
                 </Button>
 
                 <Separator/>
-                <Button Content="{StaticResource copy}">
+                <Button Content="{StaticResource copy}" Command="ApplicationCommands.Copy">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource copy}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Content="{StaticResource img_cut}">
+                <Button Content="{StaticResource img_cut}" Command="ApplicationCommands.Cut">
 
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource cut}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Content="{StaticResource img_paste}">
+                <Button Content="{StaticResource img_paste}" Command="ApplicationCommands.Paste">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource paste}"/>
                     </Button.ToolTip>
@@ -141,8 +144,8 @@
                         ContentTemplate="{StaticResource templateForTheContent}"
                         ItemTemplate="{StaticResource templateForTheHeader}">
             </TabControl>
-            
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="3"/>
+
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
             <DataGrid Grid.Row="2" Margin="10">
                 
             </DataGrid>

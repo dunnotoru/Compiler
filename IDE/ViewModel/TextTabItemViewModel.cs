@@ -1,17 +1,33 @@
-﻿using System.IO;
+﻿using IDE.ViewModels;
+using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Input;
 
 namespace IDE.ViewModel
 {
+
     internal class TextTabItemViewModel : ViewModelBase
     {
 		private string _content;
 		private string _fileName;
-        private bool _isNew;
+        private bool _isChanged;
+
+        public event EventHandler Close;
+
+        public ICommand CloseCommand { get; }
 
         public TextTabItemViewModel()
         {
             Content = string.Empty;
             FileName = string.Empty;
+
+            CloseCommand = new RelayCommand(ExecuteClose);
+        }
+
+        private void ExecuteClose(object obj)
+        {
+            Close?.Invoke(this, EventArgs.Empty);
         }
 
         public string Content
@@ -20,10 +36,10 @@ namespace IDE.ViewModel
 			set { _content = value; OnPropertyChanged(); }
 		}
 
-        public bool IsNew
+        public bool IsChanged
         {
-            get { return _isNew; }
-            set { _isNew = value; OnPropertyChanged(); }
+            get { return _isChanged; }
+            set { _isChanged = value; OnPropertyChanged(); }
         }
 
         public string Header => Path.GetFileName(FileName);
