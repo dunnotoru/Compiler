@@ -13,7 +13,7 @@
     <Window.Resources>
         <DataTemplate x:Key="templateForTheContent" DataType="{x:Type TextBox}">
             <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"/>
-            <RichTextBox />
+            
         </DataTemplate>
 
         <DataTemplate x:Key="templateForTheHeader" DataType="{x:Type TextBox}">
@@ -97,7 +97,6 @@
                 <Separator/>
 
                 <Button Content="{StaticResource img_copy}" Command="ApplicationCommands.Copy">
-                    <Image Source="../Resources/Assets/UI/copy.png" Style="{StaticResource toolbar_button_image}"/>
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource copy}"/>
                     </Button.ToolTip>
