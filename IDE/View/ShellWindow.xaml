@@ -3,33 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local ="clr-namespace:IDE.View"
-        xmlns:z ="clr-namespace:IDE"
+        xmlns:AvalonEdit="clr-namespace:ICSharpCode.AvalonEdit"
+        xmlns:editing="clr-namespace:ICSharpCode.AvalonEdit.Editing"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:helper ="clr-namespace:IDE.Helper"
+        xmlns:z ="clr-namespace:IDE"
         mc:Ignorable="d"
         MinHeight="250" MinWidth="350"
-        Height="450" Width="800">
+        Height="600" Width="1000">
 
-    <Window.Resources>
-        <DataTemplate x:Key="templateForTheContent" DataType="{x:Type TextBox}">
-            <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"/>
-            
-        </DataTemplate>
-
-        <DataTemplate x:Key="templateForTheHeader" DataType="{x:Type TextBox}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Header}">
-                    <TextBlock.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Close"/>
-                        </ContextMenu>
-                    </TextBlock.ContextMenu>
-                </TextBlock>
-                <Button Content="{DynamicResource img_cross}" Background="white" BorderThickness="5" Width="auto" Height="auto"
-                        Command="{Binding CloseCommand}"/>
-            </StackPanel>
-        </DataTemplate>
-    </Window.Resources>
     
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -141,13 +125,36 @@
             </Grid.RowDefinitions>
 
             <TabControl Margin="10" 
-                        ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}"
-                        ContentTemplate="{StaticResource templateForTheContent}"
-                        ItemTemplate="{StaticResource templateForTheHeader}">
+                        ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header}" Margin="0 0 10 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                            <avalonEdit:TextEditor
+                                WordWrap="True"
+                                ShowLineNumbers="True"
+                                LineNumbersForeground="Gray"
+                                FontFamily="Cascadia Mono"
+                                FontSize="10pt"
+                                Padding="10"
+                                >
+                                <i:Interaction.Behaviors>
+                                    <helper:AvalonEditBehavior Content="{Binding Content}"/>
+                                </i:Interaction.Behaviors>
+                            </avalonEdit:TextEditor>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
             </TabControl>
 
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
-            <DataGrid Grid.Row="2" Margin="10">
+
+            <DataGrid Margin="10" Grid.Row="2">
                 
             </DataGrid>
         </Grid>
