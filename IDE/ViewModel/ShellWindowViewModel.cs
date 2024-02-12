@@ -14,6 +14,7 @@ namespace IDE.ViewModel
         private TextTabItemViewModel _selectedTab;
         public ICommand CreateCommand { get; }
         public ICommand SaveCommand { get; }
+        public ICommand SaveAsCommand { get; }
         public ICommand OpenCommand { get; }
 
         public ShellWindowViewModel(IDialogService dialogService, IFileService fileService)
@@ -24,6 +25,7 @@ namespace IDE.ViewModel
 
             CreateCommand = new RelayCommand(Create);
             SaveCommand = new RelayCommand(Save, _ => SelectedTab != null);
+            SaveCommand = new RelayCommand(SaveAs, _ => SelectedTab != null);
             OpenCommand = new RelayCommand(Open);
         }
 

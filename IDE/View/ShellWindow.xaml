@@ -5,8 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local ="clr-namespace:IDE.View"
-        xmlns:AvalonEdit="clr-namespace:ICSharpCode.AvalonEdit"
-        xmlns:editing="clr-namespace:ICSharpCode.AvalonEdit.Editing"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:helper ="clr-namespace:IDE.Helper"
         xmlns:z ="clr-namespace:IDE"
@@ -14,22 +12,27 @@
         MinHeight="250" MinWidth="350"
         Height="600" Width="1000">
 
-    
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding SaveCommand}" Modifiers="Ctrl" Key="S"/>
+        <KeyBinding Command="{Binding CreateCommand}" Modifiers="Ctrl" Key="N"/>
+        <KeyBinding Command="{Binding OpenCommand}" Modifiers="Ctrl" Key="O"/>
+        
+    </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{DynamicResource file}">
-                <MenuItem Header="{DynamicResource create}"/>
-                <MenuItem Header="{DynamicResource open}"/>
-                <MenuItem Header="{DynamicResource save}"/>
-                <MenuItem Header="{DynamicResource save_as}"/>
+                <MenuItem Header="{DynamicResource create}" Command="{Binding CreateCommand}"/>
+                <MenuItem Header="{DynamicResource open}" Command="{Binding OpenCommand}"/>
+                <MenuItem Header="{DynamicResource save}" Command="{Binding SaveCommand}"/>
+                <MenuItem Header="{DynamicResource save_as}" Command="{Binding SaveAsCommand}"/>
                 <MenuItem Header="{DynamicResource exit}"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource edit}">
-                <MenuItem Header="{DynamicResource undo}"/>
-                <MenuItem Header="{DynamicResource redo}"/>
-                <MenuItem Header="{DynamicResource copy}"/>
-                <MenuItem Header="{DynamicResource paste}"/>
-                <MenuItem Header="{DynamicResource select_all}"/>
+                <MenuItem Header="{DynamicResource undo}" Command="ApplicationCommands.Undo"/>
+                <MenuItem Header="{DynamicResource redo}" Command="ApplicationCommands.Redo"/>
+                <MenuItem Header="{DynamicResource copy}" Command="ApplicationCommands.Copy"/>
+                <MenuItem Header="{DynamicResource paste}" Command="ApplicationCommands.Paste"/>
+                <MenuItem Header="{DynamicResource select_all}" Command="ApplicationCommands.SelectAll"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource text}">
                 <MenuItem Header="{DynamicResource task}"/>
@@ -117,6 +120,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -124,7 +128,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TabControl Margin="10" 
+            <TabControl Margin="10" Name="tabControl"
                         ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
@@ -137,16 +141,16 @@
                 <TabControl.ContentTemplate>
                     <DataTemplate>
                             <avalonEdit:TextEditor
+                                x:Name="editor"
                                 WordWrap="True"
                                 ShowLineNumbers="True"
                                 LineNumbersForeground="Gray"
                                 FontFamily="Cascadia Mono"
-                                FontSize="10pt"
-                                Padding="10"
-                                >
+                                FontSize="12"
+                                Padding="10">
                                 <i:Interaction.Behaviors>
-                                    <helper:AvalonEditBehavior Content="{Binding Content}"/>
-                                </i:Interaction.Behaviors>
+                                <helper:AvalonEditBehavior Content="{Binding Content}"/>
+                            </i:Interaction.Behaviors>
                             </avalonEdit:TextEditor>
                     </DataTemplate>
                 </TabControl.ContentTemplate>
