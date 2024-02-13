@@ -1,5 +1,4 @@
-﻿using ICSharpCode.AvalonEdit.Search;
-using System.Windows;
+﻿using System.Windows;
 
 namespace IDE.View
 {

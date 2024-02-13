@@ -3,21 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local ="clr-namespace:IDE.View"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:helper ="clr-namespace:IDE.Helper"
-        xmlns:z ="clr-namespace:IDE"
+        xmlns:vm ="clr-namespace:IDE.ViewModel"
         mc:Ignorable="d"
         MinHeight="250" MinWidth="350"
         Height="600" Width="1000">
 
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:TabItemViewModel}">
+            <local:CodeTabControl/>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Window.InputBindings>
         <KeyBinding Command="{Binding SaveCommand}" Modifiers="Ctrl" Key="S"/>
         <KeyBinding Command="{Binding CreateCommand}" Modifiers="Ctrl" Key="N"/>
         <KeyBinding Command="{Binding OpenCommand}" Modifiers="Ctrl" Key="O"/>
-        
     </Window.InputBindings>
+    
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{DynamicResource file}">
@@ -137,23 +143,6 @@
                         </StackPanel>
                     </DataTemplate>
                 </TabControl.ItemTemplate>
-
-                <TabControl.ContentTemplate>
-                    <DataTemplate>
-                            <avalonEdit:TextEditor
-                                x:Name="editor"
-                                WordWrap="True"
-                                ShowLineNumbers="True"
-                                LineNumbersForeground="Gray"
-                                FontFamily="Cascadia Mono"
-                                FontSize="12"
-                                Padding="10">
-                                <i:Interaction.Behaviors>
-                                <helper:AvalonEditBehavior Content="{Binding Content}"/>
-                            </i:Interaction.Behaviors>
-                            </avalonEdit:TextEditor>
-                    </DataTemplate>
-                </TabControl.ContentTemplate>
             </TabControl>
 
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>

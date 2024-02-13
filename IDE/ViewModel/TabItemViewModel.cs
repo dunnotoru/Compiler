@@ -1,12 +1,11 @@
-﻿using IDE.ViewModels;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Input;
 
 namespace IDE.ViewModel
 {
 
-    internal class TextTabItemViewModel : ViewModelBase
+    internal class TabItemViewModel : ViewModelBase
     {
 		private string _content;
 		private string _fileName;
@@ -16,7 +15,7 @@ namespace IDE.ViewModel
 
         public ICommand CloseCommand { get; }
 
-        public TextTabItemViewModel()
+        public TabItemViewModel()
         {
             Content = string.Empty;
             FileName = string.Empty;
