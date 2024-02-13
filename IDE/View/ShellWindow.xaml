@@ -13,7 +13,6 @@
     <Window.Resources>
         <DataTemplate x:Key="templateForTheContent" DataType="{x:Type TextBox}">
             <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"/>
-            <RichTextBox />
         </DataTemplate>
 
         <DataTemplate x:Key="templateForTheHeader" DataType="{x:Type TextBox}">

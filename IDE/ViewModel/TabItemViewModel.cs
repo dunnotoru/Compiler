@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace IDE.ViewModel
 {
 
-    internal class TextTabItemViewModel : ViewModelBase
+    internal class TabItemViewModel : ViewModelBase
     {
 		private string _content;
 		private string _fileName;
@@ -15,14 +15,18 @@ namespace IDE.ViewModel
 
         public event EventHandler Close;
 
-        public ICommand CloseCommand { get; }
+        public ICommand CloseCommand => new RelayCommand(ExecuteClose);
 
-        public TextTabItemViewModel()
+        public TabItemViewModel()
         {
             Content = string.Empty;
             FileName = string.Empty;
+        }
 
-            CloseCommand = new RelayCommand(ExecuteClose);
+        public TabItemViewModel(string fileName, string content)
+        {
+            Content = content;
+            FileName = fileName;
         }
 
         private void ExecuteClose(object obj)

@@ -10,15 +10,15 @@ namespace IDE.ViewModel
         private IDialogService _dialogService;
         private IFileService _fileService;
 
-		private ObservableCollection<TextTabItemViewModel> _tabs;
-        private TextTabItemViewModel _selectedTab;
+		private ObservableCollection<TabItemViewModel> _tabs;
+        private TabItemViewModel _selectedTab;
         public ICommand CreateCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand OpenCommand { get; }
 
         public ShellWindowViewModel(IDialogService dialogService, IFileService fileService)
         {
-            Tabs = new ObservableCollection<TextTabItemViewModel>();
+            Tabs = new ObservableCollection<TabItemViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
 
@@ -34,9 +34,7 @@ namespace IDE.ViewModel
             
             string content = _fileService.LoadFile(fileName);
 
-            TextTabItemViewModel tab = new TextTabItemViewModel();
-            tab.FileName = fileName;
-            tab.Content = content;
+            TabItemViewModel tab = new TabItemViewModel(fileName, content);
             AddTab(tab);
         }
 
@@ -64,11 +62,11 @@ namespace IDE.ViewModel
 
         private void Create(object obj)
         {
-            TextTabItemViewModel tab = new TextTabItemViewModel();
+            TabItemViewModel tab = new TabItemViewModel();
             AddTab(tab);
         }
 
-        private void AddTab(TextTabItemViewModel tab)
+        private void AddTab(TabItemViewModel tab)
         {
             Tabs.Add(tab);
             SelectedTab = tab;
@@ -78,21 +76,21 @@ namespace IDE.ViewModel
 
         private void RemoveTab(object? sender, System.EventArgs e)
         {
-            if (sender is not TextTabItemViewModel) return;
+            if (sender is not TabItemViewModel) return;
 
-            TextTabItemViewModel tab = (TextTabItemViewModel)sender;
+            TabItemViewModel tab = (TabItemViewModel)sender;
 
             tab.Close -= RemoveTab;
             Tabs.Remove(tab);
         }
 
-        public TextTabItemViewModel SelectedTab
+        public TabItemViewModel SelectedTab
         {
             get { return _selectedTab; }
             set { _selectedTab = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<TextTabItemViewModel> Tabs
+        public ObservableCollection<TabItemViewModel> Tabs
 		{
 			get { return _tabs; }
 			set { _tabs = value; OnPropertyChanged(); }
