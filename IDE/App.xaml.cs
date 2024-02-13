@@ -3,9 +3,11 @@ using IDE.Services.Abstractions;
 using IDE.View;
 using IDE.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -17,6 +19,7 @@ namespace IDE
         private static List<CultureInfo> _languages = new List<CultureInfo>();
         public static event EventHandler? LanguageChanged;
         private IServiceProvider _serviceProvider;
+        private ILogger _logger;
 
         public static List<CultureInfo> Languages
         {
@@ -120,10 +123,27 @@ namespace IDE
             services.AddTransient<ICloseService, CloseService>();
             services.AddTransient<IMessageBoxService, MessageBoxService>();
 
+            services.AddSingleton(typeof(ILogger), ConfigureLogger());
+
             services.AddSingleton<ShellWindowViewModel>();
 
-
             return services.BuildServiceProvider();
+        }
+
+        private ILogger ConfigureLogger()
+        {
+            string directory = Environment.CurrentDirectory;
+            string logDir = "Log";
+            directory = Path.Combine(directory, logDir);
+            if(!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            
+            FileLoggerConfiguration configuration = new FileLoggerConfiguration();
+            ILoggerFactory loggerFactory = LoggerFactory.Create(builder => 
+                builder
+                    .AddProvider(new FileLoggerProvider(directory, configuration)));
+
+            return loggerFactory.CreateLogger<FileLogger>();
         }
     }
 }

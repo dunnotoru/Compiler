@@ -1,5 +1,5 @@
 ﻿using IDE.Services.Abstractions;
-using IDE.Services.Abstractions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,6 +13,7 @@ namespace IDE.ViewModel
         private readonly IFileService _fileService;
         private readonly ICloseService _closeService;
         private readonly IMessageBoxService _messageBoxService;
+        private readonly ILogger _logger;
 
 		private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel _selectedTab;
@@ -23,13 +24,18 @@ namespace IDE.ViewModel
         public ICommand OpenCommand => new RelayCommand(Open);
         public ICommand CloseCommand => new RelayCommand(Close);
 
-        public ShellWindowViewModel(IDialogService dialogService, IFileService fileService, ICloseService closeService, IMessageBoxService messageBoxService)
+        public ShellWindowViewModel(IDialogService dialogService,
+                                    IFileService fileService,
+                                    ICloseService closeService,
+                                    IMessageBoxService messageBoxService,
+                                    ILogger logger)
         {
             Tabs = new ObservableCollection<TabItemViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
             _closeService = closeService;
             _messageBoxService = messageBoxService;
+            _logger = logger;
         }
 
         private void Open(object obj)
@@ -50,6 +56,7 @@ namespace IDE.ViewModel
             tab.IsUnsaved = false;
 
             AddTab(tab);
+            _logger.LogInformation("File opened");
         }
 
         private void Save(object obj)
