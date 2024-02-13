@@ -56,7 +56,7 @@ namespace IDE.ViewModel
             tab.IsUnsaved = false;
 
             AddTab(tab);
-            _logger.LogInformation("File opened");
+            _logger.LogDebug("File opened " + fileName);
         }
 
         private void Save(object obj)
@@ -66,6 +66,7 @@ namespace IDE.ViewModel
             _fileService.SaveFile(SelectedTab.FileName, SelectedTab.Content);
 
             SelectedTab.IsUnsaved = false;
+            _logger.LogDebug("File saved " + SelectedTab.FileName);
         }
 
         private void SaveAs(object obj)
@@ -77,6 +78,8 @@ namespace IDE.ViewModel
             SelectedTab.FileName = fileName;
             _fileService.SaveFile(SelectedTab.FileName, SelectedTab.Content);
             SelectedTab.IsUnsaved = false;
+
+            _logger.LogDebug("File " + fileName + " saved as " + SelectedTab.FileName);
         }
 
         private void SaveAll()
@@ -94,6 +97,7 @@ namespace IDE.ViewModel
             tab.IsUnsaved = true;
 
             AddTab(tab);
+            _logger.LogDebug("File created " + fileName);
         }
 
         private void AddTab(TabItemViewModel tab)
@@ -132,6 +136,7 @@ namespace IDE.ViewModel
             }
 
 
+            _logger.LogDebug("Application closed");
             _closeService.Close();
         }
 
