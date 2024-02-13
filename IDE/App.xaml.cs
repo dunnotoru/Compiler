@@ -71,8 +71,6 @@ namespace IDE
         {
             _languages.Clear();
             _languages.Add(new CultureInfo("en_US"));
-
-
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -83,6 +81,7 @@ namespace IDE
             ShellWindow window = new ShellWindow();
             MainWindow = window;
             MainWindow.DataContext = _serviceProvider.GetService<ShellWindowViewModel>();
+            MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             MainWindow.Show();
 
             base.OnStartup(e);
@@ -111,9 +110,6 @@ namespace IDE
             Resources.MergedDictionaries.Add(lang);
             Resources.MergedDictionaries.Add(styles);
             Resources.MergedDictionaries.Add(assets);
-            Resources.MergedDictionaries.Add(theme);
-            Resources.MergedDictionaries.Add(primaryColor);
-            Resources.MergedDictionaries.Add(accentColor);
         }
 
         private IServiceProvider ConfigureServices()
