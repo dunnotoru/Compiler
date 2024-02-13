@@ -1,7 +1,6 @@
 ﻿using IDE.ViewModels;
 using System;
 using System.IO;
-using System.Windows;
 using System.Windows.Input;
 
 namespace IDE.ViewModel

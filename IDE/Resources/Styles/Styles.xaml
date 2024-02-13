@@ -18,7 +18,7 @@
     </Style>
 
     <Style TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="14"/>
     </Style>
 </ResourceDictionary>

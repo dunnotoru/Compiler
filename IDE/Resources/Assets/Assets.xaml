@@ -3,17 +3,17 @@
                     xmlns:v="clr-namespace:System;assembly=mscorlib">
 
     <!-- tools -->
-    <Image x:Key="img_create" Source="UI/create.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_open" Source="UI/open.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_save" Source="UI/save.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_undo" Source="UI/undo.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_redo" Source="UI/redo.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_copy" Source="UI/copy.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_cut" Source="UI/cut.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_paste" Source="UI/paste.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_run" Source="UI/run.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_cert" Source="UI/cert.png" Style="{StaticResource toolbar_button_image}"/>
-    <Image x:Key="img_info" Source="UI/info.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_create" Source="pack://application:,,,/Resources/Assets/UI/create.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_open" Source="pack://application:,,,/Resources/Assets/UI/open.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_save" Source="pack://application:,,,/Resources/Assets/UI/save.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_undo" Source="pack://application:,,,/Resources/Assets/UI/undo.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_redo" Source="pack://application:,,,/Resources/Assets/UI/redo.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_copy" Source="pack://application:,,,/Resources/Assets/UI/copy.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_cut" Source="pack://application:,,,/Resources/Assets/UI/cut.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_paste" Source="pack://application:,,,/Resources/Assets/UI/paste.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_run" Source="pack://application:,,,/Resources/Assets/UI/run.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_cert" Source="pack://application:,,,/Resources/Assets/UI/cert.png" Style="{StaticResource toolbar_button_image}"/>
+    <Image x:Key="img_info" Source="pack://application:,,,/Resources/Assets/UI/info.png" Style="{StaticResource toolbar_button_image}"/>
     
-    <Image x:Key="img_cross" Source="UI/cross.png" Style="{StaticResource close_tab_cross}"/>
+    <Image x:Key="img_cross" Source="pack://application:,,,/Resources/Assets/UI/cross.png" Style="{StaticResource close_tab_cross}"/>
 </ResourceDictionary>

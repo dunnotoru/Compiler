@@ -91,17 +91,29 @@ namespace IDE
         private void LoadResources()
         {
             ResourceDictionary lang = new ResourceDictionary();
-            lang.Source = new Uri("Resources/Languages/lang.xaml", UriKind.RelativeOrAbsolute);
+            lang.Source = new Uri("pack://application:,,,/Resources/Languages/lang.xaml", UriKind.RelativeOrAbsolute);
 
             ResourceDictionary styles = new ResourceDictionary();
-            styles.Source = new Uri("Resources/Styles/Styles.xaml", UriKind.RelativeOrAbsolute);
+            styles.Source = new Uri("pack://application:,,,/Resources/Styles/Styles.xaml", UriKind.RelativeOrAbsolute);
 
             ResourceDictionary assets = new ResourceDictionary();
-            assets.Source = new Uri("Resources/Assets/Assets.xaml", UriKind.RelativeOrAbsolute);
+            assets.Source = new Uri("pack://application:,,,/Resources/Assets/Assets.xaml", UriKind.RelativeOrAbsolute);
+
+            ResourceDictionary theme = new ResourceDictionary();
+            assets.Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml", UriKind.RelativeOrAbsolute);
+            ResourceDictionary defaults = new ResourceDictionary();
+            assets.Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.RelativeOrAbsolute);
+            ResourceDictionary primaryColor = new ResourceDictionary();
+            assets.Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml", UriKind.RelativeOrAbsolute);
+            ResourceDictionary accentColor = new ResourceDictionary();
+            assets.Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml", UriKind.RelativeOrAbsolute);
 
             Resources.MergedDictionaries.Add(lang);
             Resources.MergedDictionaries.Add(styles);
             Resources.MergedDictionaries.Add(assets);
+            Resources.MergedDictionaries.Add(theme);
+            Resources.MergedDictionaries.Add(primaryColor);
+            Resources.MergedDictionaries.Add(accentColor);
         }
 
         private IServiceProvider ConfigureServices()
