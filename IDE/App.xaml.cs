@@ -141,7 +141,9 @@ namespace IDE
             FileLoggerConfiguration configuration = new FileLoggerConfiguration();
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder => 
                 builder
-                    .AddProvider(new FileLoggerProvider(directory, configuration)));
+                    .AddProvider(new FileLoggerProvider(directory, configuration))
+                    .AddFilter("System", LogLevel.Debug)
+                    .SetMinimumLevel(LogLevel.Debug));
 
             return loggerFactory.CreateLogger<FileLogger>();
         }
