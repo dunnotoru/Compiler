@@ -18,10 +18,13 @@ namespace IDE.View
 
         private void editor_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            if (Keyboard.Modifiers != ModifierKeys.Control) return;
             if (e.Delta > 0)
                 IncreaseFontSize();
             else
                 DecreaseFontSize();
+
+            e.Handled = true;
         }
 
         private void IncreaseFontSize()
