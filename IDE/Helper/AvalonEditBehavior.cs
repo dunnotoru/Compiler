@@ -57,8 +57,6 @@ namespace IDE.Helper
                         editor.CaretOffset = 0;
                     else
                         editor.CaretOffset = caretOffset;
-
-
                 }
             }
         }

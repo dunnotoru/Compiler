@@ -1,5 +1,5 @@
-﻿using IDE.Model;
-using IDE.Model.Abstractions;
+﻿using IDE.Services;
+using IDE.Services.Abstractions;
 using IDE.View;
 using IDE.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -121,6 +121,9 @@ namespace IDE
             IServiceCollection services = new ServiceCollection();
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IDialogService, DialogService>();
+            services.AddTransient<ICloseService, CloseService>();
+            services.AddTransient<IMessageBoxService, MessageBoxService>();
+
             services.AddSingleton<ShellWindowViewModel>();
 
 

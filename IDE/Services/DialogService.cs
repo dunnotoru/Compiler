@@ -1,7 +1,7 @@
-﻿using IDE.Model.Abstractions;
+﻿using IDE.Services.Abstractions;
 using Microsoft.Win32;
 
-namespace IDE.Model
+namespace IDE.Services
 {
     internal class DialogService : IDialogService
     {
@@ -20,6 +20,7 @@ namespace IDE.Model
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "Text Files | *.txt";
             dialog.DefaultExt = "txt";
+            
             dialog.ShowDialog();
 
             return dialog.FileName;
