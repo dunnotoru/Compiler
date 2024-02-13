@@ -13,9 +13,11 @@
         Height="600" Width="1000">
 
     <Window.Resources>
+
         <DataTemplate DataType="{x:Type vm:TabItemViewModel}">
             <local:CodeTabControl/>
         </DataTemplate>
+        <BooleanToVisibilityConverter x:Key="BoolToVisiblity"/>
     </Window.Resources>
     
     <Window.InputBindings>
@@ -23,7 +25,7 @@
         <KeyBinding Command="{Binding CreateCommand}" Modifiers="Ctrl" Key="N"/>
         <KeyBinding Command="{Binding OpenCommand}" Modifiers="Ctrl" Key="O"/>
     </Window.InputBindings>
-    
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{DynamicResource file}">
@@ -31,7 +33,7 @@
                 <MenuItem Header="{DynamicResource open}" Command="{Binding OpenCommand}"/>
                 <MenuItem Header="{DynamicResource save}" Command="{Binding SaveCommand}"/>
                 <MenuItem Header="{DynamicResource save_as}" Command="{Binding SaveAsCommand}"/>
-                <MenuItem Header="{DynamicResource exit}"/>
+                <MenuItem Header="{DynamicResource exit}" Command="{Binding CloseCommand}"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource edit}">
                 <MenuItem Header="{DynamicResource undo}" Command="ApplicationCommands.Undo"/>
@@ -139,7 +141,8 @@
                 <TabControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header}" Margin="0 0 10 0"/>
+                            <TextBlock Text="{Binding Header}"/>
+                            <Ellipse Fill="DarkSlateGray" Margin="5 0 0 0" Width="10" Height="10" Visibility="{Binding IsUnsaved, Converter={StaticResource BoolToVisiblity}}"/>
                         </StackPanel>
                     </DataTemplate>
                 </TabControl.ItemTemplate>

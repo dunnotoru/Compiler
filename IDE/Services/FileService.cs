@@ -1,14 +1,14 @@
-﻿using IDE.Model.Abstractions;
+﻿using IDE.Services.Abstractions;
 using System.IO;
 
-namespace IDE.Model
+namespace IDE.Services
 {
     internal class FileService : IFileService
     {
         public string LoadFile(string path)
         {
             string content;
-            using (TextReader tr = File.OpenText(path))
+            using (StreamReader tr = File.OpenText(path))
             {
                 content = tr.ReadToEnd();
             }
@@ -17,7 +17,7 @@ namespace IDE.Model
 
         public void SaveFile(string path, string content)
         {
-            using (TextWriter tw = File.CreateText(path))
+            using (StreamWriter tw = File.CreateText(path))
             {
                 tw.Write(content);
             }

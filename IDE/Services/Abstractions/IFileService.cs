@@ -1,4 +1,4 @@
-﻿namespace IDE.Model.Abstractions
+﻿namespace IDE.Services.Abstractions
 {
     internal interface IFileService
     {

@@ -9,18 +9,22 @@ namespace IDE.ViewModel
     {
 		private string _content;
 		private string _fileName;
-        private bool _isChanged;
+        private bool _isUnsaved;
 
         public event EventHandler Close;
 
-        public ICommand CloseCommand { get; }
+        public ICommand CloseCommand => new RelayCommand(ExecuteClose);
 
-        public TabItemViewModel()
+        public TabItemViewModel(string fileName)
         {
+            FileName = fileName;
             Content = string.Empty;
-            FileName = string.Empty;
+        }
 
-            CloseCommand = new RelayCommand(ExecuteClose);
+        public TabItemViewModel(string fileName, string content)
+        {
+            FileName = fileName;
+            Content = content;
         }
 
         private void ExecuteClose(object obj)
@@ -31,13 +35,13 @@ namespace IDE.ViewModel
         public string Content
 		{
 			get { return _content; }
-			set { _content = value; OnPropertyChanged(); }
+			set { _content = value; OnPropertyChanged(); IsUnsaved = true; }
 		}
 
-        public bool IsChanged
+        public bool IsUnsaved
         {
-            get { return _isChanged; }
-            set { _isChanged = value; OnPropertyChanged(); }
+            get { return _isUnsaved; }
+            set { _isUnsaved = value; OnPropertyChanged(); }
         }
 
         public string Header => Path.GetFileName(FileName);

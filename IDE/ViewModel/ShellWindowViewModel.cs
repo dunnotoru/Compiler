@@ -1,56 +1,62 @@
 ﻿using IDE.Model.Abstractions;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace IDE.ViewModel
 {
     internal class ShellWindowViewModel : ViewModelBase
     {
-        private IDialogService _dialogService;
-        private IFileService _fileService;
+        private readonly IDialogService _dialogService;
+        private readonly IFileService _fileService;
+        private readonly ICloseService _closeService;
+        private readonly IMessageBoxService _messageBoxService;
 
 		private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel _selectedTab;
-        public ICommand CreateCommand { get; }
-        public ICommand SaveCommand { get; }
-        public ICommand SaveAsCommand { get; }
-        public ICommand OpenCommand { get; }
 
-        public ShellWindowViewModel(IDialogService dialogService, IFileService fileService)
+        public ICommand CreateCommand => new RelayCommand(Create);
+        public ICommand SaveCommand => new RelayCommand(Save, _ => SelectedTab != null);
+        public ICommand SaveAsCommand => new RelayCommand(SaveAs, _ => SelectedTab != null);
+        public ICommand OpenCommand => new RelayCommand(Open);
+        public ICommand CloseCommand => new RelayCommand(Close);
+
+        public ShellWindowViewModel(IDialogService dialogService, IFileService fileService, ICloseService closeService, IMessageBoxService messageBoxService)
         {
             Tabs = new ObservableCollection<TabItemViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
-
-            CreateCommand = new RelayCommand(Create);
-            SaveCommand = new RelayCommand(Save, _ => SelectedTab != null);
-            SaveCommand = new RelayCommand(SaveAs, _ => SelectedTab != null);
-            OpenCommand = new RelayCommand(Open);
+            _closeService = closeService;
+            _messageBoxService = messageBoxService;
         }
 
         private void Open(object obj)
         {
             string fileName = _dialogService.OpenFileDialog();
             if (string.IsNullOrWhiteSpace(fileName)) return;
+
+            TabItemViewModel? tab = Tabs.FirstOrDefault(_ => _.FileName.ToLower().Equals(fileName.ToLower()));
+            if (tab is not null)
+            {
+                SelectedTab = tab;
+                return;
+            }
             
             string content = _fileService.LoadFile(fileName);
 
-            TabItemViewModel tab = new TabItemViewModel();
-            tab.FileName = fileName;
-            tab.Content = content;
+            tab = new TabItemViewModel(fileName, content);
+            tab.IsUnsaved = false;
+
             AddTab(tab);
         }
 
         private void Save(object obj)
         {
             if (SelectedTab == null) return;
-            if (SelectedTab.FileName == string.Empty)
-            {
-                SaveAs(obj);
-                return;
-            }
 
             _fileService.SaveFile(SelectedTab.FileName, SelectedTab.Content);
+
+            SelectedTab.IsUnsaved = false;
         }
 
         private void SaveAs(object obj)
@@ -61,11 +67,23 @@ namespace IDE.ViewModel
 
             SelectedTab.FileName = fileName;
             _fileService.SaveFile(SelectedTab.FileName, SelectedTab.Content);
+            SelectedTab.IsUnsaved = false;
+        }
+
+        private void SaveAll()
+        {
+            foreach(TabItemViewModel tab in Tabs)
+                Save(tab);
         }
 
         private void Create(object obj)
         {
-            TabItemViewModel tab = new TabItemViewModel();
+            string fileName = _dialogService.SaveAsFileDialog();
+            if (string.IsNullOrEmpty(fileName)) return;
+
+            TabItemViewModel tab = new TabItemViewModel(fileName);
+            tab.IsUnsaved = true;
+
             AddTab(tab);
         }
 
@@ -73,11 +91,10 @@ namespace IDE.ViewModel
         {
             Tabs.Add(tab);
             SelectedTab = tab;
-
             tab.Close += RemoveTab;
         }
 
-        private void RemoveTab(object? sender, System.EventArgs e)
+        private void RemoveTab(object? sender, EventArgs e)
         {
             if (sender is not TabItemViewModel) return;
 
@@ -85,6 +102,28 @@ namespace IDE.ViewModel
 
             tab.Close -= RemoveTab;
             Tabs.Remove(tab);
+        }
+
+        private void Close(object obj)
+        {
+            MessageResult result = MessageResult.No;
+            if (Tabs.Any(_ => _.IsUnsaved == true))
+                result = _messageBoxService.ShowYesNoCancel("Сохранить изменения?");
+
+            switch (result)
+            {
+                case MessageResult.Yes:
+                    SaveAll(); break;
+
+                case MessageResult.Cancel:
+                    return;
+
+                default:
+                    break;
+            }
+
+
+            _closeService.Close();
         }
 
         public TabItemViewModel SelectedTab
