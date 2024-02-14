@@ -74,11 +74,11 @@ namespace IDE
         {
             _languages.Clear();
             _languages.Add(new CultureInfo("en_US"));
+            LoadResources();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            LoadResources();
             _serviceProvider = ConfigureServices();
 
             ShellWindow window = new ShellWindow();
@@ -101,15 +101,6 @@ namespace IDE
             ResourceDictionary assets = new ResourceDictionary();
             assets.Source = new Uri("pack://application:,,,/Resources/Assets/Assets.xaml", UriKind.RelativeOrAbsolute);
 
-            ResourceDictionary theme = new ResourceDictionary();
-            assets.Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml", UriKind.RelativeOrAbsolute);
-            ResourceDictionary defaults = new ResourceDictionary();
-            assets.Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.RelativeOrAbsolute);
-            ResourceDictionary primaryColor = new ResourceDictionary();
-            assets.Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml", UriKind.RelativeOrAbsolute);
-            ResourceDictionary accentColor = new ResourceDictionary();
-            assets.Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml", UriKind.RelativeOrAbsolute);
-
             Resources.MergedDictionaries.Add(lang);
             Resources.MergedDictionaries.Add(styles);
             Resources.MergedDictionaries.Add(assets);
@@ -122,6 +113,7 @@ namespace IDE
             services.AddTransient<IDialogService, DialogService>();
             services.AddTransient<ICloseService, CloseService>();
             services.AddTransient<IMessageBoxService, MessageBoxService>();
+            services.AddTransient<IWindowService, WindowService>();
 
             services.AddSingleton(typeof(ILogger), ConfigureLogger());
 
@@ -135,11 +127,11 @@ namespace IDE
             string directory = Environment.CurrentDirectory;
             string logDir = "Log";
             directory = Path.Combine(directory, logDir);
-            if(!Directory.Exists(directory))
+            if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-            
+
             FileLoggerConfiguration configuration = new FileLoggerConfiguration();
-            ILoggerFactory loggerFactory = LoggerFactory.Create(builder => 
+            ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
                 builder
                     .AddProvider(new FileLoggerProvider(directory, configuration))
                     .AddFilter("System", LogLevel.Debug)

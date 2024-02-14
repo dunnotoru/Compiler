@@ -55,6 +55,7 @@
             <MenuItem Header="{DynamicResource certificate}">
                 <MenuItem Header="{DynamicResource show_certificate}"/>
                 <MenuItem Header="{DynamicResource about}"/>
+                <MenuItem Header="{DynamicResource settings}" Command="{Binding NavigateToSettingsCommand}"/>
             </MenuItem>
         </Menu>
         
@@ -121,7 +122,7 @@
                         <ToolTip Content="{DynamicResource certificate}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Content="{StaticResource img_info}">
+                <Button Content="{StaticResource img_info}" >
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource about}"/>
                     </Button.ToolTip>

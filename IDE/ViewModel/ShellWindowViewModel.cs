@@ -1,19 +1,22 @@
 ﻿using IDE.Services.Abstractions;
+using IDE.View;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Permissions;
 using System.Windows.Input;
 
 namespace IDE.ViewModel
 {
-    internal class ShellWindowViewModel : ViewModelBase
+    internal sealed class ShellWindowViewModel : ViewModelBase
     {
         private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
         private readonly ICloseService _closeService;
         private readonly IMessageBoxService _messageBoxService;
         private readonly ILogger _logger;
+        private readonly IWindowService _windowService; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel _selectedTab;
@@ -23,12 +26,14 @@ namespace IDE.ViewModel
         public ICommand SaveAsCommand => new RelayCommand(SaveAs, _ => SelectedTab != null);
         public ICommand OpenCommand => new RelayCommand(Open);
         public ICommand CloseCommand => new RelayCommand(Close);
+        public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
 
         public ShellWindowViewModel(IDialogService dialogService,
                                     IFileService fileService,
                                     ICloseService closeService,
                                     IMessageBoxService messageBoxService,
-                                    ILogger logger)
+                                    ILogger logger,
+                                    IWindowService windowService)
         {
             Tabs = new ObservableCollection<TabItemViewModel>();
             _dialogService = dialogService;
@@ -36,6 +41,7 @@ namespace IDE.ViewModel
             _closeService = closeService;
             _messageBoxService = messageBoxService;
             _logger = logger;
+            _windowService = windowService;
         }
 
         private void Open(object obj)
@@ -138,6 +144,10 @@ namespace IDE.ViewModel
 
             _logger.LogDebug("Application closed");
             _closeService.Close();
+        }
+        private void NavigateToSettings(object obj)
+        {
+            _windowService.ShowDialog(() => new SettingsViewModel());
         }
 
         public TabItemViewModel SelectedTab
