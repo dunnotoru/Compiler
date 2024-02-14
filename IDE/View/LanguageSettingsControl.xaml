@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="513.735">
     <StackPanel>
-        <ComboBox>
+        <ComboBox Margin="50 10 50 10" Name="langs" Background="Red">
             
         </ComboBox>
     </StackPanel>

@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    
+    <!-- menu -->
+    <v:String x:Key="file">Файл</v:String>
+    <v:String x:Key="create">Создать</v:String>
+    <v:String x:Key="open">Open</v:String>
+    <v:String x:Key="save">Save</v:String>
+    <v:String x:Key="save_as">Save as</v:String>
+    <v:String x:Key="exit">Exit</v:String>
+
+    <v:String x:Key="edit">Edit</v:String>
+    <v:String x:Key="undo">Undo</v:String>
+    <v:String x:Key="redo">Redo</v:String>
+    <v:String x:Key="copy">Copy</v:String>
+    <v:String x:Key="cut">Cut</v:String>
+    <v:String x:Key="paste">Paste</v:String>
+    <v:String x:Key="remove">Remove</v:String>
+    <v:String x:Key="select_all">Select all</v:String>
+
+    <v:String x:Key="text">Text</v:String>
+    <v:String x:Key="task">Task</v:String>
+    <v:String x:Key="grammar">Grammar</v:String>
+    <v:String x:Key="analyze_method">Analyze method</v:String>
+    <v:String x:Key="error_diagnosis">Error diagnosis</v:String>
+    <v:String x:Key="test_example">Test example</v:String>
+    <v:String x:Key="reference_list">Reference list</v:String>
+    <v:String x:Key="source_code">Source code</v:String>
+    
+    <v:String x:Key="run">Run</v:String>
+    
+    <v:String x:Key="certificate">Certificate</v:String>
+    <v:String x:Key="show_certificate">Show certificate</v:String>
+    <v:String x:Key="about">About</v:String>
+    <v:String x:Key="settings">Settings</v:String>
+    
+    <!-- settings -->
+    <v:String x:Key="settings_language">Язык</v:String>
+
+</ResourceDictionary>

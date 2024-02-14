@@ -43,16 +43,16 @@ namespace IDE
                 switch(value.Name)
                 {
                     case "ru_RU":
-                        dict.Source = new Uri($"Resources/lang.{value.Name}.xaml", UriKind.Relative);
+                        dict.Source = new Uri($"Resources/Languages/lang.{value.Name}.xaml", UriKind.Relative);
                         break;
                     default:
-                        dict.Source = new Uri($"Resources/lang.xaml", UriKind.Relative);
+                        dict.Source = new Uri($"Resources/Languages/lang.xaml", UriKind.Relative);
                         break;
                         
                 }
 
                 ResourceDictionary oldDict = (from d in Current.Resources.MergedDictionaries
-                                              where d.Source != null && d.Source.OriginalString.StartsWith("Resources/lang.")
+                                              where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
                                               select d).First();
 
                 if(oldDict != null)
@@ -72,9 +72,10 @@ namespace IDE
 
         public App()
         {
+            LoadResources();
             _languages.Clear();
             _languages.Add(new CultureInfo("en_US"));
-            LoadResources();
+            _languages.Add(new CultureInfo("ru_RU"));
         }
 
         protected override void OnStartup(StartupEventArgs e)

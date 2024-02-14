@@ -16,7 +16,7 @@ namespace IDE.ViewModel
         public ViewModelBase ViewModel
         {
             get { return _viewModel; }
-            set { _viewModel = value; }
+            set { _viewModel = value; OnPropertyChanged(); }
         }
 
         public string Content

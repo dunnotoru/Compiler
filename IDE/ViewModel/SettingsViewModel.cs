@@ -4,25 +4,26 @@ namespace IDE.ViewModel
 {
     class SettingsViewModel : ViewModelBase
     {
-        private ViewModelBase _current;
-        private ObservableCollection<ViewModelBase> _items;
+        private ListItemViewModel _selectedItem;
+        private ObservableCollection<ListItemViewModel> _items;
 
         public SettingsViewModel()
         {
-            Items = new ObservableCollection<ViewModelBase>();
+            Items = new ObservableCollection<ListItemViewModel>();
             Items.Add(new ListItemViewModel("Language", () => new LanguageSettingsViewModel()));
         }
 
-        public ObservableCollection<ViewModelBase> Items
+        public ObservableCollection<ListItemViewModel> Items
         {
             get { return _items; }
             set { _items = value; OnPropertyChanged(); }
         }
 
-        public ViewModelBase Current
+        public ListItemViewModel SelectedItem
         {
-            get { return _current; }
-            set { _current = value; OnPropertyChanged(); }
+            get { return _selectedItem; }
+            set { _selectedItem = value; OnPropertyChanged(); }
         }
+
     }
 }

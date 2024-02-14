@@ -17,7 +17,7 @@
 
     <DockPanel>
         <ListView DockPanel.Dock="Left" Width="auto" 
-                  ItemsSource="{Binding Items}">
+                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Content}"/>
@@ -25,6 +25,6 @@
             </ListView.ItemTemplate>
         </ListView>
         
-        <ContentControl Margin="10" Content="{Binding CurrentViewModel}"/>
+        <ContentControl Margin="10" Content="{Binding Path=SelectedItem.ViewModel}"/>
     </DockPanel>
 </Window>
