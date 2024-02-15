@@ -42,6 +42,9 @@ namespace IDE
                 ResourceDictionary dict = new ResourceDictionary();
                 switch(value.Name)
                 {
+                    case "zh_CN":
+                        dict.Source = new Uri($"Resources/Languages/lang.{value.Name}.xaml", UriKind.Relative);
+                        break;
                     case "ru_RU":
                         dict.Source = new Uri($"Resources/Languages/lang.{value.Name}.xaml", UriKind.Relative);
                         break;
@@ -76,6 +79,7 @@ namespace IDE
             _languages.Clear();
             _languages.Add(new CultureInfo("en_US"));
             _languages.Add(new CultureInfo("ru_RU"));
+            _languages.Add(new CultureInfo("zh_CN"));
         }
 
         protected override void OnStartup(StartupEventArgs e)

@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    
+    <!-- menu -->
+    <v:String x:Key="file">文件</v:String>
+    <v:String x:Key="create">创建</v:String>
+    <v:String x:Key="open">打开</v:String>
+    <v:String x:Key="save">保存</v:String>
+    <v:String x:Key="save_as">另存为</v:String>
+    <v:String x:Key="exit">退出</v:String>
+
+
+    <v:String x:Key="edit">编辑</v:String>
+    <v:String x:Key="undo">撤销</v:String>
+    <v:String x:Key="redo">重做</v:String>
+    <v:String x:Key="copy">复制</v:String>
+    <v:String x:Key="cut">剪切</v:String>
+    <v:String x:Key="paste">粘贴</v:String>
+    <v:String x:Key="remove">删除</v:String>
+    <v:String x:Key="select_all">全选</v:String>
+
+    <v:String x:Key="text">文本</v:String>
+    <v:String x:Key="task">任务</v:String>
+    <v:String x:Key="grammar">语法</v:String>
+    <v:String x:Key="analyze_method">分析方法</v:String>
+    <v:String x:Key="error_diagnosis">错误诊断</v:String>
+    <v:String x:Key="test_example">测试示例</v:String>
+    <v:String x:Key="reference_list">参考列表</v:String>
+    <v:String x:Key="source_code">源代码</v:String>
+
+    <v:String x:Key="run">运行</v:String>
+
+    <v:String x:Key="certificate">证书</v:String>
+    <v:String x:Key="show_certificate">显示证书</v:String>
+    <v:String x:Key="about">关于</v:String>
+    <v:String x:Key="settings">设置</v:String>
+
+    <!-- settings -->
+    <v:String x:Key="settings_language">语言</v:String>
+
+
+</ResourceDictionary>
