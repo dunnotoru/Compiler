@@ -36,8 +36,9 @@
     <v:String x:Key="settings">Settings</v:String>
     
     <!-- settings -->
+    <v:String x:Key="settings_back">back</v:String>
     <v:String x:Key="settings_language">Language</v:String>
-    
+
     <!-- messages -->
     <v:String x:Key="msg_save_changes">Save Changes?</v:String>
 </ResourceDictionary>

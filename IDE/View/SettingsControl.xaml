@@ -13,18 +13,19 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid>
-        <DockPanel>
-            <ListView DockPanel.Dock="Left" Width="auto" MinWidth="100" 
-                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Path=Content}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+    
+    <DockPanel Grid.ColumnSpan="2" Grid.RowSpan="2" Background="White">
+        <ListView DockPanel.Dock="Left" Width="auto" MinWidth="100" 
+                ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Content}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-            <ContentControl Margin="10" Content="{Binding Path=SelectedItem.ViewModel}"/>
-        </DockPanel>
-    </Grid>
+        <ContentControl Margin="10" Content="{Binding Path=SelectedItem.ViewModel}"/>
+
+        <Button Command="{Binding BackCommand}" Width="100" Height="50" VerticalAlignment="Bottom" Margin="10" Content="{DynamicResource settings_back}"/>
+    </DockPanel>
 </UserControl>
