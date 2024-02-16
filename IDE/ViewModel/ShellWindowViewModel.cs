@@ -1,10 +1,8 @@
 ﻿using IDE.Services.Abstractions;
-using IDE.View;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Permissions;
 using System.Windows.Input;
 
 namespace IDE.ViewModel
@@ -17,6 +15,7 @@ namespace IDE.ViewModel
         private readonly IMessageBoxService _messageBoxService;
         private readonly ILogger _logger;
         private readonly IWindowService _windowService; 
+        private readonly ILocalizationProvider _localization; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel _selectedTab;
@@ -33,7 +32,8 @@ namespace IDE.ViewModel
                                     ICloseService closeService,
                                     IMessageBoxService messageBoxService,
                                     ILogger logger,
-                                    IWindowService windowService)
+                                    IWindowService windowService,
+                                    ILocalizationProvider localization)
         {
             Tabs = new ObservableCollection<TabItemViewModel>();
             _dialogService = dialogService;
@@ -42,6 +42,7 @@ namespace IDE.ViewModel
             _messageBoxService = messageBoxService;
             _logger = logger;
             _windowService = windowService;
+            _localization = localization;
         }
 
         private void Open(object obj)
@@ -127,7 +128,7 @@ namespace IDE.ViewModel
         {
             MessageResult result = MessageResult.No;
             if (Tabs.Any(_ => _.IsUnsaved == true))
-                result = _messageBoxService.ShowYesNoCancel("Сохранить изменения?");
+                result = _messageBoxService.ShowYesNoCancel(_localization.GetLocalizedString("msg_save_changes"));
 
             switch (result)
             {
@@ -147,7 +148,7 @@ namespace IDE.ViewModel
         }
         private void NavigateToSettings(object obj)
         {
-            _windowService.ShowDialog(() => new SettingsViewModel());
+            _windowService.ShowDialog(() => new SettingsViewModel(_localization));
         }
 
         public TabItemViewModel SelectedTab

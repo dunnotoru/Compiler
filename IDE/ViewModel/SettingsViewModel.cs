@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using IDE.Services.Abstractions;
+using System.Collections.ObjectModel;
 
 namespace IDE.ViewModel
 {
@@ -6,11 +7,13 @@ namespace IDE.ViewModel
     {
         private ListItemViewModel _selectedItem;
         private ObservableCollection<ListItemViewModel> _items;
+        private readonly ILocalizationProvider _localizationProvider;
 
-        public SettingsViewModel()
+        public SettingsViewModel(ILocalizationProvider localizationProvider)
         {
+            _localizationProvider = localizationProvider;
             Items = new ObservableCollection<ListItemViewModel>();
-            Items.Add(new ListItemViewModel("Language", () => new LanguageSettingsViewModel()));
+            Items.Add(new ListItemViewModel(_localizationProvider.GetLocalizedString("settings_language"), () => new LanguageSettingsViewModel()));
         }
 
         public ObservableCollection<ListItemViewModel> Items

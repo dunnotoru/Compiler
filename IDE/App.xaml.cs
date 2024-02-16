@@ -19,8 +19,7 @@ namespace IDE
         private static List<CultureInfo> _languages = new List<CultureInfo>();
         public static event EventHandler? LanguageChanged;
         private IServiceProvider _serviceProvider;
-        private ILogger _logger;
-
+        
         public static List<CultureInfo> Languages
         {
             get { return _languages; }
@@ -40,18 +39,14 @@ namespace IDE
                 Thread.CurrentThread.CurrentUICulture = value;
 
                 ResourceDictionary dict = new ResourceDictionary();
-                switch(value.Name)
+
+                try
                 {
-                    case "zh_CN":
-                        dict.Source = new Uri($"Resources/Languages/lang.{value.Name}.xaml", UriKind.Relative);
-                        break;
-                    case "ru_RU":
-                        dict.Source = new Uri($"Resources/Languages/lang.{value.Name}.xaml", UriKind.Relative);
-                        break;
-                    default:
-                        dict.Source = new Uri($"Resources/Languages/lang.xaml", UriKind.Relative);
-                        break;
-                        
+                    dict.Source = new Uri($"Resources/Languages/lang.{value.Name}.xaml", UriKind.Relative);
+                }
+                catch
+                {
+                    dict.Source = new Uri($"Resources/Languages/lang.xaml", UriKind.Relative);
                 }
 
                 ResourceDictionary oldDict = (from d in Current.Resources.MergedDictionaries
@@ -76,37 +71,47 @@ namespace IDE
         public App()
         {
             LoadResources();
+            LoadLanguages();
+            _serviceProvider = ConfigureServices();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Language = new CultureInfo(IDE.Properties.Settings.Default.DefaultLanguage);
+
+            MainWindow = _serviceProvider.GetRequiredService<ShellWindow>();
+            MainWindow.DataContext = _serviceProvider.GetRequiredService<ShellWindowViewModel>();
+            MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            MainWindow.Show();
+
+
+            base.OnStartup(e);
+        }
+
+
+        private void App_LanguageChanged(object? sender, EventArgs e)
+        {
+            IDE.Properties.Settings.Default.DefaultLanguage = Language.Name;
+            IDE.Properties.Settings.Default.Save();
+        }
+
+        private void LoadLanguages()
+        {
+            LanguageChanged += App_LanguageChanged;
             _languages.Clear();
             _languages.Add(new CultureInfo("en_US"));
             _languages.Add(new CultureInfo("ru_RU"));
             _languages.Add(new CultureInfo("zh_CN"));
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            _serviceProvider = ConfigureServices();
-
-            ShellWindow window = new ShellWindow();
-            MainWindow = window;
-            MainWindow.DataContext = _serviceProvider.GetService<ShellWindowViewModel>();
-            MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            MainWindow.Show();
-
-            base.OnStartup(e);
-        }
-
         private void LoadResources()
         {
-            ResourceDictionary lang = new ResourceDictionary();
-            lang.Source = new Uri("pack://application:,,,/Resources/Languages/lang.xaml", UriKind.RelativeOrAbsolute);
-
             ResourceDictionary styles = new ResourceDictionary();
             styles.Source = new Uri("pack://application:,,,/Resources/Styles/Styles.xaml", UriKind.RelativeOrAbsolute);
 
             ResourceDictionary assets = new ResourceDictionary();
             assets.Source = new Uri("pack://application:,,,/Resources/Assets/Assets.xaml", UriKind.RelativeOrAbsolute);
 
-            Resources.MergedDictionaries.Add(lang);
             Resources.MergedDictionaries.Add(styles);
             Resources.MergedDictionaries.Add(assets);
         }
@@ -120,9 +125,11 @@ namespace IDE
             services.AddTransient<IMessageBoxService, MessageBoxService>();
             services.AddTransient<IWindowService, WindowService>();
 
+            services.AddSingleton(typeof(ILocalizationProvider), new LocalizationProvider(GetLocalizedString));
             services.AddSingleton(typeof(ILogger), ConfigureLogger());
 
             services.AddSingleton<ShellWindowViewModel>();
+            services.AddSingleton<ShellWindow>();
 
             return services.BuildServiceProvider();
         }
@@ -143,6 +150,15 @@ namespace IDE
                     .SetMinimumLevel(LogLevel.Debug));
 
             return loggerFactory.CreateLogger<FileLogger>();
+        }
+
+        private string GetLocalizedString(string key)
+        {
+            ResourceDictionary dict = (from d in Current.Resources.MergedDictionaries
+                                          where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
+                                          select d).First();
+
+            return dict[key] as string ?? string.Empty;
         }
     }
 }

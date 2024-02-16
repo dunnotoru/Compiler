@@ -37,5 +37,7 @@
     
     <!-- settings -->
     <v:String x:Key="settings_language">Language</v:String>
-
+    
+    <!-- messages -->
+    <v:String x:Key="msg_save_changes">Save Changes?</v:String>
 </ResourceDictionary>
