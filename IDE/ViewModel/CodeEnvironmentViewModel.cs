@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace IDE.ViewModel
 {
-    internal sealed class ShellWindowViewModel : ViewModelBase
+    internal sealed class CodeEnvironmentViewModel : ViewModelBase
     {
         private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
@@ -27,7 +27,7 @@ namespace IDE.ViewModel
         public ICommand CloseCommand => new RelayCommand(Close);
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
 
-        public ShellWindowViewModel(IDialogService dialogService,
+        public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
                                     ICloseService closeService,
                                     IMessageBoxService messageBoxService,

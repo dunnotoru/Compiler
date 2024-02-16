@@ -7,6 +7,11 @@ namespace IDE.View
         public ShellWindow()
         {
             InitializeComponent();
+
+            double screenHeight = SystemParameters.FullPrimaryScreenHeight;
+            double screenWidth = SystemParameters.FullPrimaryScreenWidth;
+            this.Top = (screenHeight - this.Height) / 2;
+            this.Left = (screenWidth - this.Width) / 2;
         }
     }
 }

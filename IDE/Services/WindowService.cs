@@ -1,5 +1,4 @@
 ﻿using IDE.Services.Abstractions;
-using IDE.View;
 using IDE.ViewModel;
 using System;
 using System.Windows;
@@ -17,9 +16,8 @@ namespace IDE.Services
 
         public void ShowDialog<T>(Func<T> getViewModel) where T : ViewModelBase
         {
-            SettingsWindow window = new SettingsWindow();
-            window.DataContext = getViewModel();
-            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            Window window = new Window();
+            window.Content = getViewModel();
             window.ShowDialog();
         }
     }

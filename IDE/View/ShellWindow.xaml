@@ -1,159 +1,21 @@
 ﻿<Window x:Class="IDE.View.ShellWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local ="clr-namespace:IDE.View"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-        xmlns:helper ="clr-namespace:IDE.Helper"
-        xmlns:vm ="clr-namespace:IDE.ViewModel"
+        xmlns:local="clr-namespace:IDE.View"
+        xmlns:vm="clr-namespace:IDE.ViewModel"
         mc:Ignorable="d"
         MinHeight="250" MinWidth="350"
         Height="600" Width="1000">
 
     <Window.Resources>
-
-        <DataTemplate DataType="{x:Type vm:TabItemViewModel}">
-            <local:CodeTabControl/>
+        <DataTemplate DataType="{x:Type vm:CodeEnvironmentViewModel}">
+            <local:CodeEnvironmentControl/>
         </DataTemplate>
-        <BooleanToVisibilityConverter x:Key="BoolToVisiblity"/>
     </Window.Resources>
     
-    <Window.InputBindings>
-        <KeyBinding Command="{Binding SaveCommand}" Modifiers="Ctrl" Key="S"/>
-        <KeyBinding Command="{Binding CreateCommand}" Modifiers="Ctrl" Key="N"/>
-        <KeyBinding Command="{Binding OpenCommand}" Modifiers="Ctrl" Key="O"/>
-    </Window.InputBindings>
-
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="{DynamicResource file}">
-                <MenuItem Header="{DynamicResource create}" Command="{Binding CreateCommand}"/>
-                <MenuItem Header="{DynamicResource open}" Command="{Binding OpenCommand}"/>
-                <MenuItem Header="{DynamicResource save}" Command="{Binding SaveCommand}"/>
-                <MenuItem Header="{DynamicResource save_as}" Command="{Binding SaveAsCommand}"/>
-                <MenuItem Header="{DynamicResource exit}" Command="{Binding CloseCommand}"/>
-            </MenuItem>
-            <MenuItem Header="{DynamicResource edit}">
-                <MenuItem Header="{DynamicResource undo}" Command="ApplicationCommands.Undo"/>
-                <MenuItem Header="{DynamicResource redo}" Command="ApplicationCommands.Redo"/>
-                <MenuItem Header="{DynamicResource copy}" Command="ApplicationCommands.Copy"/>
-                <MenuItem Header="{DynamicResource paste}" Command="ApplicationCommands.Paste"/>
-                <MenuItem Header="{DynamicResource select_all}" Command="ApplicationCommands.SelectAll"/>
-            </MenuItem>
-            <MenuItem Header="{DynamicResource text}">
-                <MenuItem Header="{DynamicResource task}"/>
-                <MenuItem Header="{DynamicResource grammar}"/>
-                <MenuItem Header="{DynamicResource analyze_method}"/>
-                <MenuItem Header="{DynamicResource error_diagnosis}"/>
-                <MenuItem Header="{DynamicResource test_example}"/>
-                <MenuItem Header="{DynamicResource reference_list}"/>
-                <MenuItem Header="{DynamicResource source_code}"/>
-            </MenuItem>
-            <MenuItem Header="{DynamicResource run}"/>
-            <MenuItem Header="{DynamicResource certificate}">
-                <MenuItem Header="{DynamicResource show_certificate}"/>
-                <MenuItem Header="{DynamicResource about}"/>
-                <MenuItem Header="{DynamicResource settings}" Command="{Binding NavigateToSettingsCommand}"/>
-            </MenuItem>
-        </Menu>
-        
-        <ToolBarTray DockPanel.Dock="Top">
-            <ToolBar>
-                <Button Command="{Binding CreateCommand}" Content="{StaticResource img_create}">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource create}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Command="{Binding OpenCommand}" Content="{StaticResource img_open}">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource open}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Command="{Binding SaveCommand}" Content="{StaticResource img_save}">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource save}"/>
-                    </Button.ToolTip>
-                </Button>
-
-                <Separator/>
-                <Button Content="{StaticResource img_undo}" Command="ApplicationCommands.Undo">
-                    <Button.ToolTip>    
-                        <ToolTip Content="{DynamicResource undo}"/>
-                    </Button.ToolTip>
-                </Button>
-
-                <Button Content="{StaticResource img_redo}" Command="ApplicationCommands.Redo">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource redo}"/>
-                    </Button.ToolTip>
-                </Button>
-
-                <Separator/>
-
-                <Button Content="{StaticResource img_copy}" Command="ApplicationCommands.Copy">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource copy}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Content="{StaticResource img_cut}" Command="ApplicationCommands.Cut">
-
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource cut}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Content="{StaticResource img_paste}" Command="ApplicationCommands.Paste">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource paste}"/>
-                    </Button.ToolTip>
-                </Button>
-
-                <Separator/>
-                <Button Content="{StaticResource img_run}">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource run}"/>
-                    </Button.ToolTip>
-                </Button>
-
-                <Separator/>
-                <Button Content="{StaticResource img_cert}">
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource certificate}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Content="{StaticResource img_info}" >
-                    <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource about}"/>
-                    </Button.ToolTip>
-                </Button>
-            </ToolBar>
-        </ToolBarTray>
-        
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <TabControl Margin="10" Name="tabControl"
-                        ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
-                <TabControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header}"/>
-                            <Ellipse Fill="DarkSlateGray" Margin="5 0 0 0" Width="10" Height="10" Visibility="{Binding IsUnsaved, Converter={StaticResource BoolToVisiblity}}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
-            </TabControl>
-
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
-
-            <DataGrid Margin="10" Grid.Row="2">
-                
-            </DataGrid>
-        </Grid>
-    </DockPanel>
+    <Grid>
+        <ContentControl Content="{Binding Current}"/>
+    </Grid>
 </Window>

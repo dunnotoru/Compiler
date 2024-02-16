@@ -19,6 +19,7 @@ namespace IDE
         private static List<CultureInfo> _languages = new List<CultureInfo>();
         public static event EventHandler? LanguageChanged;
         private IServiceProvider _serviceProvider;
+        private NavigationStore _store = new NavigationStore();
         
         public static List<CultureInfo> Languages
         {
@@ -49,9 +50,9 @@ namespace IDE
                     dict.Source = new Uri($"Resources/Languages/lang.xaml", UriKind.Relative);
                 }
 
-                ResourceDictionary oldDict = (from d in Current.Resources.MergedDictionaries
+                ResourceDictionary? oldDict = (from d in Current.Resources.MergedDictionaries
                                               where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
-                                              select d).First();
+                                              select d).FirstOrDefault();
 
                 if(oldDict != null)
                 {
@@ -79,15 +80,13 @@ namespace IDE
         {
             Language = new CultureInfo(IDE.Properties.Settings.Default.DefaultLanguage);
 
+            _store.Current = _serviceProvider.GetRequiredService<CodeEnvironmentViewModel>();
             MainWindow = _serviceProvider.GetRequiredService<ShellWindow>();
-            MainWindow.DataContext = _serviceProvider.GetRequiredService<ShellWindowViewModel>();
-            MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            MainWindow.DataContext = _serviceProvider.GetRequiredService<ShellViewModel>();
             MainWindow.Show();
-
 
             base.OnStartup(e);
         }
-
 
         private void App_LanguageChanged(object? sender, EventArgs e)
         {
@@ -119,6 +118,11 @@ namespace IDE
         private IServiceProvider ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<NavigationStore>(_store);
+            services.AddTransient<IViewModelFactory, ViewModelFactory>();
+            services.AddSingleton<NavigationService>();
+
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IDialogService, DialogService>();
             services.AddTransient<ICloseService, CloseService>();
@@ -128,7 +132,8 @@ namespace IDE
             services.AddSingleton(typeof(ILocalizationProvider), new LocalizationProvider(GetLocalizedString));
             services.AddSingleton(typeof(ILogger), ConfigureLogger());
 
-            services.AddSingleton<ShellWindowViewModel>();
+            services.AddSingleton<CodeEnvironmentViewModel>();
+            services.AddSingleton<ShellViewModel>();
             services.AddSingleton<ShellWindow>();
 
             return services.BuildServiceProvider();
