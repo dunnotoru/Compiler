@@ -14,8 +14,8 @@ namespace IDE.ViewModel
         private readonly ICloseService _closeService;
         private readonly IMessageBoxService _messageBoxService;
         private readonly ILogger _logger;
-        private readonly IWindowService _windowService; 
         private readonly ILocalizationProvider _localization; 
+        private readonly NavigationService _navigationService; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel _selectedTab;
@@ -32,8 +32,8 @@ namespace IDE.ViewModel
                                     ICloseService closeService,
                                     IMessageBoxService messageBoxService,
                                     ILogger logger,
-                                    IWindowService windowService,
-                                    ILocalizationProvider localization)
+                                    ILocalizationProvider localization,
+                                    NavigationService navigationService)
         {
             Tabs = new ObservableCollection<TabItemViewModel>();
             _dialogService = dialogService;
@@ -41,8 +41,8 @@ namespace IDE.ViewModel
             _closeService = closeService;
             _messageBoxService = messageBoxService;
             _logger = logger;
-            _windowService = windowService;
             _localization = localization;
+            _navigationService = navigationService;
         }
 
         private void Open(object obj)
@@ -146,9 +146,10 @@ namespace IDE.ViewModel
             _logger.LogDebug("Application closed");
             _closeService.Close();
         }
+
         private void NavigateToSettings(object obj)
         {
-            _windowService.ShowDialog(() => new SettingsViewModel(_localization));
+            _navigationService.Navigate<SettingsViewModel>();
         }
 
         public TabItemViewModel SelectedTab

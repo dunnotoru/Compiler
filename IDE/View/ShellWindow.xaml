@@ -13,6 +13,9 @@
         <DataTemplate DataType="{x:Type vm:CodeEnvironmentViewModel}">
             <local:CodeEnvironmentControl/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <local:SettingsControl/>
+        </DataTemplate>
     </Window.Resources>
     
     <Grid>

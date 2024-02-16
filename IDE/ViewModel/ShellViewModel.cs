@@ -1,4 +1,5 @@
 ﻿using IDE.Services;
+using System;
 
 namespace IDE.ViewModel
 {
@@ -6,7 +7,6 @@ namespace IDE.ViewModel
     {
         private readonly NavigationStore _store;
 
-        private ViewModelBase _current;
         public ViewModelBase Current
         {
             get => _store.Current;
@@ -15,6 +15,12 @@ namespace IDE.ViewModel
         public ShellViewModel(NavigationStore store)
         {
             _store = store;
+            _store.ViewModelChanged += OnViewModelChanged;
+        }
+
+        private void OnViewModelChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(Current));
         }
     }
 }

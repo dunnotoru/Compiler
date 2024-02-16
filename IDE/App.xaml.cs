@@ -133,6 +133,7 @@ namespace IDE
             services.AddSingleton(typeof(ILogger), ConfigureLogger());
 
             services.AddSingleton<CodeEnvironmentViewModel>();
+            services.AddSingleton<SettingsViewModel>();
             services.AddSingleton<ShellViewModel>();
             services.AddSingleton<ShellWindow>();
 
