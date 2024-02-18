@@ -9,8 +9,8 @@ namespace IDE.ViewModel
 
         public ListItemViewModel(string content, Func<ViewModelBase> getViewModel)
         {
-            Content = content;
-            ViewModel = getViewModel();
+            _content = content;
+            _viewModel = getViewModel();
         }
 
         public ViewModelBase ViewModel

@@ -31,7 +31,7 @@ namespace IDE.Helper
                 AssociatedObject.TextChanged -= AssociatedObjectOnTextChanged;
         }
 
-        private void AssociatedObjectOnTextChanged(object sender, EventArgs eventArgs)
+        private void AssociatedObjectOnTextChanged(object? sender, EventArgs eventArgs)
         {
             var textEditor = sender as TextEditor;
             if (textEditor != null)
@@ -45,20 +45,22 @@ namespace IDE.Helper
             DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var behavior = dependencyObject as AvalonEditBehavior;
-            if (behavior.AssociatedObject != null)
-            {
-                var editor = behavior.AssociatedObject as TextEditor;
-                if (editor.Document != null)
-                {
-                    var caretOffset = editor.CaretOffset;
-                    editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-                    if(editor.Document.Text.Length < caretOffset)
-                        editor.CaretOffset = 0;
-                    else
-                        editor.CaretOffset = caretOffset;
-                }
-            }
+            AvalonEditBehavior? behavior = dependencyObject as AvalonEditBehavior;
+            if (behavior == null) return;
+            if (behavior.AssociatedObject is null) return;
+
+            TextEditor? editor = behavior.AssociatedObject as TextEditor;
+            if (editor is null) return;
+            if(editor.Document is null) return;
+
+            var caretOffset = editor.CaretOffset;
+            editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
+            if (editor.Document.Text is null) return;
+
+            if(editor.Document.Text.Length < caretOffset)
+                editor.CaretOffset = 0;
+            else
+                editor.CaretOffset = caretOffset;
         }
     }
 }

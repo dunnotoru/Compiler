@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
@@ -18,7 +19,7 @@ namespace IDE.ViewModel
         private readonly NavigationService _navigationService; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
-        private TabItemViewModel _selectedTab;
+        private TabItemViewModel? _selectedTab;
 
         public ICommand CreateCommand => new RelayCommand(Create);
         public ICommand SaveCommand => new RelayCommand(Save, _ => SelectedTab != null);
@@ -35,7 +36,7 @@ namespace IDE.ViewModel
                                     ILocalizationProvider localization,
                                     NavigationService navigationService)
         {
-            Tabs = new ObservableCollection<TabItemViewModel>();
+            _tabs = new ObservableCollection<TabItemViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
             _closeService = closeService;
@@ -45,7 +46,7 @@ namespace IDE.ViewModel
             _navigationService = navigationService;
         }
 
-        private void Open(object obj)
+        private void Open(object? obj)
         {
             string fileName = _dialogService.OpenFileDialog();
             if (string.IsNullOrWhiteSpace(fileName)) return;
@@ -66,7 +67,7 @@ namespace IDE.ViewModel
             _logger.LogDebug("File opened " + fileName);
         }
 
-        private void Save(object obj)
+        private void Save(object? obj)
         {
             if (SelectedTab == null) return;
 
@@ -76,7 +77,7 @@ namespace IDE.ViewModel
             _logger.LogDebug("File saved " + SelectedTab.FileName);
         }
 
-        private void SaveAs(object obj)
+        private void SaveAs(object? obj)
         {
             if (SelectedTab == null) return;
             string fileName = _dialogService.SaveAsFileDialog();
@@ -95,7 +96,7 @@ namespace IDE.ViewModel
                 Save(tab);
         }
 
-        private void Create(object obj)
+        private void Create(object? obj)
         {
             string fileName = _dialogService.SaveAsFileDialog();
             if (string.IsNullOrEmpty(fileName)) return;
@@ -124,7 +125,7 @@ namespace IDE.ViewModel
             Tabs.Remove(tab);
         }
 
-        private void Close(object obj)
+        private void Close(object? obj)
         {
             MessageResult result = MessageResult.No;
             if (Tabs.Any(_ => _.IsUnsaved == true))
@@ -147,12 +148,32 @@ namespace IDE.ViewModel
             _closeService.Close();
         }
 
-        private void NavigateToSettings(object obj)
+        private void NavigateToSettings(object? obj)
         {
             _navigationService.Navigate<SettingsViewModel>();
         }
 
-        public TabItemViewModel SelectedTab
+        private void ShowAbout(object? obj)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\..\README.md")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        private void ShowHelp(object? obj)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\Resources\help.html")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        public TabItemViewModel? SelectedTab
         {
             get { return _selectedTab; }
             set { _selectedTab = value; OnPropertyChanged(); }

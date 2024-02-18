@@ -28,24 +28,26 @@ namespace IDE.View
             }
         }
 
-        private void LanguageChanged(Object sender, EventArgs e)
+        private void LanguageChanged(object? sender, EventArgs e)
         {
             CultureInfo currLang = App.Language;
 
             foreach (ComboBoxItem i in langs.Items)
             {
-                CultureInfo ci = i.Tag as CultureInfo;
+                CultureInfo? ci = i.Tag as CultureInfo;
+                if (ci is null) continue;
+
                 if (ci.Equals(currLang))
                     langs.SelectedItem = i;
             }
         }
 
-        private void OnLanguageSelected(Object sender, EventArgs e)
+        private void OnLanguageSelected(object? sender, EventArgs e)
         {
-            ComboBoxItem mi = sender as ComboBoxItem;
+            ComboBoxItem? mi = sender as ComboBoxItem;
             if (mi != null)
             {
-                CultureInfo lang = mi.Tag as CultureInfo;
+                CultureInfo? lang = mi.Tag as CultureInfo;
                 if (lang != null)
                 {
                     App.Language = lang;

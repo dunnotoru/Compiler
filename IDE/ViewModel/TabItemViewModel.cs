@@ -11,23 +11,23 @@ namespace IDE.ViewModel
 		private string _fileName;
         private bool _isUnsaved;
 
-        public event EventHandler Close;
+        public event EventHandler? Close;
 
         public ICommand CloseCommand => new RelayCommand(ExecuteClose);
 
         public TabItemViewModel(string fileName)
         {
-            FileName = fileName;
-            Content = string.Empty;
+            _fileName = fileName;
+            _content = string.Empty;
         }
 
         public TabItemViewModel(string fileName, string content)
         {
-            FileName = fileName;
-            Content = content;
+            _fileName = fileName;
+            _content = content;
         }
 
-        private void ExecuteClose(object obj)
+        private void ExecuteClose(object? obj)
         {
             Close?.Invoke(this, EventArgs.Empty);
         }
