@@ -28,13 +28,9 @@ namespace IDE.ViewModel
         public ICommand OpenCommand => new RelayCommand(Open);
         public ICommand CloseCommand => new RelayCommand(Close);
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
-<<<<<<< Updated upstream
-
-=======
         public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
         public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
         
->>>>>>> Stashed changes
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
                                     ICloseService closeService,
