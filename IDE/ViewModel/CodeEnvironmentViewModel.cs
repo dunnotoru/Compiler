@@ -27,6 +27,9 @@ namespace IDE.ViewModel
         public ICommand OpenCommand => new RelayCommand(Open);
         public ICommand CloseCommand => new RelayCommand(Close);
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
+        public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
+        public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
+        
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
@@ -143,7 +146,6 @@ namespace IDE.ViewModel
                     break;
             }
 
-
             _logger.LogDebug("Application closed");
             _closeService.Close();
         }
@@ -152,6 +154,7 @@ namespace IDE.ViewModel
         {
             _navigationService.Navigate<SettingsViewModel>();
         }
+
 
         private void ShowAbout(object? obj)
         {
