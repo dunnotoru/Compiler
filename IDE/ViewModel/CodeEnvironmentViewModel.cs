@@ -1,4 +1,5 @@
-﻿using IDE.Services.Abstractions;
+﻿using ControlzEx.Standard;
+using IDE.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
@@ -27,7 +28,13 @@ namespace IDE.ViewModel
         public ICommand OpenCommand => new RelayCommand(Open);
         public ICommand CloseCommand => new RelayCommand(Close);
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
+<<<<<<< Updated upstream
 
+=======
+        public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
+        public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
+        
+>>>>>>> Stashed changes
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
                                     ICloseService closeService,
@@ -69,7 +76,7 @@ namespace IDE.ViewModel
 
         private void Save(object? obj)
         {
-            if (SelectedTab == null) return;
+            if (SelectedTab is null) return;
 
             _fileService.SaveFile(SelectedTab.FileName, SelectedTab.Content);
 
@@ -79,7 +86,7 @@ namespace IDE.ViewModel
 
         private void SaveAs(object? obj)
         {
-            if (SelectedTab == null) return;
+            if (SelectedTab is null) return;
             string fileName = _dialogService.SaveAsFileDialog();
             if (string.IsNullOrWhiteSpace(fileName)) return;
 
@@ -120,6 +127,24 @@ namespace IDE.ViewModel
             if (sender is not TabItemViewModel) return;
 
             TabItemViewModel tab = (TabItemViewModel)sender;
+            MessageResult result = MessageResult.No;
+            if (tab.IsUnsaved == true)
+            {
+                result = _messageBoxService.ShowYesNoCancel(_localization.GetLocalizedString("msg_save_changes"));
+            }
+
+            switch (result)
+            {
+                case MessageResult.Yes:
+                    _fileService.SaveFile(tab.FileName, tab.Content);
+                    break;
+
+                case MessageResult.Cancel:
+                    return;
+
+                default:
+                    break;
+            }
 
             tab.Close -= RemoveTab;
             Tabs.Remove(tab);
