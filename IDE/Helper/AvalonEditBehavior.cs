@@ -54,7 +54,12 @@ namespace IDE.Helper
             if(editor.Document is null) return;
 
             var caretOffset = editor.CaretOffset;
+
+            if (dependencyPropertyChangedEventArgs.NewValue is null) return;
+
             editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
+            
+
             if (editor.Document.Text is null) return;
 
             if(editor.Document.Text.Length < caretOffset)

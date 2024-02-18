@@ -16,9 +16,9 @@ namespace IDE
 {
     public partial class App : Application
     {
-        private static List<CultureInfo> _languages = new List<CultureInfo>();
+        private static readonly List<CultureInfo> _languages = new List<CultureInfo>();
         public static event EventHandler? LanguageChanged;
-        private IServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
         private NavigationStore _store = new NavigationStore();
         
         public static List<CultureInfo> Languages
@@ -33,7 +33,7 @@ namespace IDE
             }
             set
             {
-                if (value == null) throw new ArgumentNullException("null language");
+                if (value is null) throw new ArgumentNullException("null language");
                 if (value == Thread.CurrentThread.CurrentUICulture) return;
 
                 Thread.CurrentThread.CurrentUICulture = value;
@@ -53,7 +53,7 @@ namespace IDE
                                               where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
                                               select d).FirstOrDefault();
 
-                if(oldDict != null)
+                if(oldDict is not null)
                 {
                     int index = Current.Resources.MergedDictionaries.IndexOf(oldDict);
                     Current.Resources.MergedDictionaries.Remove(oldDict);

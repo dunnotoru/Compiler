@@ -139,6 +139,9 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Header}"/>
                             <Ellipse Fill="DarkSlateGray" Margin="5 0 0 0" Width="10" Height="10" Visibility="{Binding IsUnsaved, Converter={StaticResource BoolToVisiblity}}"/>
+                            <Button Command="{Binding CloseCommand}" Margin="5 0 0 0"  Background="White">
+                                <TextBlock Text="x"/>
+                            </Button>
                         </StackPanel>
                     </DataTemplate>
                 </TabControl.ItemTemplate>

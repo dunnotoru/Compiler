@@ -13,10 +13,18 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    
-    <DockPanel Grid.ColumnSpan="2" Grid.RowSpan="2" Background="White">
-        <ListView DockPanel.Dock="Left" Width="auto" MinWidth="100" 
-                ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+
+    <Grid Grid.ColumnSpan="2" Grid.RowSpan="2" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="22*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="133*"/>
+            <ColumnDefinition Width="667*"/>
+        </Grid.ColumnDefinitions>
+        <ListView Width="auto" MinWidth="100" Margin="10,10,19,10"
+                ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Grid.Column="0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Content}"/>
@@ -24,8 +32,8 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ContentControl Margin="10" Content="{Binding Path=SelectedItem.ViewModel}"/>
+        <ContentControl Margin="10,10,10,10" Content="{Binding Path=SelectedItem.ViewModel}" Grid.Column="1" Grid.Row="0"/>
 
-        <Button Command="{Binding BackCommand}" Width="100" Height="50" VerticalAlignment="Bottom" Margin="10" Content="{DynamicResource settings_back}"/>
-    </DockPanel>
+        <Button Command="{Binding BackCommand}" Height="34" Width="100" VerticalAlignment="Center" Content="{DynamicResource settings_back}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"/>
+    </Grid>
 </UserControl>
