@@ -37,7 +37,9 @@
     <v:String x:Key="settings">设置</v:String>
 
     <!-- settings -->
+    <v:String x:Key="settings_back">返回</v:String>
     <v:String x:Key="settings_language">语言</v:String>
 
-
+    <!-- messages -->
+    <v:String x:Key="msg_save_changes">保存更改？</v:String>
 </ResourceDictionary>
