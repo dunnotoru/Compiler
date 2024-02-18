@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
@@ -26,6 +27,9 @@ namespace IDE.ViewModel
         public ICommand OpenCommand => new RelayCommand(Open);
         public ICommand CloseCommand => new RelayCommand(Close);
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
+        public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
+        public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
+        
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
@@ -142,7 +146,6 @@ namespace IDE.ViewModel
                     break;
             }
 
-
             _logger.LogDebug("Application closed");
             _closeService.Close();
         }
@@ -150,6 +153,26 @@ namespace IDE.ViewModel
         private void NavigateToSettings(object obj)
         {
             _navigationService.Navigate<SettingsViewModel>();
+        }
+
+        private void ShowAbout(object obj)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\Resources\help.html")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        private void ShowHelp(object obj)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\Resources\help.html")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
 
         public TabItemViewModel SelectedTab
