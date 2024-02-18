@@ -23,6 +23,7 @@
     <None Remove="Resources\Assets\UI\create.png" />
     <None Remove="Resources\Assets\UI\cross.png" />
     <None Remove="Resources\Assets\UI\cut.png" />
+    <None Remove="Resources\Assets\UI\icon.png" />
     <None Remove="Resources\Assets\UI\info.png" />
     <None Remove="Resources\Assets\UI\open.png" />
     <None Remove="Resources\Assets\UI\paste.png" />
@@ -46,6 +47,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Assets\UI\cut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\UI\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Assets\UI\info.png">

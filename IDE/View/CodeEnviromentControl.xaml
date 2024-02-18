@@ -47,8 +47,8 @@
                 <MenuItem Header="{DynamicResource source_code}"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource run}"/>
-            <MenuItem Header="{DynamicResource certificate}">
-                <MenuItem Header="{DynamicResource show_certificate}"/>
+            <MenuItem Header="{DynamicResource help}">
+                <MenuItem Header="{DynamicResource show_help}"/>
                 <MenuItem Header="{DynamicResource about}"/>
                 <MenuItem Header="{DynamicResource settings}" Command="{Binding NavigateToSettingsCommand}"/>
             </MenuItem>
@@ -114,7 +114,7 @@
                 <Separator/>
                 <Button Content="{StaticResource img_cert}">
                     <Button.ToolTip>
-                        <ToolTip Content="{DynamicResource certificate}"/>
+                        <ToolTip Content="{DynamicResource help}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Content="{StaticResource img_info}" >
@@ -147,7 +147,12 @@
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
 
             <DataGrid Margin="10" Grid.Row="2">
-
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource file_name}" Width="auto"/>
+                    <DataGridTextColumn Header="{DynamicResource line}" Width="auto"/>
+                    <DataGridTextColumn Header="{DynamicResource column}" Width="auto"/>
+                    <DataGridTextColumn Header="{DynamicResource message}" Width="auto"/>
+                </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </DockPanel>

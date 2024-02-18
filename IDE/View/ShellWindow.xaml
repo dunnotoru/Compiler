@@ -7,7 +7,9 @@
         xmlns:vm="clr-namespace:IDE.ViewModel"
         mc:Ignorable="d"
         MinHeight="250" MinWidth="350"
-        Height="600" Width="1000">
+        Height="600" Width="1000"
+        Title="IDE"
+        Icon="pack://application:,,,/Resources/Assets/UI/icon.png">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:CodeEnvironmentViewModel}">
