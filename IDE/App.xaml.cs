@@ -22,7 +22,6 @@ namespace IDE
         {
             get { return _languages; }
         }
-
         public static CultureInfo Language
         {
             get
