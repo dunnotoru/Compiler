@@ -36,6 +36,12 @@
     <v:String x:Key="about">关于</v:String>
     <v:String x:Key="settings">设置</v:String>
 
+    <!-- output grid -->
+    <v:String x:Key="file_name">文件名</v:String>
+    <v:String x:Key="line">字符串</v:String>
+    <v:String x:Key="column">专栏</v:String>
+    <v:String x:Key="message">留言内容</v:String>
+
     <!-- settings -->
     <v:String x:Key="settings_back">返回</v:String>
     <v:String x:Key="settings_language">语言</v:String>

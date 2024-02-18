@@ -34,7 +34,13 @@
     <v:String x:Key="show_certificate">Просмотр справки</v:String>
     <v:String x:Key="about">О программе</v:String>
     <v:String x:Key="settings">Настройки</v:String>
-    
+
+    <!-- output grid -->
+    <v:String x:Key="file_name">Имя файла</v:String>
+    <v:String x:Key="line">Строка</v:String>
+    <v:String x:Key="column">Символ</v:String>
+    <v:String x:Key="message">Сообщение</v:String>
+
     <!-- settings -->
     <v:String x:Key="settings_back">Назад</v:String>
     <v:String x:Key="settings_language">Язык</v:String>

@@ -35,6 +35,12 @@
     <v:String x:Key="about">About</v:String>
     <v:String x:Key="settings">Settings</v:String>
     
+    <!-- output grid -->
+    <v:String x:Key="file_name">File Name</v:String>
+    <v:String x:Key="line">Line</v:String>
+    <v:String x:Key="column">Column</v:String>
+    <v:String x:Key="message">Message</v:String>
+    
     <!-- settings -->
     <v:String x:Key="settings_back">back</v:String>
     <v:String x:Key="settings_language">Language</v:String>
