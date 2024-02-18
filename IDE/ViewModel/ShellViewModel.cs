@@ -7,7 +7,7 @@ namespace IDE.ViewModel
     {
         private readonly NavigationStore _store;
 
-        public ViewModelBase Current
+        public ViewModelBase? Current
         {
             get => _store.Current;
         }

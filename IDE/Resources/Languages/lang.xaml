@@ -29,9 +29,9 @@
     <v:String x:Key="source_code">Source code</v:String>
     
     <v:String x:Key="run">Run</v:String>
-    
-    <v:String x:Key="certificate">Certificate</v:String>
-    <v:String x:Key="show_certificate">Show certificate</v:String>
+
+    <v:String x:Key="help">Help</v:String>
+    <v:String x:Key="show_help">Show help</v:String>
     <v:String x:Key="about">About</v:String>
     <v:String x:Key="settings">Settings</v:String>
     

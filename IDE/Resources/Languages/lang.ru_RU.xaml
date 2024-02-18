@@ -30,8 +30,8 @@
     
     <v:String x:Key="run">Пуск</v:String>
     
-    <v:String x:Key="certificate">Справка</v:String>
-    <v:String x:Key="show_certificate">Просмотр справки</v:String>
+    <v:String x:Key="help">Справка</v:String>
+    <v:String x:Key="show_help">Просмотр справки</v:String>
     <v:String x:Key="about">О программе</v:String>
     <v:String x:Key="settings">Настройки</v:String>
 

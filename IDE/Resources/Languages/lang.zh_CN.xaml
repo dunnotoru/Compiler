@@ -31,8 +31,8 @@
 
     <v:String x:Key="run">运行</v:String>
 
-    <v:String x:Key="certificate">证书</v:String>
-    <v:String x:Key="show_certificate">显示证书</v:String>
+    <v:String x:Key="help">证书</v:String>
+    <v:String x:Key="show_help">显示证书</v:String>
     <v:String x:Key="about">关于</v:String>
     <v:String x:Key="settings">设置</v:String>
 

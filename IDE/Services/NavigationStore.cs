@@ -5,9 +5,9 @@ namespace IDE.Services
 {
     internal class NavigationStore
     {
-        private ViewModelBase _current;
+        private ViewModelBase? _current;
 
-        public ViewModelBase Current
+        public ViewModelBase? Current
         {
             get { return _current; }
             set { _current = value; ViewModelChanged?.Invoke(this, EventArgs.Empty); }

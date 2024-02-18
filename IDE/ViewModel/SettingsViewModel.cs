@@ -7,7 +7,7 @@ namespace IDE.ViewModel
 {
     class SettingsViewModel : ViewModelBase
     {
-        private ListItemViewModel _selectedItem;
+        private ListItemViewModel? _selectedItem;
         private ObservableCollection<ListItemViewModel> _items;
         private readonly ILocalizationProvider _localizationProvider;
         private readonly NavigationService _navigationService;
@@ -18,7 +18,7 @@ namespace IDE.ViewModel
         {
             _localizationProvider = localizationProvider;
             _navigationService = navigationService;
-            Items = new ObservableCollection<ListItemViewModel>();
+            _items = new ObservableCollection<ListItemViewModel>();
             Items.Add(new ListItemViewModel(_localizationProvider.GetLocalizedString("settings_language"), () => new LanguageSettingsViewModel()));
         }
 
@@ -28,13 +28,13 @@ namespace IDE.ViewModel
             set { _items = value; OnPropertyChanged(); }
         }
 
-        public ListItemViewModel SelectedItem
+        public ListItemViewModel? SelectedItem
         {
             get { return _selectedItem; }
             set { _selectedItem = value; OnPropertyChanged(); }
         }
 
-        private void Back(object obj)
+        private void Back(object? obj)
         {
             _navigationService.Navigate<CodeEnvironmentViewModel>();
         }
