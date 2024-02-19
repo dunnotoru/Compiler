@@ -177,7 +177,7 @@ namespace IDE.ViewModel
         private void ShowAbout(object? obj)
         {
             var p = new Process();
-            p.StartInfo = new ProcessStartInfo(@"..\..\..\..\README.md")
+            p.StartInfo = new ProcessStartInfo(@"Resources\about.html")
             {
                 UseShellExecute = true
             };
@@ -187,7 +187,7 @@ namespace IDE.ViewModel
         private void ShowHelp(object? obj)
         {
             var p = new Process();
-            p.StartInfo = new ProcessStartInfo(@"..\..\..\Resources\help.html")
+            p.StartInfo = new ProcessStartInfo(@"Resources\help.html")
             {
                 UseShellExecute = true
             };
