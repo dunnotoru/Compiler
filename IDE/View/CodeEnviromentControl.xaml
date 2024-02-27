@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:IDE.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type vm:TabItemViewModel}">
             <local:CodeTabControl/>
@@ -150,6 +150,17 @@
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
 
             <TabControl Margin="10" Grid.Row="2">
+                <TabItem Header="Scan result">
+                    <DataGrid ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Code}" Header="{DynamicResource code}" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding RawToken}" Header="{DynamicResource rawToken}" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding TokenType}" Header="{DynamicResource tokenType}" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding StartIndex}" Header="{DynamicResource startIndex}" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding EndIndex}" Header="{DynamicResource endIndex}" Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
                 <TabItem Header="Info">
                     <DataGrid AutoGenerateColumns="False">
                         <DataGrid.Columns>
@@ -157,17 +168,6 @@
                             <DataGridTextColumn Header="{DynamicResource line}" Width="auto"/>
                             <DataGridTextColumn Header="{DynamicResource column}" Width="auto"/>
                             <DataGridTextColumn Header="{DynamicResource message}" Width="auto"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </TabItem>
-                <TabItem Header="Scan result">
-                    <DataGrid ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Code}" Header="code" Width="auto"/>
-                            <DataGridTextColumn Binding="{Binding RawToken}" Header="rawToken" Width="auto"/>
-                            <DataGridTextColumn Binding="{Binding TokenType}" Header="tokenType" Width="auto"/>
-                            <DataGridTextColumn Binding="{Binding StartIndex}" Header="startIndex" Width="auto"/>
-                            <DataGridTextColumn Binding="{Binding EndIndex}" Header="endIndex" Width="auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>

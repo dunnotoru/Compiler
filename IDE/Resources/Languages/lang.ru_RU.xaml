@@ -41,6 +41,12 @@
     <v:String x:Key="column">Символ</v:String>
     <v:String x:Key="message">Сообщение</v:String>
 
+    <v:String x:Key="code">Код</v:String>
+    <v:String x:Key="rawToken">Лексема</v:String>
+    <v:String x:Key="tokenType">Тип лексемы</v:String>
+    <v:String x:Key="startIndex">Начальная позиция</v:String>
+    <v:String x:Key="endIndex">Конечная позиция</v:String>
+
     <!-- settings -->
     <v:String x:Key="settings_back">Назад</v:String>
     <v:String x:Key="settings_language">Язык</v:String>

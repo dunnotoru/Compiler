@@ -40,6 +40,13 @@
     <v:String x:Key="line">Line</v:String>
     <v:String x:Key="column">Column</v:String>
     <v:String x:Key="message">Message</v:String>
+
+    <v:String x:Key="code">Code</v:String>
+    <v:String x:Key="rawToken">RawToken</v:String>
+    <v:String x:Key="tokenType">TokenType</v:String>
+    <v:String x:Key="startIndex">StartIndex</v:String>
+    <v:String x:Key="endIndex">EndIndex</v:String>
+    
     
     <!-- settings -->
     <v:String x:Key="settings_back">back</v:String>
@@ -47,4 +54,5 @@
 
     <!-- messages -->
     <v:String x:Key="msg_save_changes">Save Changes?</v:String>
+    
 </ResourceDictionary>
