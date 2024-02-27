@@ -1,5 +1,4 @@
-﻿using System.CodeDom;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace IDE.ViewModel
 {

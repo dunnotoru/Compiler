@@ -105,7 +105,7 @@
                 </Button>
 
                 <Separator/>
-                <Button Content="{StaticResource img_run}">
+                <Button Content="{StaticResource img_run}" Command="{Binding ScanCommand}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource run}"/>
                     </Button.ToolTip>
@@ -151,7 +151,7 @@
 
             <TabControl Margin="10" Grid.Row="2">
                 <TabItem Header="Info">
-                    <DataGrid>
+                    <DataGrid AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{DynamicResource file_name}" Width="auto"/>
                             <DataGridTextColumn Header="{DynamicResource line}" Width="auto"/>
@@ -161,13 +161,13 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Scan result">
-                    <DataGrid>
+                    <DataGrid ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="code" Width="auto"/>
-                            <DataGridTextColumn Header="rawToken" Width="auto"/>
-                            <DataGridTextColumn Header="tokenType" Width="auto"/>
-                            <DataGridTextColumn Header="startIndex" Width="auto"/>
-                            <DataGridTextColumn Header="endIndex" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding Code}" Header="code" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding RawToken}" Header="rawToken" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding TokenType}" Header="tokenType" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding StartIndex}" Header="startIndex" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding EndIndex}" Header="endIndex" Width="auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>

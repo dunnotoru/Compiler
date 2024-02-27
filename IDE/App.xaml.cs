@@ -128,6 +128,8 @@ namespace IDE
             services.AddTransient<IMessageBoxService, MessageBoxService>();
             services.AddTransient<IWindowService, WindowService>();
 
+            services.AddTransient<IScanService, ScanService>();
+
             services.AddSingleton(typeof(ILocalizationProvider), new LocalizationProvider(GetLocalizedString));
             services.AddSingleton(typeof(ILogger), ConfigureLogger());
 

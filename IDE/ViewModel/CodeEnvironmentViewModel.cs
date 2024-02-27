@@ -1,6 +1,8 @@
-﻿using IDE.Services.Abstractions;
+﻿using IDE.Model;
+using IDE.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -15,11 +17,14 @@ namespace IDE.ViewModel
         private readonly ICloseService _closeService;
         private readonly IMessageBoxService _messageBoxService;
         private readonly ILogger _logger;
-        private readonly ILocalizationProvider _localization; 
+        private readonly ILocalizationProvider _localization;
+        private readonly IScanService _scanService;
         private readonly NavigationService _navigationService; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel? _selectedTab;
+
+        private ObservableCollection<TokenViewModel> _scanResult;
 
         public ICommand CreateCommand => new RelayCommand(Create);
         public ICommand SaveCommand => new RelayCommand(Save, _ => SelectedTab != null);
@@ -29,13 +34,7 @@ namespace IDE.ViewModel
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
         public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
         public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
-
         public ICommand ScanCommand => new RelayCommand(Scan);
-
-        private void Scan(object? obj)
-        {
-            throw new NotImplementedException();
-        }
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
@@ -43,9 +42,11 @@ namespace IDE.ViewModel
                                     IMessageBoxService messageBoxService,
                                     ILogger logger,
                                     ILocalizationProvider localization,
-                                    NavigationService navigationService)
+                                    NavigationService navigationService,
+                                    IScanService scanService)
         {
             _tabs = new ObservableCollection<TabItemViewModel>();
+            _scanResult = new ObservableCollection<TokenViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
             _closeService = closeService;
@@ -53,6 +54,7 @@ namespace IDE.ViewModel
             _logger = logger;
             _localization = localization;
             _navigationService = navigationService;
+            _scanService = scanService;
         }
 
         private void Open(object? obj)
@@ -200,6 +202,18 @@ namespace IDE.ViewModel
             p.Start();
         }
 
+        private void Scan(object? obj)
+        {
+            if (SelectedTab is null) return;
+
+            ScanResult.Clear();
+            List<Token> _tokens = _scanService.Scan(SelectedTab.Content).ToList();
+            foreach (Token token in _tokens)
+            {
+                ScanResult.Add(new TokenViewModel(token));
+            }
+        }
+
         public TabItemViewModel? SelectedTab
         {
             get { return _selectedTab; }
@@ -211,5 +225,11 @@ namespace IDE.ViewModel
 			get { return _tabs; }
 			set { _tabs = value; OnPropertyChanged(); }
 		}
-	}
+
+        public ObservableCollection<TokenViewModel> ScanResult
+        {
+            get { return _scanResult; }
+            set { _scanResult = value; OnPropertyChanged(); }
+        }
+    }
 }
