@@ -1,5 +1,4 @@
-﻿using ControlzEx.Standard;
-using IDE.Services.Abstractions;
+﻿using IDE.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
@@ -30,6 +29,13 @@ namespace IDE.ViewModel
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
         public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
         public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
+
+        public ICommand ScanCommand => new RelayCommand(Scan);
+
+        private void Scan(object? obj)
+        {
+            throw new NotImplementedException();
+        }
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
