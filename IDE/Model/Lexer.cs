@@ -31,7 +31,7 @@ namespace IDE.Model
                 string word;
                 if (TryParseWord(code, ref position, out word)
                     || TryParseNumber(code, ref position, out word)
-                    || TryParseOperation(code, ref position, out word)
+                    || TryParseOperator(code, ref position, out word)
                     || TryParseString(code, ref position, out word))
                 {
                     tokens.Add(new Token(word, position));
@@ -97,7 +97,7 @@ namespace IDE.Model
             return false;
         }
 
-        private static bool TryParseString(string code,ref int pos, out string str)
+        private static bool TryParseString(string code, ref int pos, out string str)
         {
             str = "error";
             if (pos >= code.Length)
@@ -130,7 +130,7 @@ namespace IDE.Model
             return false;
         }
 
-        private bool TryParseOperation(string code, ref int pos, out string operation)
+        private bool TryParseOperator(string code, ref int pos, out string operation)
         {
             operation = "error";
             if (pos >= code.Length)
@@ -146,7 +146,7 @@ namespace IDE.Model
                 return false;
 
             operation = liter;
-            pos += symb.Length;
+            pos += operation.Length;
             return true;
         }
     }

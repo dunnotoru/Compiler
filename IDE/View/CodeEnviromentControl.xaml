@@ -151,7 +151,7 @@
 
             <TabControl Margin="10" Grid.Row="2">
                 <TabItem Header="Scan result">
-                    <DataGrid ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
+                    <DataGrid Style="{StaticResource token_datagrid}" ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Code}" Header="{DynamicResource code}" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding RawToken}" Header="{DynamicResource rawToken}" Width="auto"/>

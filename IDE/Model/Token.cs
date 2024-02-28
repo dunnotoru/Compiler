@@ -87,56 +87,46 @@ namespace IDE.Model
             { "FALSE", TokenType.False },
         };
 
-        public static bool DefaultTokenExists(string rawToken)
-        {
-            return DefaultTypes.ContainsKey(rawToken);
-        }
-
-        private static bool IsIdentifier(string rawToken)
-        {
-            return rawToken.Length != 0 && char.IsLetter(rawToken[0]);
-        }
-
-        private static bool IsSignedInteger(string rawToken)
-        {
-            return int.TryParse(rawToken, out int _);
-        }
-
-        private static bool IsSignedDouble(string rawToken)
-        {
-            return double.TryParse(rawToken, NumberFormatInfo.InvariantInfo, out double _);
-        }
-
-        private static bool IsStringLiteral(string rawToken)
-        {
-            return rawToken.StartsWith("\"") && rawToken.EndsWith("\"");
-        }
-
-        public Token(string rawToken, int startPos)
-        {
-            RawToken = rawToken;
-            StartPos = startPos;
-
-            if (rawToken.Length == 0)
-                throw new ArgumentException("raw token is empty");
-
-            if (DefaultTokenExists(rawToken))
-                Type = DefaultTypes[rawToken];
-            else if (IsIdentifier(rawToken) && char.IsLetter(rawToken[0]))
-                Type = TokenType.Identifier;
-            else if (IsSignedInteger(rawToken))
-                Type = TokenType.SignedIntegerNumber;
-            else if (IsSignedDouble(rawToken))
-                Type = TokenType.SignedDoubleNumber;
-            else if (IsStringLiteral(rawToken))
-                Type = TokenType.StringLiteral;
-            else
-                Type = TokenType.Invalid;
-        }
-
         public TokenType Type { get; }
         public string RawToken { get; }
         public int StartPos { get; }
         public int EndPos { get => StartPos + RawToken.Length; }
+
+        public Token(string rawToken, int startPos)
+        {
+            if (rawToken.Length == 0)
+                throw new ArgumentException("raw token is empty");
+
+            RawToken = rawToken;
+            StartPos = startPos;
+            Type = GetTokenType(rawToken);
+        }
+
+        public static bool DefaultTokenExists(string rawToken)
+            => DefaultTypes.ContainsKey(rawToken);
+        private static bool IsIdentifier(string rawToken)
+            => rawToken.Length != 0 && char.IsLetter(rawToken[0]);
+        private static bool IsSignedInteger(string rawToken)
+            => int.TryParse(rawToken, out int _);
+        private static bool IsSignedDouble(string rawToken)
+            => double.TryParse(rawToken, NumberFormatInfo.InvariantInfo, out double _);
+        private static bool IsStringLiteral(string rawToken)
+            => rawToken.StartsWith("\"") && rawToken.EndsWith("\"");
+
+        public static TokenType GetTokenType(string rawToken)
+        {
+            if (DefaultTokenExists(rawToken))
+                return DefaultTypes[rawToken];
+            if (IsIdentifier(rawToken) && char.IsLetter(rawToken[0]))
+                return TokenType.Identifier;
+            if (IsSignedInteger(rawToken))
+                return TokenType.SignedIntegerNumber;
+            if (IsSignedDouble(rawToken))
+                return TokenType.SignedDoubleNumber;
+            if (IsStringLiteral(rawToken))
+                return TokenType.StringLiteral;
+
+            return TokenType.Invalid;
+        }
     }
 }
