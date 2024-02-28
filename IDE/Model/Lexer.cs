@@ -16,125 +16,126 @@ namespace IDE.Model
 
             code = code.Replace("\n", "").Replace("\t", "").Replace("\r", "");
 
+            string rawToken;
             do
             {
                 char liter = code[position];
-                if (liter == '\0')
-                    break;
 
                 if (char.IsWhiteSpace(liter))
                 {
                     tokens.Add(new Token(liter.ToString(), position));
                     position += 1;
                 }
-
-                string word;
-                if (TryParseWord(code, ref position, out word)
-                    || TryParseNumber(code, ref position, out word)
-                    || TryParseOperator(code, ref position, out word)
-                    || TryParseString(code, ref position, out word))
+                else if (TryParseWord(code, position, out rawToken)
+                    || TryParseNumber(code, position, out rawToken)
+                    || TryParseOperator(code, position, out rawToken)
+                    || TryParseString(code, position, out rawToken))
                 {
-                    tokens.Add(new Token(word, position));
-                    continue;
+                    tokens.Add(new Token(rawToken, position));
+                    position += rawToken.Length;
                 }
-
-                position += 1;
+                else
+                {
+                    position += 1;
+                }
 
             } while (position < code.Length);
 
             return tokens;
         }
 
-        private bool TryParseWord(string code, ref int pos, out string word)
+        private bool TryParseWord(string code, int pos, out string result)
         {
-            word = "error";
-            if(pos >= code.Length) 
-                return false;
+            result = "error";
+            
             char liter = code[pos];
-            if (!char.IsLetter(liter))
-                return false;
+            if (!char.IsLetter(liter)) return false;
 
-            StringBuilder wordBuffer = new StringBuilder();
+            StringBuilder buffer = new StringBuilder();
             while (pos < code.Length)
             {
                 liter = code[pos];
                 if (!char.IsLetter(liter) && liter != ':')
                 {
-                    word = wordBuffer.ToString();
+                    result = buffer.ToString();
                     return true;
                 }
 
-                wordBuffer.Append(liter);
+                buffer.Append(liter);
                 pos++;
             }
 
-            return false;
-        }
-
-        private bool TryParseNumber(string code, ref int pos, out string number)
-        {
-            number = "error";
-            if (pos >= code.Length)
-                return false;
-            char liter = code[pos];
-            if (!char.IsDigit(liter))
-                return false;
-
-            StringBuilder numberBuffer = new StringBuilder();
-            while (pos < code.Length)
+            if (pos == code.Length)
             {
-                liter = code[pos];
-                if (!char.IsDigit(liter) && liter != '.')
-                {
-                    number = numberBuffer.ToString();
-                    return true;
-                }
-
-                numberBuffer.Append(liter);
-                pos++;
-            }
-
-            return false;
-        }
-
-        private static bool TryParseString(string code, ref int pos, out string str)
-        {
-            str = "error";
-            if (pos >= code.Length)
-                return false;
-            char literal = code[pos];
-            if (literal != '\"')
-                return false;
-
-            StringBuilder strBuffer = new StringBuilder();
-            int quotesCount = 0;
-            while (pos < code.Length)
-            {
-                literal = code[pos];
-                if(literal == '\"')
-                    quotesCount++;
-                else if(quotesCount == 2)
-                    break;
-
-                strBuffer.Append(literal);
-
-                pos++;
-            }
-
-            if(quotesCount == 2)
-            {
-                str = strBuffer.ToString();
+                result = buffer.ToString();
                 return true;
             }
 
             return false;
         }
 
-        private bool TryParseOperator(string code, ref int pos, out string operation)
+        private bool TryParseNumber(string code, int pos, out string result)
         {
-            operation = "error";
-            if (pos >= code.Length)
-                return false;
+            result = "error";
+            char liter = code[pos];
+            if (!char.IsDigit(liter)) return false;
+
+            StringBuilder buffer = new StringBuilder();
+            while (pos < code.Length)
+            {
+                liter = code[pos];
+                if (!char.IsDigit(liter) && liter != '.')
+                {
+                    result = buffer.ToString();
+                    return true;
+                }
+
+                buffer.Append(liter);
+                pos++;
+            }
+
+            if (pos == code.Length)
+            {
+                result = buffer.ToString();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryParseString(string code, int pos, out string result)
+        {
+            result = "error";
+            char liter = code[pos];
+            if (liter != '\"') return false;
+
+            StringBuilder strBuffer = new StringBuilder();
+            int quotesCount = 0;
+            while (pos < code.Length)
+            {
+                liter = code[pos];
+                if(liter == '\"')
+                    quotesCount++;
+                else if(quotesCount == 2)
+                    break;
+
+                strBuffer.Append(liter);
+
+                pos++;
+            }
+
+            if(quotesCount == 2)
+            {
+                result = strBuffer.ToString();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool TryParseOperator(string code, int pos, out string result)
+        {
+            result = "error";
             string liter = code[pos].ToString();
 
             string symb = "<>=";
@@ -145,8 +146,7 @@ namespace IDE.Model
             if (!Token.DefaultTokenExists(liter))
                 return false;
 
-            operation = liter;
-            pos += operation.Length;
+            result = liter;
             return true;
         }
     }
