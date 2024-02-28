@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System;
-using ControlzEx.Standard;
 
 namespace IDE.Model
 {
@@ -42,8 +41,10 @@ namespace IDE.Model
         And = 27,
         Or = 28,
         Not = 29,
+        True = 30,
+        False = 31,
 
-        Invalid = 30
+        Invalid = 32
     }
 
     internal class Token
@@ -76,14 +77,20 @@ namespace IDE.Model
             { ">>", TokenType.Greater},
             { "<<", TokenType.Less },
             { "==", TokenType.Equal },
-            { ">>=", TokenType.GreaterOrEqual },
-            { "<<=", TokenType.LessOrEqual },
+            { ">=", TokenType.GreaterOrEqual },
+            { "<=", TokenType.LessOrEqual },
             
-            { "and", TokenType.LessOrEqual },
-            { "not", TokenType.LessOrEqual },
-            { "or", TokenType.LessOrEqual },
-
+            { "and", TokenType.And },
+            { "not", TokenType.Not },
+            { "or", TokenType.Or },
+            { "TRUE", TokenType.True },
+            { "FALSE", TokenType.False },
         };
+
+        public static bool DefaultTokenExists(string rawToken)
+        {
+            return DefaultTypes.ContainsKey(rawToken);
+        }
 
         private static bool IsIdentifier(string rawToken)
         {
@@ -102,7 +109,7 @@ namespace IDE.Model
 
         private static bool IsStringLiteral(string rawToken)
         {
-             return rawToken.StartsWith("\"") && rawToken.EndsWith("\"");
+            return rawToken.StartsWith("\"") && rawToken.EndsWith("\"");
         }
 
         public Token(string rawToken, int startPos)
@@ -113,7 +120,7 @@ namespace IDE.Model
             if (rawToken.Length == 0)
                 throw new ArgumentException("raw token is empty");
 
-            if (DefaultTypes.ContainsKey(rawToken))
+            if (DefaultTokenExists(rawToken))
                 Type = DefaultTypes[rawToken];
             else if (IsIdentifier(rawToken) && char.IsLetter(rawToken[0]))
                 Type = TokenType.Identifier;

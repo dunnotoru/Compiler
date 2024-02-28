@@ -14,7 +14,7 @@ namespace IDE.Model
             List<Token> tokens = new List<Token>();
             int position = 0;
 
-            code = code.Replace("\n", "").Replace("\t", "");
+            code = code.Replace("\n", "").Replace("\t", "").Replace("\r", "");
 
             do
             {
@@ -31,7 +31,7 @@ namespace IDE.Model
                 string word;
                 if (TryParseWord(code, ref position, out word)
                     || TryParseNumber(code, ref position, out word)
-                    || TryParseSymbol(code, ref position, out word)
+                    || TryParseOperation(code, ref position, out word)
                     || TryParseString(code, ref position, out word))
                 {
                     tokens.Add(new Token(word, position));
@@ -130,18 +130,23 @@ namespace IDE.Model
             return false;
         }
 
-        private bool TryParseSymbol(string code, ref int pos, out string symbol)
+        private bool TryParseOperation(string code, ref int pos, out string operation)
         {
-            symbol = "error";
+            operation = "error";
             if (pos >= code.Length)
                 return false;
             string liter = code[pos].ToString();
 
-            if (!Token.DefaultTypes.ContainsKey(liter))
+            string symb = "<>=";
+            if (pos < code.Length - 1)
+                if (symb.Contains(liter) && symb.Contains(code[pos + 1]))
+                    liter += code[pos + 1];
+
+            if (!Token.DefaultTokenExists(liter))
                 return false;
 
-            symbol = liter;
-            pos++;
+            operation = liter;
+            pos += symb.Length;
             return true;
         }
     }
