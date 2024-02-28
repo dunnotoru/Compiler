@@ -7,44 +7,45 @@ namespace IDE.Model
     internal enum TokenType
     {
         Identifier = 0,
-        Integer = 1,
-        Double = 2,
-        ComplexNumber = 3,
+        Integer,
+        Double,
+        String,
+        Complex,
 
-        Whitespace = 4,
-        Comma = 5,
-        Semicolon = 6,
-        Assignment = 7,
+        Whitespace,
+        Comma,
+        Semicolon,
+        Assignment,
 
-        OpenTemplate = 8,
-        CloseTemplate = 9,
-        OpenArgument = 10,
-        CloseArgument = 11,
-        OpenScope = 12,
-        CloseScope = 13,
+        OpenTemplate,
+        CloseTemplate,
+        OpenArgument,
+        CloseArgument,
+        OpenScope,
+        CloseScope,
 
-        SignedIntegerNumber = 14,
-        SignedDoubleNumber = 15,
-        StringLiteral = 16,
+        SignedIntegerNumber,
+        SignedDoubleNumber,
+        StringLiteral,
 
-        Plus = 17,
-        Minus = 18,
-        Multiply = 19,
-        Divide = 20,
-        Module = 21,
+        Plus,
+        Minus,
+        Multiply,
+        Divide,
+        Module,
 
-        Greater = 22,
-        Less = 23,
-        GreaterOrEqual = 24,
-        LessOrEqual = 25,
-        Equal = 26,
-        And = 27,
-        Or = 28,
-        Not = 29,
-        True = 30,
-        False = 31,
+        Greater,
+        Less,
+        GreaterOrEqual,
+        LessOrEqual,
+        Equal,
+        And,
+        Or,
+        Not,
+        True,
+        False,
 
-        Invalid = 32
+        Invalid
     }
 
     internal class Token
@@ -52,9 +53,10 @@ namespace IDE.Model
         public static Dictionary<string, TokenType> DefaultTypes { get; } 
             = new Dictionary<string, TokenType>()
         {
+            { "string", TokenType.String },
             { "int", TokenType.Integer },
             { "double", TokenType.Double },
-            { "std::complex", TokenType.ComplexNumber },
+            { "std::complex", TokenType.Complex },
 
             { " ", TokenType.Whitespace },
             { ",", TokenType.Comma },
