@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace IDE.Model
@@ -7,12 +8,19 @@ namespace IDE.Model
     {
         public IEnumerable<Token> Scan(string code)
         {
+            if (code.Length == 0)
+                return Enumerable.Empty<Token>();
+
             List<Token> tokens = new List<Token>();
             int position = 0;
+
+            code = code.Replace("\n", "").Replace("\t", "");
 
             do
             {
                 char liter = code[position];
+                if (liter == '\0')
+                    break;
 
                 if (char.IsWhiteSpace(liter))
                 {
@@ -21,12 +29,12 @@ namespace IDE.Model
                 }
 
                 string word;
-                if (TryParseWord(code, position, out word)
-                    || TryParseNumber(code, position, out word)
-                    || TryParseSymbol(code, position, out word))
+                if (TryParseWord(code, ref position, out word)
+                    || TryParseNumber(code, ref position, out word)
+                    || TryParseSymbol(code, ref position, out word)
+                    || TryParseString(code, ref position, out word))
                 {
                     tokens.Add(new Token(word, position));
-                    position += word.Length;
                     continue;
                 }
 
@@ -37,11 +45,13 @@ namespace IDE.Model
             return tokens;
         }
 
-        private bool TryParseWord(string code, int pos, out string word)
+        private bool TryParseWord(string code, ref int pos, out string word)
         {
             word = "error";
+            if(pos >= code.Length) 
+                return false;
             char liter = code[pos];
-            if (char.IsLetter(liter) == false)
+            if (!char.IsLetter(liter))
                 return false;
 
             StringBuilder wordBuffer = new StringBuilder();
@@ -61,18 +71,20 @@ namespace IDE.Model
             return false;
         }
 
-        private bool TryParseNumber(string code, int pos, out string number)
+        private bool TryParseNumber(string code, ref int pos, out string number)
         {
             number = "error";
+            if (pos >= code.Length)
+                return false;
             char liter = code[pos];
-            if (!char.IsDigit(liter) && liter != '-')
+            if (!char.IsDigit(liter))
                 return false;
 
             StringBuilder numberBuffer = new StringBuilder();
             while (pos < code.Length)
             {
                 liter = code[pos];
-                if (!char.IsDigit(liter) && liter != '.' && liter != '-')
+                if (!char.IsDigit(liter) && liter != '.')
                 {
                     number = numberBuffer.ToString();
                     return true;
@@ -85,24 +97,52 @@ namespace IDE.Model
             return false;
         }
 
-        private bool TryParseSymbol(string code, int pos, out string symbol)
+        private static bool TryParseString(string code,ref int pos, out string str)
         {
-            symbol = "error";
-            char liter = code[pos];
+            str = "error";
+            if (pos >= code.Length)
+                return false;
+            char literal = code[pos];
+            if (literal != '\"')
+                return false;
 
-            switch (liter)
+            StringBuilder strBuffer = new StringBuilder();
+            int quotesCount = 0;
+            while (pos < code.Length)
             {
-                case '<':
-                case '>':
-                case '(':
-                case ')':
-                case ',':
-                case ';':
-                    symbol = liter.ToString();
-                    return true;
+                literal = code[pos];
+                if(literal == '\"')
+                    quotesCount++;
+                else if(quotesCount == 2)
+                    break;
+
+                strBuffer.Append(literal);
+
+                pos++;
+            }
+
+            if(quotesCount == 2)
+            {
+                str = strBuffer.ToString();
+                return true;
             }
 
             return false;
+        }
+
+        private bool TryParseSymbol(string code, ref int pos, out string symbol)
+        {
+            symbol = "error";
+            if (pos >= code.Length)
+                return false;
+            string liter = code[pos].ToString();
+
+            if (!Token.DefaultTypes.ContainsKey(liter))
+                return false;
+
+            symbol = liter;
+            pos++;
+            return true;
         }
     }
 }

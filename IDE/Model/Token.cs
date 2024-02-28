@@ -1,25 +1,49 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System;
+using ControlzEx.Standard;
 
 namespace IDE.Model
 {
     internal enum TokenType
     {
-        ComplexNumber = 0,
-        Identifier = 1,
-        Integer = 2,
-        Double = 3,
+        Identifier = 0,
+        Integer = 1,
+        Double = 2,
+        ComplexNumber = 3,
+
         Whitespace = 4,
-        OpenTemplate = 5,
-        CloseTemplate = 6,
-        OpenArgument = 7,
-        CloseArgument = 8,
-        SignedIntegerNumber = 9,
-        SignedDoubleNumber = 10,
-        Comma = 11,
-        Semicolon = 12,
-        Invalid = 13,
+        Comma = 5,
+        Semicolon = 6,
+        Assignment = 7,
+
+        OpenTemplate = 8,
+        CloseTemplate = 9,
+        OpenArgument = 10,
+        CloseArgument = 11,
+        OpenScope = 12,
+        CloseScope = 13,
+
+        SignedIntegerNumber = 14,
+        SignedDoubleNumber = 15,
+        StringLiteral = 16,
+
+        Plus = 17,
+        Minus = 18,
+        Multiply = 19,
+        Divide = 20,
+        Module = 21,
+
+        Greater = 22,
+        Less = 23,
+        GreaterOrEqual = 24,
+        LessOrEqual = 25,
+        Equal = 26,
+        And = 27,
+        Or = 28,
+        Not = 29,
+
+        Invalid = 30
     }
 
     internal class Token
@@ -27,16 +51,38 @@ namespace IDE.Model
         public static Dictionary<string, TokenType> DefaultTypes { get; } 
             = new Dictionary<string, TokenType>()
         {
-            { "std::complex", TokenType.ComplexNumber },
-            { " ", TokenType.Whitespace },
             { "int", TokenType.Integer },
             { "double", TokenType.Double },
+            { "std::complex", TokenType.ComplexNumber },
+
+            { " ", TokenType.Whitespace },
+            { ",", TokenType.Comma },
+            { ";", TokenType.Semicolon },
+            { "=", TokenType.Assignment },
+
             { "<", TokenType.OpenTemplate },
             { ">", TokenType.CloseTemplate },
             { "(", TokenType.OpenArgument },
             { ")", TokenType.CloseArgument },
-            { ",", TokenType.Comma },
-            { ";", TokenType.Semicolon },
+            { "{", TokenType.OpenScope},
+            { "}", TokenType.CloseScope },
+
+            { "+", TokenType.Plus },
+            { "-", TokenType.Minus },
+            { "*", TokenType.Multiply },
+            { "/", TokenType.Divide },
+            { "%", TokenType.Module },
+
+            { ">>", TokenType.Greater},
+            { "<<", TokenType.Less },
+            { "==", TokenType.Equal },
+            { ">>=", TokenType.GreaterOrEqual },
+            { "<<=", TokenType.LessOrEqual },
+            
+            { "and", TokenType.LessOrEqual },
+            { "not", TokenType.LessOrEqual },
+            { "or", TokenType.LessOrEqual },
+
         };
 
         private static bool IsIdentifier(string rawToken)
@@ -52,6 +98,11 @@ namespace IDE.Model
         private static bool IsSignedDouble(string rawToken)
         {
             return double.TryParse(rawToken, NumberFormatInfo.InvariantInfo, out double _);
+        }
+
+        private static bool IsStringLiteral(string rawToken)
+        {
+             return rawToken.StartsWith("\"") && rawToken.EndsWith("\"");
         }
 
         public Token(string rawToken, int startPos)
@@ -70,6 +121,8 @@ namespace IDE.Model
                 Type = TokenType.SignedIntegerNumber;
             else if (IsSignedDouble(rawToken))
                 Type = TokenType.SignedDoubleNumber;
+            else if (IsStringLiteral(rawToken))
+                Type = TokenType.StringLiteral;
             else
                 Type = TokenType.Invalid;
         }
