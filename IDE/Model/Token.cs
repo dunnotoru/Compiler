@@ -105,7 +105,7 @@ namespace IDE.Model
         public static bool DefaultTokenExists(string rawToken)
             => DefaultTypes.ContainsKey(rawToken);
         private static bool IsIdentifier(string rawToken)
-            => rawToken.Length != 0 && char.IsLetter(rawToken[0]);
+            => rawToken.Length != 0 && (char.IsLetter(rawToken.First()) || rawToken.First() == '_');
         private static bool IsSignedInteger(string rawToken)
             => int.TryParse(rawToken, out int _) && rawToken.First() != '0';
         private static bool IsSignedDouble(string rawToken)
@@ -117,7 +117,7 @@ namespace IDE.Model
         {
             if (DefaultTokenExists(rawToken))
                 return DefaultTypes[rawToken];
-            if (IsIdentifier(rawToken) && char.IsLetter(rawToken[0]))
+            if (IsIdentifier(rawToken))
                 return TokenType.Identifier;
             if (IsSignedInteger(rawToken))
                 return TokenType.SignedIntegerNumber;

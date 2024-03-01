@@ -70,12 +70,11 @@ namespace IDE.Model
         private string ParseNumber(string code, int pos)
         {
             char liter;
-
             StringBuilder buffer = new StringBuilder();
             while (pos < code.Length)
             {
                 liter = code[pos];
-                if (!char.IsDigit(liter) && liter != '.')
+                if (!char.IsLetterOrDigit(liter) && liter != '.')
                     break;
 
                 buffer.Append(liter);
