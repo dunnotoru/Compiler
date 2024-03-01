@@ -44,6 +44,13 @@ namespace IDE.Model
         True,
         False,
 
+        If,
+        ElseIf,
+        Else,
+        For,
+        While,
+        Do,
+
         Invalid
     }
 
@@ -85,6 +92,13 @@ namespace IDE.Model
             { "or", TokenType.Or },
             { "true", TokenType.True },
             { "false", TokenType.False },
+
+            { "if", TokenType.If },
+            { "else if", TokenType.ElseIf},
+            { "else", TokenType.Else },
+            { "for", TokenType.For },
+            { "while", TokenType.While },
+            { "do", TokenType.Do },
         };
 
         public TokenType Type { get; }
@@ -116,15 +130,25 @@ namespace IDE.Model
         public static TokenType GetTokenType(string rawToken)
         {
             if (DefaultTokenExists(rawToken))
+            {
                 return DefaultTypes[rawToken];
+            }
             if (IsIdentifier(rawToken))
+            {
                 return TokenType.Identifier;
+            }
             if (IsSignedInteger(rawToken))
+            {
                 return TokenType.SignedIntegerNumber;
+            }
             if (IsSignedDouble(rawToken))
+            {
                 return TokenType.SignedDoubleNumber;
+            }
             if (IsStringLiteral(rawToken))
+            {
                 return TokenType.StringLiteral;
+            }
 
             return TokenType.Invalid;
         }
