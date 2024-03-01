@@ -10,7 +10,6 @@
     <v:String x:Key="save_as">另存为</v:String>
     <v:String x:Key="exit">退出</v:String>
 
-
     <v:String x:Key="edit">编辑</v:String>
     <v:String x:Key="undo">撤销</v:String>
     <v:String x:Key="redo">重做</v:String>
@@ -54,4 +53,46 @@
 
     <!-- messages -->
     <v:String x:Key="msg_save_changes">保存更改？</v:String>
+    
+    <!-- token -->
+    <v:String x:Key="token_identifier">标识符</v:String>
+    <v:String x:Key="token_integer">整数</v:String>
+    <v:String x:Key="token_double">双精度</v:String>
+    <v:String x:Key="token_string">字符串</v:String>
+
+    <v:String x:Key="token_whitespace">空白</v:String>
+    <v:String x:Key="token_comma">逗号</v:String>
+    <v:String x:Key="token_semicolon">分号</v:String>
+    <v:String x:Key="token_assignment">赋值</v:String>
+
+    <v:String x:Key="token_opentemplate">开模板</v:String>
+    <v:String x:Key="token_closetemplate">闭模板</v:String>
+    <v:String x:Key="token_openargument">开参数</v:String>
+    <v:String x:Key="token_closeargument">闭参数</v:String>
+    <v:String x:Key="token_openscope">开作用域</v:String>
+    <v:String x:Key="token_closescope">闭作用域</v:String>
+
+    <v:String x:Key="token_signedintegernumber">有符号整数</v:String>
+    <v:String x:Key="token_signeddoublenumber">有符号双精度数</v:String>
+    <v:String x:Key="token_stringliteral">字符串文字</v:String>
+
+    <v:String x:Key="token_plus">加</v:String>
+    <v:String x:Key="token_minus">减</v:String>
+    <v:String x:Key="token_multiply">乘</v:String>
+    <v:String x:Key="token_divide">除</v:String>
+    <v:String x:Key="token_module">模</v:String>
+
+    <v:String x:Key="token_greater">大于</v:String>
+    <v:String x:Key="token_less">小于</v:String>
+    <v:String x:Key="token_greaterorequal">大于或等于</v:String>
+    <v:String x:Key="token_lessorequal">小于或等于</v:String>
+    <v:String x:Key="token_equal">等于</v:String>
+    <v:String x:Key="token_and">和</v:String>
+    <v:String x:Key="token_or">或</v:String>
+    <v:String x:Key="token_not">非</v:String>
+    <v:String x:Key="token_true">真</v:String>
+    <v:String x:Key="token_false">假</v:String>
+
+    <v:String x:Key="token_invalid">无效</v:String>
+
 </ResourceDictionary>

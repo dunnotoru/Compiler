@@ -53,4 +53,44 @@
 
     <!-- messages -->
     <v:String x:Key="msg_save_changes">Сохранить изменения?</v:String>
+    
+    <!-- tokens -->
+    <v:String x:Key="token_identifier">Идентификатор</v:String>
+    <v:String x:Key="token_integer">Целое</v:String>
+    <v:String x:Key="token_double">Дробное</v:String>
+    <v:String x:Key="token_string">Строковый литерал</v:String>
+
+    <v:String x:Key="token_whitespace">Пробел</v:String>
+    <v:String x:Key="token_comma">Запятая</v:String>
+    <v:String x:Key="token_semicolon">Конец оператора</v:String>
+    <v:String x:Key="token_assignment">Присваивание</v:String>
+
+    <v:String x:Key="token_openargument">Открытие аргумента</v:String>
+    <v:String x:Key="token_closeargument">Закрытие аргумента</v:String>
+    <v:String x:Key="token_openscope">Открытие блока кода</v:String>
+    <v:String x:Key="token_closescope">Закрытие блока кода</v:String>
+
+    <v:String x:Key="token_signedintegernumber">Целое число со знаком</v:String>
+    <v:String x:Key="token_signeddoublenumber">Дробное число со знаком</v:String>
+    <v:String x:Key="token_stringliteral">Строковый литерал</v:String>
+
+    <v:String x:Key="token_plus">Плюс</v:String>
+    <v:String x:Key="token_minus">Минус</v:String>
+    <v:String x:Key="token_multiply">Умножиение</v:String>
+    <v:String x:Key="token_divide">Деление</v:String>
+    <v:String x:Key="token_module">Модуль</v:String>
+
+    <v:String x:Key="token_greater">Больше</v:String>
+    <v:String x:Key="token_less">Меньше</v:String>
+    <v:String x:Key="token_greaterorequal">Больше или равно</v:String>
+    <v:String x:Key="token_lessorequal">Меньше или равно</v:String>
+    <v:String x:Key="token_equal">Равно</v:String>
+    <v:String x:Key="token_and">И</v:String>
+    <v:String x:Key="token_or">Или</v:String>
+    <v:String x:Key="token_not">Не</v:String>
+    <v:String x:Key="token_true">Истина</v:String>
+    <v:String x:Key="token_false">Ложь</v:String>
+
+    <v:String x:Key="token_invalid">Недопустимый</v:String>
+
 </ResourceDictionary>

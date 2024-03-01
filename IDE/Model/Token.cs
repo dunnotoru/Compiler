@@ -16,8 +16,6 @@ namespace IDE.Model
         Semicolon,
         Assignment,
 
-        OpenTemplate,
-        CloseTemplate,
         OpenArgument,
         CloseArgument,
         OpenScope,

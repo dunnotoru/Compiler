@@ -1,0 +1,97 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Меню -->
+    <v:String x:Key="file">Файл</v:String>
+    <v:String x:Key="create">Үҙгәртерү</v:String>
+    <v:String x:Key="open">Ачу</v:String>
+    <v:String x:Key="save">Саклау</v:String>
+    <v:String x:Key="save_as">Файлне биңа саклау</v:String>
+    <v:String x:Key="exit">Чыгу</v:String>
+
+    <v:String x:Key="edit">Һуңгыллау</v:String>
+    <v:String x:Key="undo">Узганы кире</v:String>
+    <v:String x:Key="redo">Үзгәртмәнен кире</v:String>
+    <v:String x:Key="copy">Күсереп алу</v:String>
+    <v:String x:Key="cut">Киесеп алу</v:String>
+    <v:String x:Key="paste">Үстәгә бере</v:String>
+    <v:String x:Key="remove">Бетере</v:String>
+    <v:String x:Key="select_all">Бәреләрне сайлау</v:String>
+
+    <v:String x:Key="text">Мәтн</v:String>
+    <v:String x:Key="task">Турында</v:String>
+    <v:String x:Key="grammar">Грамматика</v:String>
+    <v:String x:Key="analyze_method">Анализ методы</v:String>
+    <v:String x:Key="error_diagnosis">Хаталар диагностикасе</v:String>
+    <v:String x:Key="test_example">Примерны сынау</v:String>
+    <v:String x:Key="reference_list">Сылтама тизгән</v:String>
+    <v:String x:Key="source_code">Эчтәлек коды</v:String>
+
+    <v:String x:Key="run">Идарә итү</v:String>
+
+    <v:String x:Key="help">Ярдәм</v:String>
+    <v:String x:Key="show_help">Ярдәм күрсәтү</v:String>
+    <v:String x:Key="about">Бөтен турында</v:String>
+    <v:String x:Key="settings">Сәттәр</v:String>
+
+    <!-- Гриддагы шәклләр -->
+    <v:String x:Key="file_name">Файл исеме</v:String>
+    <v:String x:Key="line">Сыра</v:String>
+    <v:String x:Key="column">Баҫыу</v:String>
+    <v:String x:Key="message">Хәбәр</v:String>
+
+    <v:String x:Key="code">Код</v:String>
+    <v:String x:Key="rawToken">Түп</v:String>
+    <v:String x:Key="tokenType">Түпләме түре</v:String>
+    <v:String x:Key="startIndex">Башлау индексы</v:String>
+    <v:String x:Key="endIndex">Ахырлау индексы</v:String>
+
+
+    <!-- Сәттәр -->
+    <v:String x:Key="settings_back">кайту</v:String>
+    <v:String x:Key="settings_language">Тел</v:String>
+
+    <!-- Хәбәрләр -->
+    <v:String x:Key="msg_save_changes">Үзгәрешләрне сакларга?</v:String>
+
+    <!-- Токенлар -->
+    <v:String x:Key="token_identifier">Идентификатор</v:String>
+    <v:String x:Key="token_integer">Бут цифр</v:String>
+    <v:String x:Key="token_double">Жагасы һавалан</v:String>
+    <v:String x:Key="token_string">Сирәкле</v:String>
+
+    <v:String x:Key="token_whitespace">Бослык</v:String>
+    <v:String x:Key="token_comma">Вергүче</v:String>
+    <v:String x:Key="token_semicolon">Нөктә</v:String>
+    <v:String x:Key="token_assignment">Тауыш</v:String>
+
+    <v:String x:Key="token_openargument">Ачу аргументы</v:String>
+    <v:String x:Key="token_closeargument">Туктату аргументы</v:String>
+    <v:String x:Key="token_openscope">Ачу һалыкы</v:String>
+    <v:String x:Key="token_closescope">Туктату һалыкы</v:String>
+
+    <v:String x:Key="token_signedintegernumber">Зур цифр</v:String>
+    <v:String x:Key="token_signeddoublenumber">Зур дабыл цифр</v:String>
+    <v:String x:Key="token_stringliteral">Сирәкле литералы</v:String>
+
+    <v:String x:Key="token_plus">Плюс</v:String>
+    <v:String x:Key="token_minus">Минус</v:String>
+    <v:String x:Key="token_multiply">Көбиш</v:String>
+    <v:String x:Key="token_divide">Бүлүү</v:String>
+    <v:String x:Key="token_module">Модуль</v:String>
+
+    <v:String x:Key="token_greater">Күчә</v:String>
+    <v:String x:Key="token_less">Кеме</v:String>
+    <v:String x:Key="token_greaterorequal">Күчәнең һәм яки тең</v:String>
+    <v:String x:Key="token_lessorequal">Кеменең һәм яки тең</v:String>
+    <v:String x:Key="token_equal">Тең</v:String>
+    <v:String x:Key="token_and">һәм</v:String>
+    <v:String x:Key="token_or">йәки</v:String>
+    <v:String x:Key="token_not">йәки</v:String>
+    <v:String x:Key="token_true">он</v:String>
+    <v:String x:Key="token_false">ялган</v:String>
+
+    <v:String x:Key="token_invalid">Туура эмес</v:String>
+
+</ResourceDictionary>

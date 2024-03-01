@@ -100,6 +100,8 @@ namespace IDE
             _languages.Add(new CultureInfo("en_US"));
             _languages.Add(new CultureInfo("ru_RU"));
             _languages.Add(new CultureInfo("zh_CN"));
+            _languages.Add(new CultureInfo("tt_RU"));
+            _languages.Add(new CultureInfo("de_DE"));
         }
 
         private void LoadResources()

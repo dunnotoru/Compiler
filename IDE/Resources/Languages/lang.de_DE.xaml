@@ -1,0 +1,97 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Menü -->
+    <v:String x:Key="file">Datei</v:String>
+    <v:String x:Key="create">Erstellen</v:String>
+    <v:String x:Key="open">Öffnen</v:String>
+    <v:String x:Key="save">Speichern</v:String>
+    <v:String x:Key="save_as">Speichern als</v:String>
+    <v:String x:Key="exit">Beenden</v:String>
+
+    <v:String x:Key="edit">Bearbeiten</v:String>
+    <v:String x:Key="undo">Rückgängig</v:String>
+    <v:String x:Key="redo">Wiederholen</v:String>
+    <v:String x:Key="copy">Kopieren</v:String>
+    <v:String x:Key="cut">Ausschneiden</v:String>
+    <v:String x:Key="paste">Einfügen</v:String>
+    <v:String x:Key="remove">Entfernen</v:String>
+    <v:String x:Key="select_all">Alles auswählen</v:String>
+
+    <v:String x:Key="text">Text</v:String>
+    <v:String x:Key="task">Aufgabe</v:String>
+    <v:String x:Key="grammar">Grammatik</v:String>
+    <v:String x:Key="analyze_method">Analysemethode</v:String>
+    <v:String x:Key="error_diagnosis">Fehlerdiagnose</v:String>
+    <v:String x:Key="test_example">Testbeispiel</v:String>
+    <v:String x:Key="reference_list">Referenzliste</v:String>
+    <v:String x:Key="source_code">Quellcode</v:String>
+
+    <v:String x:Key="run">Ausführen</v:String>
+
+    <v:String x:Key="help">Hilfe</v:String>
+    <v:String x:Key="show_help">Hilfe anzeigen</v:String>
+    <v:String x:Key="about">Über</v:String>
+    <v:String x:Key="settings">Einstellungen</v:String>
+
+    <!-- Ausgabe-Raster -->
+    <v:String x:Key="file_name">Dateiname</v:String>
+    <v:String x:Key="line">Zeile</v:String>
+    <v:String x:Key="column">Spalte</v:String>
+    <v:String x:Key="message">Nachricht</v:String>
+
+    <v:String x:Key="code">Code</v:String>
+    <v:String x:Key="rawToken">Roh-Token</v:String>
+    <v:String x:Key="tokenType">Token-Typ</v:String>
+    <v:String x:Key="startIndex">Startindex</v:String>
+    <v:String x:Key="endIndex">Endindex</v:String>
+
+
+    <!-- Einstellungen -->
+    <v:String x:Key="settings_back">Zurück</v:String>
+    <v:String x:Key="settings_language">Sprache</v:String>
+
+    <!-- Nachrichten -->
+    <v:String x:Key="msg_save_changes">Änderungen speichern?</v:String>
+
+    <!-- Token -->
+    <v:String x:Key="token_identifier">Bezeichner</v:String>
+    <v:String x:Key="token_integer">Ganzzahl</v:String>
+    <v:String x:Key="token_double">Kommazahl</v:String>
+    <v:String x:Key="token_string">Zeichenkette</v:String>
+
+    <v:String x:Key="token_whitespace">Leerzeichen</v:String>
+    <v:String x:Key="token_comma">Komma</v:String>
+    <v:String x:Key="token_semicolon">Semikolon</v:String>
+    <v:String x:Key="token_assignment">Zuweisung</v:String>
+
+    <v:String x:Key="token_openargument">Öffnendes Argument</v:String>
+    <v:String x:Key="token_closeargument">Schließendes Argument</v:String>
+    <v:String x:Key="token_openscope">Öffnender Bereich</v:String>
+    <v:String x:Key="token_closescope">Schließender Bereich</v:String>
+
+    <v:String x:Key="token_signedintegernumber">Vorzeichenbehaftete Ganzzahl</v:String>
+    <v:String x:Key="token_signeddoublenumber">Vorzeichenbehaftete Kommazahl</v:String>
+    <v:String x:Key="token_stringliteral">Zeichenkettenliteral</v:String>
+
+    <v:String x:Key="token_plus">Plus</v:String>
+    <v:String x:Key="token_minus">Minus</v:String>
+    <v:String x:Key="token_multiply">Multiplikation</v:String>
+    <v:String x:Key="token_divide">Division</v:String>
+    <v:String x:Key="token_module">Modul</v:String>
+
+    <v:String x:Key="token_greater">Größer</v:String>
+    <v:String x:Key="token_less">Kleiner</v:String>
+    <v:String x:Key="token_greaterorequal">Größer oder gleich</v:String>
+    <v:String x:Key="token_lessorequal">Kleiner oder gleich</v:String>
+    <v:String x:Key="token_equal">Gleich</v:String>
+    <v:String x:Key="token_and">Und</v:String>
+    <v:String x:Key="token_or">Oder</v:String>
+    <v:String x:Key="token_not">Nicht</v:String>
+    <v:String x:Key="token_true">Wahr</v:String>
+    <v:String x:Key="token_false">Falsch</v:String>
+
+    <v:String x:Key="token_invalid">Ungültig</v:String>
+
+</ResourceDictionary>
