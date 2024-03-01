@@ -138,9 +138,10 @@ namespace IDE.Model
             result = "error";
             string liter = code[pos].ToString();
 
-            string symb = "<>=";
+            string firstCharacter = "<>=";
+            string secondCharacter = "=";
             if (pos < code.Length - 1)
-                if (symb.Contains(liter) && symb.Contains(code[pos + 1]))
+                if (firstCharacter.Contains(liter) && secondCharacter.Contains(code[pos + 1]))
                     liter += code[pos + 1];
 
             if (!Token.DefaultTokenExists(liter))

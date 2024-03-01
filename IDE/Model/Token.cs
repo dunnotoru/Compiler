@@ -10,7 +10,6 @@ namespace IDE.Model
         Integer,
         Double,
         String,
-        Complex,
 
         Whitespace,
         Comma,
@@ -56,15 +55,13 @@ namespace IDE.Model
             { "string", TokenType.String },
             { "int", TokenType.Integer },
             { "double", TokenType.Double },
-            { "std::complex", TokenType.Complex },
+            { "std::complex", TokenType.Identifier },
 
             { " ", TokenType.Whitespace },
             { ",", TokenType.Comma },
             { ";", TokenType.Semicolon },
             { "=", TokenType.Assignment },
 
-            { "<", TokenType.OpenTemplate },
-            { ">", TokenType.CloseTemplate },
             { "(", TokenType.OpenArgument },
             { ")", TokenType.CloseArgument },
             { "{", TokenType.OpenScope},
@@ -76,8 +73,8 @@ namespace IDE.Model
             { "/", TokenType.Divide },
             { "%", TokenType.Module },
 
-            { ">>", TokenType.Greater},
-            { "<<", TokenType.Less },
+            { ">", TokenType.Greater},
+            { "<", TokenType.Less },
             { "==", TokenType.Equal },
             { ">=", TokenType.GreaterOrEqual },
             { "<=", TokenType.LessOrEqual },
@@ -85,8 +82,8 @@ namespace IDE.Model
             { "and", TokenType.And },
             { "not", TokenType.Not },
             { "or", TokenType.Or },
-            { "TRUE", TokenType.True },
-            { "FALSE", TokenType.False },
+            { "true", TokenType.True },
+            { "false", TokenType.False },
         };
 
         public TokenType Type { get; }
