@@ -112,12 +112,12 @@
                 </Button>
 
                 <Separator/>
-                <Button Content="{StaticResource img_cert}">
+                <Button Content="{StaticResource img_cert}" Command="{Binding ShowHelpCommand}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource help}"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Content="{StaticResource img_info}" >
+                <Button Content="{StaticResource img_info}" Command="{Binding ShowAboutCommand}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource about}"/>
                     </Button.ToolTip>
