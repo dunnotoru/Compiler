@@ -9,39 +9,17 @@ namespace IDE.Model
         public IEnumerable<Token> Scan(string code)
         {
             if (code.Length == 0)
+            {
                 return Enumerable.Empty<Token>();
+            }
 
             List<Token> tokens = new List<Token>();
             int position = 0;
 
             code = code.Replace("\t", "").Replace("\r", "");
 
-            string rawToken = "";
-            do
-            {
-                char liter = code[position];
-
-                if (char.IsWhiteSpace(liter))
-                {
-                    rawToken = liter.ToString();
-                }
-                else if (char.IsLetter(liter))
-                {
-                    rawToken = ParseWord(code, position);
-                }
-                else if (char.IsDigit(liter))
-                {
-                    rawToken = ParseNumber(code, position);
-                }
-                else if (liter == '\"')
-                {
-                    rawToken = ParseString(code, position);
-                }
-                else
-                {
-                    rawToken = ParseOperator(code, position);
-                }
-
+            do {
+                string rawToken = ParseToken(code, position);
                 tokens.Add(new Token(rawToken, position));
                 position += rawToken.Length;
 
@@ -50,71 +28,82 @@ namespace IDE.Model
             return tokens;
         }
 
-        private string ParseWord(string code, int pos)
+        private string ParseToken(string code, int position)
+        {
+            char liter = code[position];
+            if (char.IsWhiteSpace(liter))
+            {
+                return liter.ToString();
+            }
+            if (char.IsLetterOrDigit(liter))
+            {
+                return ParseIndetifierOrLiteral(code, position);
+            }
+            if (liter == '\"')
+            {
+                return ParseString(code, position);
+            }
+            
+            return ParseOperator(code, position);
+        }
+
+        private string ParseIndetifierOrLiteral(string code, int position)
         {
             char liter;
             StringBuilder buffer = new StringBuilder();
-            while (pos < code.Length)
+            while (position < code.Length)
             {
-                liter = code[pos];
-                if (!char.IsLetterOrDigit(liter) && liter != ':')
+                liter = code[position];
+                if (!char.IsLetterOrDigit(liter))
+                {
                     break;
+                }
 
                 buffer.Append(liter);
-                pos++;
+                position++;
             }
 
             return buffer.ToString();
         }
 
-        private string ParseNumber(string code, int pos)
-        {
-            char liter;
-
-            StringBuilder buffer = new StringBuilder();
-            while (pos < code.Length)
-            {
-                liter = code[pos];
-                if (!char.IsDigit(liter) && liter != '.')
-                    break;
-
-                buffer.Append(liter);
-                pos++;
-            }
-
-            return buffer.ToString();
-        }
-
-        private string ParseString(string code, int pos)
+        private string ParseString(string code, int position)
         {
             char liter;
             StringBuilder buffer = new StringBuilder();
             int quotesCount = 0;
-            while (pos < code.Length)
+            while (position < code.Length)
             {
-                liter = code[pos];
+                liter = code[position];
                 if(liter == '\"')
+                {
                     quotesCount++;
+                }
                 else if(quotesCount == 2 || liter == '\n')
+                {
                     break;
+                }
 
                 buffer.Append(liter);
 
-                pos++;
+                position++;
             }
 
             return buffer.ToString();
         }
 
-        private string ParseOperator(string code, int pos)
+        private string ParseOperator(string code, int position)
         {
-            string liter = code[pos].ToString();
+            string liter = code[position].ToString();
 
             string firstCharacter = "<>=";
             string secondCharacter = "=";
-            if (pos < code.Length - 1)
-                if (firstCharacter.Contains(liter) && secondCharacter.Contains(code[pos + 1]))
-                    liter += code[pos + 1];
+            if (position < code.Length - 1)
+            {
+                if (firstCharacter.Contains(liter) && secondCharacter.Contains(code[position + 1]))
+                {
+                    liter += code[position + 1];
+                }
+            }
 
             return liter;
         }
