@@ -14,128 +14,100 @@ namespace IDE.Model
             List<Token> tokens = new List<Token>();
             int position = 0;
 
-            code = code.Replace("\n", "").Replace("\t", "").Replace("\r", "");
+            code = code.Replace("\t", "").Replace("\r", "");
 
-            string rawToken;
+            string rawToken = "";
             do
             {
                 char liter = code[position];
 
                 if (char.IsWhiteSpace(liter))
                 {
-                    tokens.Add(new Token(liter.ToString(), position));
-                    position += 1;
+                    rawToken = liter.ToString();
                 }
-                else if (TryParseWord(code, position, out rawToken)
-                    || TryParseNumber(code, position, out rawToken)
-                    || TryParseOperator(code, position, out rawToken)
-                    || TryParseString(code, position, out rawToken))
+                else if (char.IsLetter(liter))
                 {
-                    tokens.Add(new Token(rawToken, position));
-                    position += rawToken.Length;
+                    rawToken = ParseWord(code, position);
+                }
+                else if (char.IsDigit(liter))
+                {
+                    rawToken = ParseNumber(code, position);
+                }
+                else if (liter == '\"')
+                {
+                    rawToken = ParseString(code, position);
                 }
                 else
                 {
-                    position += 1;
+                    rawToken = ParseOperator(code, position);
                 }
+
+                tokens.Add(new Token(rawToken, position));
+                position += rawToken.Length;
 
             } while (position < code.Length);
 
             return tokens;
         }
 
-        private bool TryParseWord(string code, int pos, out string result)
+        private string ParseWord(string code, int pos)
         {
-            result = "error";
-            
-            char liter = code[pos];
-            if (!char.IsLetter(liter)) return false;
-
+            char liter;
             StringBuilder buffer = new StringBuilder();
             while (pos < code.Length)
             {
                 liter = code[pos];
-                if (!char.IsLetter(liter) && liter != ':')
-                {
-                    result = buffer.ToString();
-                    return true;
-                }
+                if (!char.IsLetterOrDigit(liter) && liter != ':')
+                    break;
 
                 buffer.Append(liter);
                 pos++;
             }
 
-            if (pos == code.Length)
-            {
-                result = buffer.ToString();
-                return true;
-            }
-
-            return false;
+            return buffer.ToString();
         }
 
-        private bool TryParseNumber(string code, int pos, out string result)
+        private string ParseNumber(string code, int pos)
         {
-            result = "error";
-            char liter = code[pos];
-            if (!char.IsDigit(liter)) return false;
+            char liter;
 
             StringBuilder buffer = new StringBuilder();
             while (pos < code.Length)
             {
                 liter = code[pos];
                 if (!char.IsDigit(liter) && liter != '.')
-                {
-                    result = buffer.ToString();
-                    return true;
-                }
+                    break;
 
                 buffer.Append(liter);
                 pos++;
             }
 
-            if (pos == code.Length)
-            {
-                result = buffer.ToString();
-                return true;
-            }
-
-            return false;
+            return buffer.ToString();
         }
 
-        private static bool TryParseString(string code, int pos, out string result)
+        private string ParseString(string code, int pos)
         {
-            result = "error";
-            char liter = code[pos];
-            if (liter != '\"') return false;
-
-            StringBuilder strBuffer = new StringBuilder();
+            char liter;
+            StringBuilder buffer = new StringBuilder();
             int quotesCount = 0;
             while (pos < code.Length)
             {
                 liter = code[pos];
                 if(liter == '\"')
                     quotesCount++;
-                else if(quotesCount == 2)
+                else if(quotesCount == 2 || liter == '\n')
                     break;
 
-                strBuffer.Append(liter);
+                buffer.Append(liter);
 
                 pos++;
             }
 
-            if(quotesCount == 2)
-            {
-                result = strBuffer.ToString();
-                return true;
-            }
-
-            return false;
+            return buffer.ToString();
         }
 
-        private bool TryParseOperator(string code, int pos, out string result)
+        private string ParseOperator(string code, int pos)
         {
-            result = "error";
             string liter = code[pos].ToString();
 
             string firstCharacter = "<>=";
@@ -144,11 +116,7 @@ namespace IDE.Model
                 if (firstCharacter.Contains(liter) && secondCharacter.Contains(code[pos + 1]))
                     liter += code[pos + 1];
 
-            if (!Token.DefaultTokenExists(liter))
-                return false;
-
-            result = liter;
-            return true;
+            return liter;
         }
     }
 }

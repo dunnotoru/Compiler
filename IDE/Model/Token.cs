@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace IDE.Model
 {
@@ -11,6 +12,7 @@ namespace IDE.Model
         Double,
         String,
 
+        Newline,
         Whitespace,
         Comma,
         Semicolon,
@@ -55,6 +57,7 @@ namespace IDE.Model
             { "double", TokenType.Double },
             { "std::complex", TokenType.Identifier },
 
+            { "\n", TokenType.Newline },
             { " ", TokenType.Whitespace },
             { ",", TokenType.Comma },
             { ";", TokenType.Semicolon },
@@ -104,11 +107,11 @@ namespace IDE.Model
         private static bool IsIdentifier(string rawToken)
             => rawToken.Length != 0 && char.IsLetter(rawToken[0]);
         private static bool IsSignedInteger(string rawToken)
-            => int.TryParse(rawToken, out int _);
+            => int.TryParse(rawToken, out int _) && rawToken.First() != '0';
         private static bool IsSignedDouble(string rawToken)
-            => double.TryParse(rawToken, NumberFormatInfo.InvariantInfo, out double _);
+            => double.TryParse(rawToken, NumberFormatInfo.InvariantInfo, out double _) && rawToken.First() != '0' && rawToken.Last() != '.';
         private static bool IsStringLiteral(string rawToken)
-            => rawToken.StartsWith("\"") && rawToken.EndsWith("\"");
+            => rawToken.StartsWith("\"") && rawToken.EndsWith("\"") && !rawToken.Contains('\n') && rawToken.Length > 1;
 
         public static TokenType GetTokenType(string rawToken)
         {
