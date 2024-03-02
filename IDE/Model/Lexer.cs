@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -35,9 +36,13 @@ namespace IDE.Model
             {
                 return liter.ToString();
             }
-            if (char.IsLetterOrDigit(liter))
+            if (char.IsLetter(liter) || liter == '_')
             {
-                return ParseIndetifierOrLiteral(code, position);
+                return Parse(code, position, (liter) => !char.IsLetterOrDigit(liter) && liter != '_');
+            }
+            if (char.IsDigit(liter))
+            {
+                return Parse(code, position, (liter) => !char.IsDigit(liter));
             }
             if (liter == '\"')
             {
@@ -47,14 +52,14 @@ namespace IDE.Model
             return ParseOperator(code, position);
         }
 
-        private string ParseIndetifierOrLiteral(string code, int position)
+        private string Parse(string code, int position, Func<char, bool> stopRule)
         {
             char liter;
             StringBuilder buffer = new StringBuilder();
             while (position < code.Length)
             {
                 liter = code[position];
-                if (!char.IsLetterOrDigit(liter))
+                if (stopRule(liter))
                 {
                     break;
                 }
