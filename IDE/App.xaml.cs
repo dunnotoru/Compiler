@@ -87,6 +87,8 @@ namespace IDE
             base.OnStartup(e);
         }
 
+
+
         private void App_LanguageChanged(object? sender, EventArgs e)
         {
             IDE.Properties.Settings.Default.DefaultLanguage = Language.Name;
@@ -116,6 +118,11 @@ namespace IDE
             Resources.MergedDictionaries.Add(assets);
         }
 
+        private void Close()
+        {
+            MainWindow.Close();
+        }
+
         private IServiceProvider ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
@@ -126,9 +133,9 @@ namespace IDE
 
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IDialogService, DialogService>();
-            services.AddTransient<ICloseService, CloseService>();
             services.AddTransient<IMessageBoxService, MessageBoxService>();
             services.AddTransient<IWindowService, WindowService>();
+            services.AddTransient<ICloseService>(_ => new CloseService(Close));
 
             services.AddTransient<IScanService, ScanService>();
 
