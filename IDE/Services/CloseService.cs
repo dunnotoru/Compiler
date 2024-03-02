@@ -1,18 +1,25 @@
 ﻿using IDE.Services.Abstractions;
-using System.Windows;
+using System;
 
 namespace IDE.Services
 {
     internal class CloseService : ICloseService
     {
+        private Action _close;
+
+        public CloseService(Action close)
+        {
+            _close = close;
+        }
+
         public void Close()
         {
-            Application.Current.Shutdown();
+            _close();
         }
 
         public void Close(int code)
         {
-            Application.Current.Shutdown(code);
+            _close();
         }
     }
 }

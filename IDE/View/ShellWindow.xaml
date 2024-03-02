@@ -21,6 +21,6 @@
     </Window.Resources>
     
     <Grid>
-        <ContentControl Content="{Binding Current}"/>
+        <ContentControl Name="ContentControl" Content="{Binding Current}"/>
     </Grid>
 </Window>

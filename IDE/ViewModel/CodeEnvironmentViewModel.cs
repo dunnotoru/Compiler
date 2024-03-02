@@ -156,6 +156,11 @@ namespace IDE.ViewModel
 
         private void Close(object? obj)
         {
+            _closeService.Close();
+        }
+
+        public bool AskClose()
+        {
             MessageResult result = MessageResult.No;
             if (Tabs.Any(_ => _.IsUnsaved == true))
                 result = _messageBoxService.ShowYesNoCancel(_localization.GetLocalizedString("msg_save_changes"));
@@ -163,17 +168,15 @@ namespace IDE.ViewModel
             switch (result)
             {
                 case MessageResult.Yes:
-                    SaveAll(); break;
+                    SaveAll(); 
+                    return true;
 
                 case MessageResult.Cancel:
-                    return;
+                    return false;
 
                 default:
-                    break;
+                    return true;
             }
-
-            _logger.LogDebug("Application closed");
-            _closeService.Close();
         }
 
         private void NavigateToSettings(object? obj)
