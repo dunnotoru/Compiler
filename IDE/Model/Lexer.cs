@@ -38,11 +38,11 @@ namespace IDE.Model
             }
             if (char.IsLetter(symbol) || symbol == '_')
             {
-                return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && c != '_');
+                return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && c != '_' && c != ':');
             }
             if (char.IsDigit(symbol))
             {
-                return Parse(code, position, (c) => !char.IsDigit(c));
+                return Parse(code, position, (c) => !char.IsDigit(c) && c != '.');
             }
             if (symbol == '\"')
             {
@@ -100,8 +100,8 @@ namespace IDE.Model
         {
             string symbol = code[position].ToString();
 
-            string firstCharacter = "<>=";
-            string secondCharacter = "=";
+            string firstCharacter = "<>=&!|";
+            string secondCharacter = "=&|";
             if (position < code.Length - 1)
             {
                 if (firstCharacter.Contains(symbol) && secondCharacter.Contains(code[position + 1]))
