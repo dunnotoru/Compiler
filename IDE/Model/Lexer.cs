@@ -31,20 +31,20 @@ namespace IDE.Model
 
         private string ParseToken(string code, int position)
         {
-            char liter = code[position];
-            if (char.IsWhiteSpace(liter))
+            char symbol = code[position];
+            if (char.IsWhiteSpace(symbol))
             {
-                return liter.ToString();
+                return symbol.ToString();
             }
-            if (char.IsLetter(liter) || liter == '_')
+            if (char.IsLetter(symbol) || symbol == '_')
             {
-                return Parse(code, position, (liter) => !char.IsLetterOrDigit(liter) && liter != '_');
+                return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && c != '_');
             }
-            if (char.IsDigit(liter))
+            if (char.IsDigit(symbol))
             {
-                return Parse(code, position, (liter) => !char.IsDigit(liter));
+                return Parse(code, position, (c) => !char.IsDigit(c));
             }
-            if (liter == '\"')
+            if (symbol == '\"')
             {
                 return ParseString(code, position);
             }
@@ -54,17 +54,17 @@ namespace IDE.Model
 
         private string Parse(string code, int position, Func<char, bool> stopRule)
         {
-            char liter;
+            char symbol;
             StringBuilder buffer = new StringBuilder();
             while (position < code.Length)
             {
-                liter = code[position];
-                if (stopRule(liter))
+                symbol = code[position];
+                if (stopRule(symbol))
                 {
                     break;
                 }
 
-                buffer.Append(liter);
+                buffer.Append(symbol);
                 position++;
             }
 
@@ -73,22 +73,22 @@ namespace IDE.Model
 
         private string ParseString(string code, int position)
         {
-            char liter;
+            char symbol;
             StringBuilder buffer = new StringBuilder();
             int quotesCount = 0;
             while (position < code.Length)
             {
-                liter = code[position];
-                if(liter == '\"')
+                symbol = code[position];
+                if(symbol == '\"')
                 {
                     quotesCount++;
                 }
-                else if(quotesCount == 2 || liter == '\n')
+                else if(quotesCount == 2 || symbol == '\n')
                 {
                     break;
                 }
 
-                buffer.Append(liter);
+                buffer.Append(symbol);
 
                 position++;
             }
@@ -98,19 +98,19 @@ namespace IDE.Model
 
         private string ParseOperator(string code, int position)
         {
-            string liter = code[position].ToString();
+            string symbol = code[position].ToString();
 
             string firstCharacter = "<>=";
             string secondCharacter = "=";
             if (position < code.Length - 1)
             {
-                if (firstCharacter.Contains(liter) && secondCharacter.Contains(code[position + 1]))
+                if (firstCharacter.Contains(symbol) && secondCharacter.Contains(code[position + 1]))
                 {
-                    liter += code[position + 1];
+                    symbol += code[position + 1];
                 }
             }
 
-            return liter;
+            return symbol;
         }
     }
 }
