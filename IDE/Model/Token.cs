@@ -10,31 +10,31 @@ namespace IDE.Model
         Identifier = 0,
         Integer,
         Double,
+        Whitespace,
+        Less,
+        Greater,
+        OpenRoundBracket,
+        CloseRoundBracket,
+        Minus,
+        IntegerLiteral,
+        DoubleLiteral,
+        Comma,
+        Semicolon,
+
         String,
 
         Newline,
-        Whitespace,
-        Comma,
-        Semicolon,
         Assignment,
 
-        OpenArgument,
-        CloseArgument,
-        OpenScope,
-        CloseScope,
+        OpenCurlyBracket,
+        CloseCurlyBracket,
 
-        SignedIntegerNumber,
-        SignedDoubleNumber,
         StringLiteral,
-
         Plus,
-        Minus,
         Multiply,
         Divide,
         Module,
-
-        Greater,
-        Less,
+ 
         GreaterOrEqual,
         LessOrEqual,
         Equal,
@@ -70,10 +70,10 @@ namespace IDE.Model
             { ";", TokenType.Semicolon },
             { "=", TokenType.Assignment },
 
-            { "(", TokenType.OpenArgument },
-            { ")", TokenType.CloseArgument },
-            { "{", TokenType.OpenScope},
-            { "}", TokenType.CloseScope },
+            { "(", TokenType.OpenRoundBracket },
+            { ")", TokenType.CloseRoundBracket },
+            { "{", TokenType.OpenCurlyBracket},
+            { "}", TokenType.CloseCurlyBracket },
 
             { "+", TokenType.Plus },
             { "-", TokenType.Minus },
@@ -120,10 +120,10 @@ namespace IDE.Model
             => DefaultTypes.ContainsKey(rawToken);
         private static bool IsIdentifier(string rawToken)
             => rawToken.Length != 0 && (char.IsLetter(rawToken.First()) || rawToken.First() == '_');
-        private static bool IsSignedInteger(string rawToken)
-            => int.TryParse(rawToken, out int _) && rawToken.First() != '0';
-        private static bool IsSignedDouble(string rawToken)
-            => double.TryParse(rawToken, NumberFormatInfo.InvariantInfo, out double _) && rawToken.First() != '0' && rawToken.Last() != '.';
+        private static bool IsIntegerLiteral(string rawToken)
+            => int.TryParse(rawToken, out int _) && !rawToken.StartsWith("0.");
+        private static bool IsDoubleLiteral(string rawToken)
+            => double.TryParse(rawToken, NumberFormatInfo.InvariantInfo, out double _) && rawToken.StartsWith("0.") && !rawToken.EndsWith('.');
         private static bool IsStringLiteral(string rawToken)
             => rawToken.StartsWith("\"") && rawToken.EndsWith("\"") && !rawToken.Contains('\n') && rawToken.Length > 1;
 
@@ -137,13 +137,13 @@ namespace IDE.Model
             {
                 return TokenType.Identifier;
             }
-            if (IsSignedInteger(rawToken))
+            if (IsIntegerLiteral(rawToken))
             {
-                return TokenType.SignedIntegerNumber;
+                return TokenType.IntegerLiteral;
             }
-            if (IsSignedDouble(rawToken))
+            if (IsDoubleLiteral(rawToken))
             {
-                return TokenType.SignedDoubleNumber;
+                return TokenType.DoubleLiteral;
             }
             if (IsStringLiteral(rawToken))
             {
