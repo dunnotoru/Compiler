@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xaml.Schema;
 
 namespace IDE.Model
 {
@@ -32,13 +33,14 @@ namespace IDE.Model
         private string ParseToken(string code, int position)
         {
             char symbol = code[position];
+            string allowedIdentifierSymbols = "_:<>";
             if (char.IsWhiteSpace(symbol))
             {
                 return symbol.ToString();
             }
             if (char.IsLetter(symbol) || symbol == '_')
             {
-                return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && c != '_' && c != ':');
+                return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && !allowedIdentifierSymbols.Contains(c));
             }
             if (char.IsDigit(symbol))
             {

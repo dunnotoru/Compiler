@@ -8,6 +8,7 @@ namespace IDE.Model
     internal enum TokenType
     {
         Identifier = 0,
+        Complex,
         Integer,
         Double,
         Whitespace,
@@ -62,8 +63,8 @@ namespace IDE.Model
             { "string", TokenType.String },
             { "int", TokenType.Integer },
             { "double", TokenType.Double },
-            { "std::complex", TokenType.Identifier },
-
+            { "std::complex<double>", TokenType.Complex },
+            
             { "\n", TokenType.Newline },
             { " ", TokenType.Whitespace },
             { ",", TokenType.Comma },
@@ -118,8 +119,9 @@ namespace IDE.Model
 
         public static bool DefaultTokenExists(string rawToken)
             => DefaultTypes.ContainsKey(rawToken);
+
         private static bool IsIdentifier(string rawToken)
-            => rawToken.Length != 0 && (char.IsLetter(rawToken.First()) || rawToken.First() == '_');
+            => rawToken.Length != 0 && (char.IsLetter(rawToken.First()) || rawToken.First() == '_') && (rawToken.StartsWith("std::") == (rawToken.Count(x => x == ':') == 2));
         private static bool IsIntegerLiteral(string rawToken)
             => int.TryParse(rawToken, out int _) && !rawToken.StartsWith("0.");
         private static bool IsDoubleLiteral(string rawToken)
