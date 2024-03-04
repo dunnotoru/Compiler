@@ -121,16 +121,19 @@ namespace IDE.ViewModel
 
         private void AddTab(TabItemViewModel tab)
         {
-            Tabs.Add(tab);
-            SelectedTab = tab;
             tab.Close += RemoveTab;
+            Tabs.Add(tab);
         }
 
         private void RemoveTab(object? sender, EventArgs e)
         {
-            if (sender is not TabItemViewModel) return;
+            TabItemViewModel tab = sender as TabItemViewModel;
+            if (tab is null)
+            {
+                return;
+            }
 
-            TabItemViewModel tab = (TabItemViewModel)sender;
+
             MessageResult result = MessageResult.No;
             if (tab.IsUnsaved == true)
             {
@@ -149,6 +152,7 @@ namespace IDE.ViewModel
                 default:
                     break;
             }
+
 
             tab.Close -= RemoveTab;
             Tabs.Remove(tab);
@@ -183,7 +187,6 @@ namespace IDE.ViewModel
         {
             _navigationService.Navigate<SettingsViewModel>();
         }
-
 
         private void ShowAbout(object? obj)
         {
