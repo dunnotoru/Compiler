@@ -2,6 +2,6 @@
 {
     internal interface IParserState
     {
-        bool Handle(Parser parser, Token token);
+        void Handle(Parser parser, Token token);
     }
 }

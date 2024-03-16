@@ -2,14 +2,12 @@
 {
     internal class EndState : IParserState
     {
-        public bool Handle(Parser parser, Token token)
+        public void Handle(Parser parser, Token token)
         {
-            if (token.Type == TokenType.Semicolon)
+            if (token.Type != TokenType.Semicolon)
             {
-                return true;
+                parser.Errors.Add(new ParseError(token));
             }
-
-            return false;
         }
     }
 }

@@ -2,15 +2,16 @@
 {
     internal class IdentifierState : IParserState
     {
-        public bool Handle(Parser parser, Token token)
+        public void Handle(Parser parser, Token token)
         {
             if(token.Type == TokenType.Identifier)
             {
                 parser.State = new OpenArgumentState();
-                return true;
             }
-
-            return false;
+            else
+            {
+                parser.Errors.Add(new ParseError(token));
+            }
         }
     }
 }
