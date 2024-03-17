@@ -68,8 +68,7 @@
 Выходные данные: последовательность условных кодов, описывающих структуру разбираемого текста с указанием места положения и типа.
 
 ```C++
-    std::complex<double> comp(10.0, 0.2);
-    std::complex<int> amongus(10, 2);
+    std::complex<double> comp(10.0,0.2);
 ```
 
 ### Диаграмме состояний сканера
@@ -77,3 +76,32 @@
 
 ### Примеры лексического анализа
 ![О боже где картинка](images/test.png)
+
+## Лабораторная работа №3. Разработка парсера.
+Цель работы: Изучить назначение синтаксического анализатора. Спроектировать алгоритм и выполнить программную реализацию парсера.
+
+### Грамматика
+G[COMPLEX = <комплексное число>]: 
+
+VT = { ‘a’…’z’, ‘A’…’Z’, '=', 'std::complex<double>', '(', ')', '+', 'j', '-', '0'...'9', '.', ‘_’ }
+
+VN = { COMPLEX, IDENTIFIER, IDENTIFIERREM, REAL, UINTREAL, UINTREALREM, REALDECIMAL, REALDECIMALREM, IMAGINARY, UINTINAGINARY, UINTIMAGINARYREM, IMANGINARYDECIMAL,END, letter, digit }
+
+COMPLEX -> 'std::complex<double> 'IDENTIFIER
+IDENTIFIER -> (letter | '_')IDENTIFIERREM
+IDENTIFIERREM -> (letter | digit | '_')IDENTIFIERREM | '('REAL
+REAL -> ['+' | '-']UINTREAL
+UINTREAL -> digit UINTREALREM
+UINTREALREM -> digit UINTREALREM | '.' REALDECIMAL
+REALDECIMAL -> digit REALDECIMALREM
+REALDECIMALREM -> digit REALDECIMALREM | ',' IMAGINARY
+IMAGINARY -> ['+' | '-']UINTINAGINARY
+UINTINAGINARY -> digit UINTIMAGINARYREM
+UINTIMAGINARYREM -> digit UINTIMAGINARYREM | '.' IMANGINARYDECIMAL
+IMAGINARYDECIMAL -> digit IMAGINARYDECIMAL | ')' END
+END -> ';'
+digit -> '0' | '1' | '2' | ... | '9'
+letter -> 'a' | 'b' | ... | 'z' | 'A' | 'B' | ... | 'Z' 
+
+### Граф конечного автомата
+![Я хочу быть автоматом](images/automaton.jpg)
