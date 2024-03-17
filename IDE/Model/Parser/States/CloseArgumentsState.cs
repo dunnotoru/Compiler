@@ -2,16 +2,9 @@
 {
     internal class CloseArgumentsState : IParserState
     {
-        public void Handle(Parser parser, Token token)
+        public void Handle(Parser parser, string code, int position)
         {
-            if (token.Type == TokenType.CloseRoundBracket)
-            {
-                parser.State = new EndState();
-            }
-            else
-            {
-                parser.Errors.Add(new ParseError(token));
-            }
+
         }
     }
 }

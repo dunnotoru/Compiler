@@ -105,7 +105,7 @@
                 </Button>
 
                 <Separator/>
-                <Button Content="{StaticResource img_run}" Command="{Binding ScanCommand}">
+                <Button Content="{StaticResource img_run}" Command="{Binding RunCommand}">
                     <Button.ToolTip>
                         <ToolTip Content="{DynamicResource run}"/>
                     </Button.ToolTip>
@@ -149,7 +149,7 @@
 
             <TabControl Margin="10" Grid.Row="2">
                 <TabItem Header="Scan result">
-                    <DataGrid Style="{StaticResource token_datagrid}" ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
+                    <DataGrid IsReadOnly="True" Style="{StaticResource token_datagrid}" ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Code}" Header="{DynamicResource code}" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding RawToken}" Header="{DynamicResource rawToken}" Width="auto"/>
@@ -159,13 +159,13 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
-                <TabItem Header="Info">
-                    <DataGrid AutoGenerateColumns="False">
+                <TabItem Header="ParseResult">
+                    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding ParseResult}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{DynamicResource file_name}" Width="auto"/>
-                            <DataGridTextColumn Header="{DynamicResource line}" Width="auto"/>
-                            <DataGridTextColumn Header="{DynamicResource column}" Width="auto"/>
-                            <DataGridTextColumn Header="{DynamicResource message}" Width="auto"/>
+                            <DataGridTextColumn Header="Start" Binding="{Binding StartPos}" Width="auto"/>
+                            <DataGridTextColumn Header="End" Binding="{Binding EndPos}" Width="auto"/>
+                            <DataGridTextColumn Header="Expected" Binding="{Binding ExpectedToken}" Width="auto"/>
+                            <DataGridTextColumn Header="DiscardedFragment" Binding="{Binding DiscardedFragment}" Width="auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>

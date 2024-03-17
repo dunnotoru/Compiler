@@ -2,16 +2,16 @@
 {
     internal class OpenArgumentState : IParserState
     {
-        public void Handle(Parser parser, Token token)
+        public void Handle(Parser parser, string code, int position)
         {
-            if (token.Type == TokenType.OpenRoundBracket)
+            if (code[position] != '(')
             {
-                parser.State = new FirstNumberState();
+                //ОШИБКА
             }
-            else
-            {
-                parser.Errors.Add(new ParseError(token));
-            }
+
+            position++;
+            parser.State = new RealPartState();
+            parser.State.Handle(parser, code, position);
         }
     }
 }

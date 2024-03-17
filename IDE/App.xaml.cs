@@ -87,8 +87,6 @@ namespace IDE
             base.OnStartup(e);
         }
 
-
-
         private void App_LanguageChanged(object? sender, EventArgs e)
         {
             IDE.Properties.Settings.Default.DefaultLanguage = Language.Name;
@@ -138,6 +136,7 @@ namespace IDE
             services.AddTransient<ICloseService>(_ => new CloseService(Close));
 
             services.AddTransient<IScanService, ScanService>();
+            services.AddTransient<IParseService, ParseService>();
 
             services.AddSingleton(typeof(ILocalizationProvider), new LocalizationProvider(GetLocalizedString));
             services.AddSingleton(typeof(ILogger), ConfigureLogger());

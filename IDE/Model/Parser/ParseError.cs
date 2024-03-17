@@ -2,15 +2,17 @@
 {
     internal class ParseError
     {
-        private Token _token;
-        public ParseError(Token token)
-        {
-            _token = token;
-        }
+        public string ExpectedTokenType { get; private set; }
+        public string DiscardedFragment { get; private set; }
+        public int StartPos { get; private set; }
+        public int EndPos { get; private set; }
 
-        public string GetMessage()
+        public ParseError(int startPosition, int endPosition, string expected, string discardedFragment)
         {
-            return $"Ожидалось {_token.RawToken} на позиции {_token.StartPos} - {_token.EndPos}";
+            ExpectedTokenType = expected;
+            DiscardedFragment = discardedFragment;
+            StartPos = startPosition;
+            EndPos = endPosition;
         }
     }
 }

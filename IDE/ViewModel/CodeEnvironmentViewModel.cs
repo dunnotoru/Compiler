@@ -1,4 +1,5 @@
 ﻿using IDE.Model;
+using IDE.Model.Parser;
 using IDE.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
@@ -19,12 +20,14 @@ namespace IDE.ViewModel
         private readonly ILogger _logger;
         private readonly ILocalizationProvider _localization;
         private readonly IScanService _scanService;
+        private readonly IParseService _parseService;
         private readonly NavigationService _navigationService; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel? _selectedTab;
 
         private ObservableCollection<TokenViewModel> _scanResult;
+        private ObservableCollection<ParseErrorViewModel> _parseResult;
 
         public ICommand CreateCommand => new RelayCommand(Create);
         public ICommand SaveCommand => new RelayCommand(Save, _ => SelectedTab != null);
@@ -34,7 +37,7 @@ namespace IDE.ViewModel
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
         public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
         public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
-        public ICommand ScanCommand => new RelayCommand(Scan);
+        public ICommand RunCommand => new RelayCommand(Scan);
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
@@ -43,10 +46,12 @@ namespace IDE.ViewModel
                                     ILogger logger,
                                     ILocalizationProvider localization,
                                     NavigationService navigationService,
-                                    IScanService scanService)
+                                    IScanService scanService,
+                                    IParseService parseService)
         {
             _tabs = new ObservableCollection<TabItemViewModel>();
             _scanResult = new ObservableCollection<TokenViewModel>();
+            _parseResult = new ObservableCollection<ParseErrorViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
             _closeService = closeService;
@@ -55,6 +60,7 @@ namespace IDE.ViewModel
             _localization = localization;
             _navigationService = navigationService;
             _scanService = scanService;
+            _parseService = parseService;
         }
 
         private void Open(object? obj)
@@ -127,7 +133,7 @@ namespace IDE.ViewModel
 
         private void RemoveTab(object? sender, EventArgs e)
         {
-            TabItemViewModel tab = sender as TabItemViewModel;
+            TabItemViewModel? tab = sender as TabItemViewModel;
             if (tab is null)
             {
                 return;
@@ -213,10 +219,17 @@ namespace IDE.ViewModel
             if (SelectedTab is null) return;
 
             ScanResult.Clear();
-            List<Token> _tokens = _scanService.Scan(SelectedTab.Content).ToList();
-            foreach (Token token in _tokens)
+            List<Token> tokens = _scanService.Scan(SelectedTab.Content).ToList();
+            foreach (Token token in tokens)
             {
                 ScanResult.Add(new TokenViewModel(token));
+            }
+
+            ParseResult.Clear();
+            List<ParseError> errors = _parseService.Parse(SelectedTab.Content);
+            foreach (ParseError error in errors)
+            {
+                ParseResult.Add(new ParseErrorViewModel(error));
             }
         }
 
@@ -236,6 +249,12 @@ namespace IDE.ViewModel
         {
             get { return _scanResult; }
             set { _scanResult = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<ParseErrorViewModel> ParseResult
+        {
+            get { return _parseResult; }
+            set { _parseResult = value; OnPropertyChanged(); }
         }
     }
 }
