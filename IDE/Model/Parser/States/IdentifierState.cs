@@ -6,11 +6,17 @@ namespace IDE.Model.Parser.States
     {
         public void Handle(Parser parser, string code, int position)
         {
-            char c = code[position];
+            char c;
 
             StringBuilder errorBuffer = new StringBuilder();
             while (position < code.Length)
             {
+                if (position >= code.Length)
+                {
+                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
+                    return;
+                }
+
                 c = code[position];
                 if(!char.IsLetter(c) && c != '_')
                 {

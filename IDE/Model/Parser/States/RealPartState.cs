@@ -8,10 +8,45 @@ namespace IDE.Model.Parser.States
         {
             char symbol;
             StringBuilder errorBuffer = new StringBuilder();
+
             while (position < code.Length)
             {
-                symbol = code[position];
+                if (position >= code.Length)
+                {
+                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
+                    return;
+                }
 
+                char c = code[position];
+                if (!char.IsDigit(c) && c != '+' && c != '-')
+                {
+                    errorBuffer.Append(c);
+                    code.Remove(position);
+                }
+                else
+                {
+                    if (errorBuffer.Length > 0)
+                    {
+                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real start", errorBuffer.ToString()));
+                        errorBuffer.Clear();
+                    }
+
+                    position++;
+                    break;
+                }
+                position++;
+            }
+
+            errorBuffer.Clear();
+            while (position < code.Length)
+            {
+                if (position >= code.Length)
+                {
+                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
+                    return;
+                }
+
+                symbol = code[position];
                 if (!char.IsDigit(symbol) && symbol != '.')
                 {
                     errorBuffer.Append(symbol);
@@ -19,6 +54,12 @@ namespace IDE.Model.Parser.States
                 }
                 else if(symbol == '.')
                 {
+                    if (errorBuffer.Length > 0)
+                    {
+                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
+                        errorBuffer.Clear();
+                    }
+
                     position++;
                     break;
                 }
@@ -46,6 +87,12 @@ namespace IDE.Model.Parser.States
                 }
                 else if(symbol == ',')
                 {
+                    if (errorBuffer.Length > 0)
+                    {
+                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
+                        errorBuffer.Clear();
+                    }
+
                     position++;
                     break;
                 }
