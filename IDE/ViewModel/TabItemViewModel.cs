@@ -4,12 +4,12 @@ using System.Windows.Input;
 
 namespace IDE.ViewModel
 {
-
     internal class TabItemViewModel : ViewModelBase
     {
 		private string _content;
 		private string _fileName;
         private bool _isUnsaved;
+        private bool _canClean;
 
         public event EventHandler? Close;
 
@@ -44,12 +44,25 @@ namespace IDE.ViewModel
             set { _isUnsaved = value; OnPropertyChanged(); }
         }
 
-        public string Header => Path.GetFileName(FileName);
+        public bool CanClean
+        {
+            get { return _canClean; }
+            set { _canClean = value; OnPropertyChanged(); }
+        }
 
+        public string CleanedContent { get; set; }
+
+        public string Header => Path.GetFileName(FileName);
+        
         public string FileName
         {
             get { return _fileName; }
             set { _fileName = value; OnPropertyChanged(); }
+        }
+
+        public void CleanCode()
+        {
+            Content = CleanedContent;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace IDE.Model.Parser.States
                 if (c != ';')
                 {
                     errorBuffer.Append(c);
-                    code.Remove(position);
+                    code = code.Remove(position, 1);
                 }
                 else
                 {

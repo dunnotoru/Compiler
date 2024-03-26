@@ -21,7 +21,7 @@ namespace IDE.Model.Parser.States
                 if (!char.IsDigit(c) && c != '+' && c != '-')
                 {
                     errorBuffer.Append(c);
-                    code.Remove(position);
+                    code = code.Remove(position, 1);
                 }
                 else
                 {
@@ -50,7 +50,7 @@ namespace IDE.Model.Parser.States
                 if (!char.IsDigit(symbol) && symbol != '.')
                 {
                     errorBuffer.Append(symbol);
-                    code.Remove(position);
+                    code = code.Remove(position, 1);
                 }
                 else if(symbol == '.')
                 {
@@ -83,7 +83,7 @@ namespace IDE.Model.Parser.States
                 if (!char.IsDigit(symbol) && symbol != ',')
                 {
                     errorBuffer.Append(symbol);
-                    code.Remove(position);
+                    code = code.Remove(position, 1);
                 }
                 else if(symbol == ',')
                 {

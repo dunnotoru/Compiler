@@ -122,6 +122,12 @@
                         <ToolTip Content="{DynamicResource about}"/>
                     </Button.ToolTip>
                 </Button>
+
+                <Separator/>
+
+                <Button Content="Clean" Command="{Binding CleanCommand}"
+                        Visibility="{Binding SelectedTab.CanClean, Converter={StaticResource BoolToVisiblity}}">
+                </Button>
             </ToolBar>
         </ToolBarTray>
 

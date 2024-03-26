@@ -21,7 +21,7 @@ namespace IDE.Model.Parser.States
                 if(!char.IsLetter(c) && c != '_')
                 {
                     errorBuffer.Append(c);
-                    code.Remove(position);
+                    code = code.Remove(position, 1);
                 }
                 else
                 {
@@ -50,13 +50,13 @@ namespace IDE.Model.Parser.States
                 if(!char.IsLetter(c) && !char.IsDigit(c) && c == '_')
                 {
                     errorBuffer.Append(c);
-                    code.Remove(position, 1);
+                    code = code.Remove(position, 1);
                 }
                 else
                 {
                     if (errorBuffer.Length > 0)
                     {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "identifier start", errorBuffer.ToString()));
+                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "identifier", errorBuffer.ToString()));
                         errorBuffer.Clear();
                     }
                 }

@@ -37,7 +37,8 @@ namespace IDE.ViewModel
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
         public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
         public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
-        public ICommand RunCommand => new RelayCommand(Scan);
+        public ICommand RunCommand => new RelayCommand(Run);
+        public ICommand CleanCommand => new RelayCommand(Clean);
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
@@ -61,6 +62,17 @@ namespace IDE.ViewModel
             _navigationService = navigationService;
             _scanService = scanService;
             _parseService = parseService;
+        }
+
+        private void Clean(object? obj)
+        {
+            if(SelectedTab is null)
+            {
+                return;
+            }
+
+            SelectedTab.Content = SelectedTab.CleanedContent;
+            SelectedTab.CanClean = false;
         }
 
         private void Open(object? obj)
@@ -214,7 +226,7 @@ namespace IDE.ViewModel
             p.Start();
         }
 
-        private void Scan(object? obj)
+        private void Run(object? obj)
         {
             if (SelectedTab is null) return;
 
@@ -226,13 +238,13 @@ namespace IDE.ViewModel
             }
 
             ParseResult.Clear();
-            string cleanedCode;
-            (List<ParseError> errors, cleanedCode) = _parseService.Parse(SelectedTab.Content);
+
+            (List<ParseError> errors, SelectedTab.CleanedContent) = _parseService.Parse(SelectedTab.Content);
+            SelectedTab.CanClean = true;
             foreach (ParseError error in errors)
             {
                 ParseResult.Add(new ParseErrorViewModel(error));
             }
-            SelectedTab.Content = cleanedCode;
         }
 
         public TabItemViewModel? SelectedTab
