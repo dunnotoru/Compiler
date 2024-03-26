@@ -1,11 +1,10 @@
-﻿using System.Runtime.Versioning;
-using System.Text;
+﻿using System.Text;
 
 namespace IDE.Model.Parser.States
 {
     internal class EndState : IParserState
     {
-        public void Handle(Parser parser, string code, int position)
+        public string Handle(Parser parser, string code, int position)
         {
             StringBuilder errorBuffer = new StringBuilder();
             while (position < code.Length)
@@ -13,7 +12,7 @@ namespace IDE.Model.Parser.States
                 if (position >= code.Length)
                 {
                     parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                    return;
+                    return code;
                 }
                 char c = code[position];
                 if (c != ';')
@@ -38,11 +37,11 @@ namespace IDE.Model.Parser.States
 
             if(position == code.Length)
             {
-                return;
+                return code;
             }
 
             parser.State = new ComplexState();
-            parser.State.Handle(parser, code, position);
+            return parser.State.Handle(parser, code, position);
         }
     }
 }

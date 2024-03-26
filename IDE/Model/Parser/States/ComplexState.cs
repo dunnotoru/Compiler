@@ -4,12 +4,12 @@ namespace IDE.Model.Parser.States
 {
     internal class ComplexState : IParserState
     {
-        public void Handle(Parser parser, string code, int position)
+        public string Handle(Parser parser, string code, int position)
         {
             if (position >= code.Length)
             {
                 parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                return;
+                return code;
             }
 
             string whitespaceCharacters = " \n\r\t";
@@ -26,7 +26,7 @@ namespace IDE.Model.Parser.States
                 if (position >= code.Length)
                 {
                     parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                    return;
+                    return code;
                 }
 
                 if (expected[expectedPos] != code[position])
@@ -48,7 +48,7 @@ namespace IDE.Model.Parser.States
             }
 
             parser.State = new IdentifierState();
-            parser.State.Handle(parser, code, position);
+            return parser.State.Handle(parser, code, position);
         }
     }
 }

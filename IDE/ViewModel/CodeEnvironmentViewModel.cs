@@ -226,11 +226,13 @@ namespace IDE.ViewModel
             }
 
             ParseResult.Clear();
-            List<ParseError> errors = _parseService.Parse(SelectedTab.Content);
+            string cleanedCode;
+            (List<ParseError> errors, cleanedCode) = _parseService.Parse(SelectedTab.Content);
             foreach (ParseError error in errors)
             {
                 ParseResult.Add(new ParseErrorViewModel(error));
             }
+            SelectedTab.Content = cleanedCode;
         }
 
         public TabItemViewModel? SelectedTab

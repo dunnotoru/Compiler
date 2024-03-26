@@ -2,6 +2,6 @@
 {
     internal interface IParserState
     {
-        void Handle(Parser parser, string code, int position);
+        string Handle(Parser parser, string code, int position);
     }
 }

@@ -5,6 +5,6 @@ namespace IDE.Services.Abstractions
 {
     internal interface IParseService
     {
-        List<ParseError> Parse(string code);
+        (List<ParseError>, string) Parse(string code);
     }
 }

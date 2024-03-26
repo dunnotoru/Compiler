@@ -1,6 +1,5 @@
 ﻿using IDE.Model.Parser.States;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace IDE.Model.Parser
 {
@@ -14,12 +13,12 @@ namespace IDE.Model.Parser
             State = new ComplexState();
         }
 
-        public List<ParseError> Parse(string code)
+        public (List<ParseError>,string) Parse(string code)
         {
             Errors.Clear();
             State = new ComplexState();
-            State.Handle(this, code, 0);
-            return Errors;
+            string resultCode = State.Handle(this, code, 0);
+            return (Errors, resultCode);
         }
 
         public void AddError(ParseError error)

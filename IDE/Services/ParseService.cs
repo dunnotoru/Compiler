@@ -9,7 +9,7 @@ namespace IDE.Services
     {
         private Parser _parser = new Parser();
 
-        public List<ParseError> Parse(string code)
+        public (List<ParseError>,string) Parse(string code)
         {
             return _parser.Parse(code);
         }
