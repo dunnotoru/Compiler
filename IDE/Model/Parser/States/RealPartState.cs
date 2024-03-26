@@ -31,10 +31,8 @@ namespace IDE.Model.Parser.States
                         errorBuffer.Clear();
                     }
 
-                    position++;
                     break;
                 }
-                position++;
             }
 
             errorBuffer.Clear();
@@ -70,9 +68,9 @@ namespace IDE.Model.Parser.States
                         parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
                         errorBuffer.Clear();
                     }
+                    position++;
                 }
 
-                position++;
             }
 
             errorBuffer.Clear();
@@ -103,9 +101,8 @@ namespace IDE.Model.Parser.States
                         parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
                         errorBuffer.Clear();
                     }
+                    position++;
                 }
-
-                position++;
             }
 
             parser.State = new ImaginaryPartState();

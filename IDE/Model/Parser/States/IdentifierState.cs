@@ -33,7 +33,6 @@ namespace IDE.Model.Parser.States
 
                     break;
                 }
-                position++;
             }
 
             errorBuffer.Clear();
@@ -47,7 +46,7 @@ namespace IDE.Model.Parser.States
                     break;
                 }
 
-                if(!char.IsLetter(c) && !char.IsDigit(c) && c == '_')
+                if(!char.IsLetter(c) && !char.IsDigit(c) && c != '_')
                 {
                     errorBuffer.Append(c);
                     code = code.Remove(position, 1);
@@ -59,8 +58,14 @@ namespace IDE.Model.Parser.States
                         parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "identifier", errorBuffer.ToString()));
                         errorBuffer.Clear();
                     }
-                }
                     position++;
+                }
+            }
+
+            if (errorBuffer.Length > 0)
+            {
+                parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "identifier", errorBuffer.ToString()));
+                errorBuffer.Clear();
             }
 
             parser.State = new RealPartState();
