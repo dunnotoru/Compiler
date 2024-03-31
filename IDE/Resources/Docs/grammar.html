@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Грамматика</title>
+</head>
+<body>
+    <h1>Грамматика</h1>
+    <p>Тип грамматики по классификации Хомского</p>
+    <p>
+        G[COMPLEX = <комплексное число>]:</br></br>
+        
+        VT = { ‘a’…’z’, ‘A’…’Z’, '=', 'std::complex', '(', ')', '+', 'j', '-', '0'...'9', '.', ‘_’ }</br></br>
+        
+        VN = { COMPLEX, IDENTIFIER, IDENTIFIERREM, REAL, UINTREAL, UINTREALREM, REALDECIMAL,
+             REALDECIMALREM, IMAGINARY, UINTINAGINARY, UINTIMAGINARYREM, IMANGINARYDECIMAL,END, letter, digit }</br></br>
+        
+        COMPLEX -> 'std::complex 'IDENTIFIER</br>
+        IDENTIFIER -> (letter | '')IDENTIFIERREM</br>
+        IDENTIFIERREM -> (letter | digit | '')IDENTIFIERREM | '('REAL</br>
+        REAL -> ['+' | '-']UINTREAL</br>
+        UINTREAL -> digit UINTREALREM</br>
+        UINTREALREM -> digit UINTREALREM | '.' REALDECIMAL</br>
+        REALDECIMAL -> digit REALDECIMALREM</br>
+        REALDECIMALREM -> digit REALDECIMALREM | ',' IMAGINARY</br>
+        IMAGINARY -> ['+' | '-']UINTINAGINARY</br>
+        UINTINAGINARY -> digit UINTIMAGINARYREM</br>
+        UINTIMAGINARYREM -> digit UINTIMAGINARYREM | '.' IMANGINARYDECIMAL</br>
+        IMAGINARYDECIMAL -> digit IMAGINARYDECIMAL | ')' END</br>
+        END -> ';'</br>
+        digit -> '0' | '1' | '2' | ... | '9'</br>
+        letter -> 'a' | 'b' | ... | 'z' | 'A' | 'B' | ... | 'Z'</br>
+    </p>
+</body>
+</html>

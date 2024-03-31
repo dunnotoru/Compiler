@@ -37,7 +37,7 @@
                 <MenuItem Header="{DynamicResource paste}" Command="ApplicationCommands.Paste"/>
                 <MenuItem Header="{DynamicResource select_all}" Command="ApplicationCommands.SelectAll"/>
             </MenuItem>
-            <MenuItem Header="{DynamicResource text}">
+            <MenuItem Header="{DynamicResource text}" Command="{Binding }">
                 <MenuItem Header="{DynamicResource task}"/>
                 <MenuItem Header="{DynamicResource grammar}"/>
                 <MenuItem Header="{DynamicResource analyze_method}"/>

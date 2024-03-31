@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    
+}
+
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+}
+
+table {
+    width: 50%;
+    border-collapse: collapse;
+    border: 2px solid #ccc; /* Цвет рамки */
+}
+th, td {
+    border: 1px solid #ccc; /* Цвет внутренних рамок */
+    padding: 8px; /* Поля вокруг текста */
+}
+th {
+    background-color: #f2f2f2; /* Цвет фона заголовков */
+}

@@ -1,0 +1,3 @@
+std::complex<double> amongus(1.2,2.3);
+std::complex<double> skibidi(23.43, 45345345.23);
+std::complex<double> skibidi(123.456, 857.23323);
