@@ -31,7 +31,6 @@ namespace IDE.Model.Parser.States
                         errorBuffer.Clear();
                     }
 
-                    position++;
                     break;
                 }
             }
@@ -69,9 +68,8 @@ namespace IDE.Model.Parser.States
                         parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
                         errorBuffer.Clear();
                     }
+                    position++;
                 }
-
-                position++;
             }
 
             errorBuffer.Clear();

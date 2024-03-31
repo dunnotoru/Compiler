@@ -43,8 +43,8 @@ namespace IDE.Model.Parser.States
                     parser.AddError(new ParseError(position, position, "incomplete line", ""));
                     return code;
                 }
-
                 symbol = code[position];
+
                 if (!char.IsDigit(symbol) && symbol != '.')
                 {
                     errorBuffer.Append(symbol);
