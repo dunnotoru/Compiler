@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace IDE.View
@@ -12,12 +13,19 @@ namespace IDE.View
 
         private void Open(string fileName)
         {
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo(fileName)
+            try
             {
-                UseShellExecute = true
-            };
-            p.Start();
+                var p = new Process();
+                p.StartInfo = new ProcessStartInfo(fileName)
+                {
+                    UseShellExecute = true
+                };
+                p.Start();
+            }
+            catch
+            {
+                MessageBox.Show($"Error while opening {fileName}");
+            }
         }
 
         private void TaskMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using IDE.Model;
+﻿using ICSharpCode.AvalonEdit.Utils;
+using IDE.Model;
 using IDE.Model.Parser;
 using IDE.Services.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 
@@ -37,6 +39,8 @@ namespace IDE.ViewModel
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
         public ICommand RunCommand => new RelayCommand(Run);
         public ICommand CleanCommand => new RelayCommand(Clean);
+        public ICommand ShowTestExamplesCommand => new RelayCommand(ShowTextExamples);
+
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
@@ -60,6 +64,23 @@ namespace IDE.ViewModel
             _navigationService = navigationService;
             _scanService = scanService;
             _parseService = parseService;
+        }
+        private void ShowTextExamples(object? obj)
+        {
+            string text = string.Empty;
+            try
+            {
+                using(StreamReader sr = File.OpenText(@"Resources\Docs\test_example.txt"))
+                {
+                    text = sr.ReadToEnd();
+                }
+                Create(null);
+                Tabs.Last().Content = text;
+            }
+            catch
+            {
+                _messageBoxService.ShowMessage("Error while opening test_example.txt");
+            }
         }
 
         private void Clean(object? obj)
