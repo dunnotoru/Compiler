@@ -4,11 +4,7 @@ body {
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    
-}
-
-text {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 500;
 }
