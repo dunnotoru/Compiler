@@ -7,7 +7,7 @@ body {
     
 }
 
-h1 {
+text {
     font-family: 'Courier New', Courier, monospace;
     font-optical-sizing: auto;
     font-weight: 500;
@@ -16,12 +16,12 @@ h1 {
 table {
     width: 50%;
     border-collapse: collapse;
-    border: 2px solid #ccc; /* Цвет рамки */
+    border: 2px solid #ccc; 
 }
 th, td {
-    border: 1px solid #ccc; /* Цвет внутренних рамок */
-    padding: 8px; /* Поля вокруг текста */
+    border: 1px solid #ccc; 
+    padding: 8px; 
 }
 th {
-    background-color: #f2f2f2; /* Цвет фона заголовков */
+    background-color: #f2f2f2;
 }

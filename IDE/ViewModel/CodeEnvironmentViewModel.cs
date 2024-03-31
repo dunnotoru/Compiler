@@ -35,8 +35,6 @@ namespace IDE.ViewModel
         public ICommand OpenCommand => new RelayCommand(Open);
         public ICommand CloseCommand => new RelayCommand(Close);
         public ICommand NavigateToSettingsCommand => new RelayCommand(NavigateToSettings);
-        public ICommand ShowHelpCommand => new RelayCommand(ShowHelp);
-        public ICommand ShowAboutCommand => new RelayCommand(ShowAbout);
         public ICommand RunCommand => new RelayCommand(Run);
         public ICommand CleanCommand => new RelayCommand(Clean);
 
@@ -205,27 +203,6 @@ namespace IDE.ViewModel
         {
             _navigationService.Navigate<SettingsViewModel>();
         }
-
-        private void ShowAbout(object? obj)
-        {
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo(@"Resources\about.html")
-            {
-                UseShellExecute = true
-            };
-            p.Start();
-        }
-
-        private void ShowHelp(object? obj)
-        {
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo(@"Resources\help.html")
-            {
-                UseShellExecute = true
-            };
-            p.Start();
-        }
-
         private void Run(object? obj)
         {
             if (SelectedTab is null) return;
