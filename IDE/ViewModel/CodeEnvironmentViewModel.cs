@@ -1,12 +1,10 @@
-﻿using ICSharpCode.AvalonEdit.Utils;
-using IDE.Model;
+﻿using IDE.Model;
 using IDE.Model.Parser;
 using IDE.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -23,6 +21,7 @@ namespace IDE.ViewModel
         private readonly ILocalizationProvider _localization;
         private readonly IScanService _scanService;
         private readonly IParseService _parseService;
+        private readonly ITetradService _tetradService;
         private readonly NavigationService _navigationService; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
@@ -30,6 +29,7 @@ namespace IDE.ViewModel
 
         private ObservableCollection<TokenViewModel> _scanResult;
         private ObservableCollection<ParseErrorViewModel> _parseResult;
+        private ObservableCollection<TetradViewModel> _tetrads;
 
         public ICommand CreateCommand => new RelayCommand(Create);
         public ICommand SaveCommand => new RelayCommand(Save, _ => SelectedTab != null);
@@ -50,11 +50,13 @@ namespace IDE.ViewModel
                                     ILocalizationProvider localization,
                                     NavigationService navigationService,
                                     IScanService scanService,
-                                    IParseService parseService)
+                                    IParseService parseService,
+                                    ITetradService semanticsService)
         {
             _tabs = new ObservableCollection<TabItemViewModel>();
             _scanResult = new ObservableCollection<TokenViewModel>();
             _parseResult = new ObservableCollection<ParseErrorViewModel>();
+            _tetrads = new ObservableCollection<TetradViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
             _closeService = closeService;
@@ -64,7 +66,9 @@ namespace IDE.ViewModel
             _navigationService = navigationService;
             _scanService = scanService;
             _parseService = parseService;
+            _tetradService = semanticsService;
         }
+
         private void ShowTextExamples(object? obj)
         {
             string text = string.Empty;
@@ -226,22 +230,36 @@ namespace IDE.ViewModel
         }
         private void Run(object? obj)
         {
-            if (SelectedTab is null) return;
-
-            ScanResult.Clear();
-            List<Token> tokens = _scanService.Scan(SelectedTab.Content).ToList();
-            foreach (Token token in tokens)
+            try
             {
-                ScanResult.Add(new TokenViewModel(token));
+                if (SelectedTab is null) return;
+
+                ScanResult.Clear();
+                List<Token> tokens = _scanService.Scan(SelectedTab.Content).ToList();
+                foreach (Token token in tokens)
+                {
+                    ScanResult.Add(new TokenViewModel(token));
+                }
+
+                ParseResult.Clear();
+
+                (List<ParseError> errors, SelectedTab.CleanedContent) = _parseService.Parse(SelectedTab.Content);
+                SelectedTab.CanClean = true;
+                foreach (ParseError error in errors)
+                {
+                    ParseResult.Add(new ParseErrorViewModel(error));
+                }
+
+                Tetrads.Clear();
+                List<Tetrad> tetradsBuffer = _tetradService.GetTetrads(tokens);
+                foreach (Tetrad tetrad in tetradsBuffer)
+                {
+                    Tetrads.Add(new TetradViewModel(tetrad));
+                }
             }
-
-            ParseResult.Clear();
-
-            (List<ParseError> errors, SelectedTab.CleanedContent) = _parseService.Parse(SelectedTab.Content);
-            SelectedTab.CanClean = true;
-            foreach (ParseError error in errors)
+            catch (Exception ex)
             {
-                ParseResult.Add(new ParseErrorViewModel(error));
+                _messageBoxService.ShowMessage("An unknown error occured");
             }
         }
 
@@ -267,6 +285,12 @@ namespace IDE.ViewModel
         {
             get { return _parseResult; }
             set { _parseResult = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<TetradViewModel> Tetrads
+        {
+            get { return _tetrads; }
+            set { _tetrads = value; OnPropertyChanged(); }
         }
     }
 }

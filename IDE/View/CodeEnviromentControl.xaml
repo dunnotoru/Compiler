@@ -175,6 +175,16 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
+                <TabItem Header="Tetrads">
+                    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Tetrads}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Operator" Binding="{Binding Op}" Width="auto"/>
+                            <DataGridTextColumn Header="First argument" Binding="{Binding FirstArgument}" Width="auto"/>
+                            <DataGridTextColumn Header="Second argument" Binding="{Binding SecondArgument}" Width="auto"/>
+                            <DataGridTextColumn Header="Result" Binding="{Binding Result}" Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
             </TabControl>
         </Grid>
     </DockPanel>
