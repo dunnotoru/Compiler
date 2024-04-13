@@ -26,9 +26,9 @@ namespace IDE.Services
 
         private List<Tetrad> ParseTetrad(List<Token> tokens, List<Tetrad> tetrads)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(nameof(tokens));
+            ArgumentNullException.ThrowIfNull(nameof(tokens));
 
-            tokens.RemoveAll(_ => " \n\r\t".Contains(_.RawToken));
+            tokens.RemoveAll(_ => string.IsNullOrWhiteSpace(_.RawToken));
 
             tokens = SearchParenthesis(tokens, tetrads);
 
@@ -103,22 +103,22 @@ namespace IDE.Services
             Token? CloseParenthesis = null;
             foreach (Token token in tokens)
             {
-                if (token.RawToken == "(" && stack.Count == 0)
+                if (token.Type == TokenType.OpenRoundBracket && stack.Count == 0)
                 {
                     OpenParenthesis = token;
                     stack.Push(token);
                 }
-                else if (token.RawToken == "(")
+                else if (token.Type == TokenType.OpenRoundBracket)
                 {
                     stack.Push(token);
                 }
 
-                if (token.RawToken == ")" && stack.Count == 1)
+                if (token.Type == TokenType.CloseRoundBracket && stack.Count == 1)
                 {
                     CloseParenthesis = token;
                     stack.Pop();
                 }
-                else if (token.RawToken == ")" && stack.Count > 1)
+                else if (token.Type == TokenType.CloseRoundBracket && stack.Count > 1)
                 {
                     stack.Pop();
                 }
@@ -137,7 +137,15 @@ namespace IDE.Services
                 int startIndex = tokens.IndexOf(OpenParenthesis);
                 int endIndex = tokens.IndexOf(CloseParenthesis) + 1;
                 tokens.RemoveRange(startIndex, endIndex - startIndex);
-                tokens.Insert(startIndex, new Token(tetrads.Last().Result, OpenParenthesis.StartPos));
+
+                if (tetrads.Count != 0)
+                {
+                    tokens.Insert(startIndex, new Token(tetrads.Last().Result, OpenParenthesis.StartPos));
+                }
+                else
+                {
+                    tokens.Insert(startIndex, new Token(tokensBuff.Last().RawToken, OpenParenthesis.StartPos));
+                }
             }
 
             foreach (Token token in tokens.ToList())
