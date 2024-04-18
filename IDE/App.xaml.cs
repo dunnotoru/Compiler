@@ -137,7 +137,6 @@ namespace IDE
 
             services.AddTransient<IScanService, ScanService>();
             services.AddTransient<IParseService, ParseService>();
-            services.AddTransient<ITetradService, TetradService>();
 
             services.AddSingleton(typeof(ILocalizationProvider), new LocalizationProvider(GetLocalizedString));
             services.AddSingleton(typeof(ILogger), ConfigureLogger());

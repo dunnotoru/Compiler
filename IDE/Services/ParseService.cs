@@ -9,9 +9,9 @@ namespace IDE.Services
     {
         private Parser _parser = new Parser();
 
-        public (List<ParseError>,string) Parse(string code)
+        public List<ParseError> Parse(List<Token> tokens)
         {
-            return _parser.Parse(code);
+            return _parser.Parse(tokens);
         }
     }
 }

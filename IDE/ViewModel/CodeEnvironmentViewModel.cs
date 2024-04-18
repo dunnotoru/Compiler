@@ -21,7 +21,6 @@ namespace IDE.ViewModel
         private readonly ILocalizationProvider _localization;
         private readonly IScanService _scanService;
         private readonly IParseService _parseService;
-        private readonly ITetradService _tetradService;
         private readonly NavigationService _navigationService; 
 
 		private ObservableCollection<TabItemViewModel> _tabs;
@@ -29,7 +28,6 @@ namespace IDE.ViewModel
 
         private ObservableCollection<TokenViewModel> _scanResult;
         private ObservableCollection<ParseErrorViewModel> _parseResult;
-        private ObservableCollection<TetradViewModel> _tetrads;
 
         public ICommand CreateCommand => new RelayCommand(Create);
         public ICommand SaveCommand => new RelayCommand(Save, _ => SelectedTab != null);
@@ -50,13 +48,11 @@ namespace IDE.ViewModel
                                     ILocalizationProvider localization,
                                     NavigationService navigationService,
                                     IScanService scanService,
-                                    IParseService parseService,
-                                    ITetradService semanticsService)
+                                    IParseService parseService)
         {
             _tabs = new ObservableCollection<TabItemViewModel>();
             _scanResult = new ObservableCollection<TokenViewModel>();
             _parseResult = new ObservableCollection<ParseErrorViewModel>();
-            _tetrads = new ObservableCollection<TetradViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
             _closeService = closeService;
@@ -66,7 +62,6 @@ namespace IDE.ViewModel
             _navigationService = navigationService;
             _scanService = scanService;
             _parseService = parseService;
-            _tetradService = semanticsService;
         }
 
         private void ShowTextExamples(object? obj)
@@ -243,28 +238,10 @@ namespace IDE.ViewModel
 
                 ParseResult.Clear();
 
-                (List<ParseError> errors, SelectedTab.CleanedContent) = _parseService.Parse(SelectedTab.Content);
-                SelectedTab.CanClean = true;
+                List<ParseError> errors = _parseService.Parse(tokens);
                 foreach (ParseError error in errors)
                 {
                     ParseResult.Add(new ParseErrorViewModel(error));
-                }
-
-                List<Token> parenthesis = CheckParenthesis(tokens);
-                foreach (Token p in parenthesis)
-                {
-                    ParseResult.Add(new ParseErrorViewModel(new ParseError(p.StartPos,p.EndPos, "Parentesis doesn't match", "")));
-                }
-                if (parenthesis.Count > 0)
-                {
-                    return;
-                }
-
-                Tetrads.Clear();
-                List<Tetrad> tetradsBuffer = _tetradService.GetTetrads(tokens);
-                foreach (Tetrad tetrad in tetradsBuffer)
-                {
-                    Tetrads.Add(new TetradViewModel(tetrad));
                 }
             }
             catch (Exception ex)
@@ -326,10 +303,5 @@ namespace IDE.ViewModel
             set { _parseResult = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<TetradViewModel> Tetrads
-        {
-            get { return _tetrads; }
-            set { _tetrads = value; OnPropertyChanged(); }
-        }
     }
 }

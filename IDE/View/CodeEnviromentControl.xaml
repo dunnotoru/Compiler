@@ -168,20 +168,9 @@
                 <TabItem Header="ParseResult">
                     <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding ParseResult}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Start" Binding="{Binding StartPos}" Width="auto"/>
-                            <DataGridTextColumn Header="End" Binding="{Binding EndPos}" Width="auto"/>
-                            <DataGridTextColumn Header="Expected" Binding="{Binding ExpectedToken}" Width="auto"/>
-                            <DataGridTextColumn Header="DiscardedFragment" Binding="{Binding DiscardedFragment}" Width="auto"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </TabItem>
-                <TabItem Header="Tetrads">
-                    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Tetrads}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Operator" Binding="{Binding Op}" Width="auto"/>
-                            <DataGridTextColumn Header="First argument" Binding="{Binding FirstArgument}" Width="auto"/>
-                            <DataGridTextColumn Header="Second argument" Binding="{Binding SecondArgument}" Width="auto"/>
-                            <DataGridTextColumn Header="Result" Binding="{Binding Result}" Width="auto"/>
+                            <DataGridTextColumn Header="Pos" Binding="{Binding Pos}" Width="auto"/>
+                            <DataGridTextColumn Header="Actual" Binding="{Binding Actual}" Width="auto"/>
+                            <DataGridTextColumn Header="Expected" Binding="{Binding Expected}" Width="auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>

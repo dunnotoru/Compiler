@@ -1,47 +1,109 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace IDE.Model.Parser.States
 {
     internal class EndState : IParserState
     {
-        public string Handle(Parser parser, string code, int position)
+        private void ParseCloseParenthesis(Parser parser, List<Token> tokens)
         {
-            StringBuilder errorBuffer = new StringBuilder();
-            while (position < code.Length)
+            Token? lastToken = null;
+            List<Token> ErrorBuffer = new List<Token>();
+            foreach (Token token in tokens.ToList())
             {
-                if (position >= code.Length)
+                if (tokens.Count == 0)
                 {
-                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                    return code;
-                }
-                char c = code[position];
-                if (c != ';')
-                {
-                    errorBuffer.Append(c);
-                    code = code.Remove(position, 1);
-                }
-                else
-                {
-                    if (errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "semicolon", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-
                     break;
                 }
-                position++;
+
+                if (token.Type == TokenType.CloseRoundBracket)
+                {
+                    tokens.Remove(token);
+                    break;
+                }
+                else if (token.Type != TokenType.Whitespace)
+                {
+                    ErrorBuffer.Add(token);
+                }
+
+                lastToken = token;
+                tokens.Remove(token);
             }
 
-            position++;
-
-            if(position == code.Length)
+            if (ErrorBuffer.Count > 0)
             {
-                return code;
+                StringBuilder sb = new StringBuilder();
+                foreach (Token token in ErrorBuffer)
+                {
+                    sb.Append(token.RawToken + " ");
+                }
+                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), ")"));
             }
 
-            parser.State = new ComplexState();
-            return parser.State.Handle(parser, code, position);
+            if (tokens.Count == 0)
+            {
+                if (lastToken != null)
+                {
+                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
+                }
+                return;
+            }
+
+            ParseSemicolon(parser,tokens);
+        }
+
+        private void ParseSemicolon(Parser parser, List<Token> tokens)
+        {
+            Token? lastToken = null;
+            List<Token> ErrorBuffer = new List<Token>();
+            foreach (Token token in tokens.ToList())
+            {
+                if (tokens.Count == 0)
+                {
+                    break;
+                }
+
+                if (token.Type == TokenType.Semicolon)
+                {
+                    tokens.Remove(token);
+                    break;
+                }
+                else if (token.Type != TokenType.Whitespace)
+                {
+                    ErrorBuffer.Add(token);
+                }
+
+                lastToken = token;
+                tokens.Remove(token);
+            }
+
+            if (ErrorBuffer.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (Token token in ErrorBuffer)
+                {
+                    sb.Append(token.RawToken + " ");
+                }
+                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), ";"));
+            }
+
+            if (tokens.Count == 0)
+            {
+                if (lastToken != null)
+                {
+                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
+                }
+                return;
+            }
+
+            parser.State = new IdentifierState();
+            parser.State.Parse(parser, tokens);
+        }
+
+        public void Parse(Parser parser, List<Token> tokens)
+        {
+            ParseCloseParenthesis(parser, tokens);
         }
     }
 }

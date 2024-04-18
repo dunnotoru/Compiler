@@ -4,41 +4,33 @@ namespace IDE.ViewModel
 {
     internal class ParseErrorViewModel : ViewModelBase
     {
-        private string _expectedToken;
-        private string _discardedFragment;
-        private string _startPos;
-        private string _endPos;
+        private string _actual;
+        private string _expected;
+        private string _pos;
 
         public ParseErrorViewModel(ParseError error)
         {
-            _expectedToken = error.ExpectedTokenType.ToString();
-            _startPos = error.StartPos.ToString();
-            _endPos = error.EndPos.ToString();
-            _discardedFragment = error.DiscardedFragment;
+            _actual = error.Actual.ToString();
+            _pos = error.Pos.ToString();
+            _expected = error.Expected;
         }
 
-        public string EndPos
+        public string Pos
         {
-            get { return _endPos; }
-            set { _endPos = value; OnPropertyChanged(); }
+            get { return _pos; }
+            set { _pos = value; OnPropertyChanged(); }
         }
 
-        public string StartPos
+        public string Expected
         {
-            get { return _startPos; }
-            set { _startPos = value; OnPropertyChanged(); }
+            get { return _expected; }
+            set { _expected = value; OnPropertyChanged(); }
         }
 
-        public string DiscardedFragment
+        public string Actual
         {
-            get { return _discardedFragment; }
-            set { _discardedFragment = value; OnPropertyChanged(); }
-        }
-
-        public string ExpectedToken
-        {
-            get { return _expectedToken; }
-            set { _expectedToken = value; OnPropertyChanged(); }
+            get { return _actual; }
+            set { _actual = value; OnPropertyChanged(); }
         }
     }
 }

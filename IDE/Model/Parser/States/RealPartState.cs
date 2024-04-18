@@ -1,112 +1,113 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace IDE.Model.Parser.States
 {
     internal class RealPartState : IParserState
     {
-        public string Handle(Parser parser, string code, int position)
+        private void ParseOpenParenthesis(Parser parser, List<Token> tokens)
         {
-            char symbol;
-            StringBuilder errorBuffer = new StringBuilder();
-
-            while (position < code.Length)
+            Token? lastToken = null;
+            List<Token> ErrorBuffer = new List<Token>();
+            foreach (Token token in tokens.ToList())
             {
-                if (position >= code.Length)
+                if (tokens.Count == 0)
                 {
-                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                    return code;
-                }
-
-                char c = code[position];
-                if (!char.IsDigit(c) && c != '+' && c != '-')
-                {
-                    errorBuffer.Append(c);
-                    code = code.Remove(position, 1);
-                }
-                else
-                {
-                    if (errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real start", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-
                     break;
                 }
+
+                if (token.Type == TokenType.OpenRoundBracket)
+                {
+                    tokens.Remove(token);
+                    break;
+                }
+                else if (token.Type != TokenType.Whitespace)
+                {
+                    ErrorBuffer.Add(token);
+                }
+
+                lastToken = token;
+                tokens.Remove(token);
             }
 
-            errorBuffer.Clear();
-            while (position < code.Length)
+            if (ErrorBuffer.Count > 0)
             {
-                if (position >= code.Length)
+                StringBuilder sb = new StringBuilder();
+                foreach (Token token in ErrorBuffer)
                 {
-                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                    return code;
+                    sb.Append(token.RawToken + " ");
                 }
-                symbol = code[position];
-
-                if (!char.IsDigit(symbol) && symbol != '.')
-                {
-                    errorBuffer.Append(symbol);
-                    code = code.Remove(position, 1);
-                }
-                else if(symbol == '.')
-                {
-                    if (errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-
-                    position++;
-                    break;
-                }
-                else
-                {
-                    if(errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-                    position++;
-                }
-
+                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), "("));
             }
 
-            errorBuffer.Clear();
-            while(position < code.Length)
+            if (tokens.Count == 0)
             {
-                symbol = code[position];
-
-                if (!char.IsDigit(symbol) && symbol != ',')
+                if (lastToken != null)
                 {
-                    errorBuffer.Append(symbol);
-                    code = code.Remove(position, 1);
+                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
                 }
-                else if(symbol == ',')
-                {
-                    if (errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
+                return;
+            }
 
-                    position++;
+            ParseRealNumber(parser, tokens);
+        }
+        private void ParseRealNumber(Parser parser, List<Token> tokens)
+        {
+            Token? lastToken = null;
+            List<Token> ErrorBuffer = new List<Token>();
+            foreach (Token token in tokens.ToList())
+            {
+                if (tokens.Count == 0)
+                {
                     break;
                 }
-                else
+
+                if (token.Type == TokenType.DoubleLiteral)
                 {
-                    if (errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "real number", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-                    position++;
+                    tokens.Remove(token);
+                    break;
                 }
+                else if (token.Type != TokenType.Whitespace)
+                {
+                    if (token.Type == TokenType.Comma)
+                    {
+                        break;
+                    }
+
+                    ErrorBuffer.Add(token);
+                }
+
+                lastToken = token;
+                tokens.Remove(token);
+            }
+
+            if (ErrorBuffer.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (Token token in ErrorBuffer)
+                {
+                    sb.Append(token.RawToken + " ");
+                }
+                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), "double literal"));
+            }
+
+            if (tokens.Count == 0)
+            {
+                if (lastToken != null)
+                {
+                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
+                }
+                return;
             }
 
             parser.State = new ImaginaryPartState();
-            return parser.State.Handle(parser, code, position);
+            parser.State.Parse(parser, tokens);
+        }
+
+        public void Parse(Parser parser, List<Token> tokens)
+        {
+            ParseOpenParenthesis(parser, tokens);
         }
     }
 }

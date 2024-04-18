@@ -5,20 +5,15 @@ namespace IDE.Model.Parser
 {
     internal class Parser
     {
-        public IParserState State { get; set; }
-        private List<ParseError> Errors { get; set; }
-        public Parser()
-        {
-            Errors = new List<ParseError>();
-            State = new ComplexState();
-        }
+        public IParserState State { get; set; } = new ComplexState();
+        private List<ParseError> Errors { get; set; } = new List<ParseError>();
 
-        public (List<ParseError>,string) Parse(string code)
+        public List<ParseError> Parse(List<Token> tokens)
         {
             Errors.Clear();
             State = new ComplexState();
-            string resultCode = State.Handle(this, code, 0);
-            return (Errors, resultCode);
+            State.Parse(this, tokens);
+            return Errors;
         }
 
         public void AddError(ParseError error)

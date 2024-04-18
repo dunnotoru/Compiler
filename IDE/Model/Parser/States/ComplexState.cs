@@ -1,54 +1,58 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace IDE.Model.Parser.States
 {
     internal class ComplexState : IParserState
     {
-        public string Handle(Parser parser, string code, int position)
+        public void Parse(Parser parser, List<Token> tokens)
         {
-            if (position >= code.Length)
+            Token? lastToken = null;
+            List<Token> ErrorBuffer = new List<Token>();
+            foreach (Token token in tokens.ToList())
             {
-                parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                return code;
+                if (tokens.Count == 0)
+                {
+                    break;
+                }
+
+                if (token.Type == TokenType.Complex)
+                {
+                    tokens.Remove(token);
+                    break;
+                }
+                else if (token.Type != TokenType.Whitespace)
+                {
+                    ErrorBuffer.Add(token);
+                    tokens.Remove(token);
+                    break;
+                }
+
+                lastToken = token;
+                tokens.Remove(token);
             }
 
-            string whitespaceCharacters = " \n\r\t";
-            while (whitespaceCharacters.Contains(code[position]))
-            {
-                code = code.Remove(position, 1);
+            if (ErrorBuffer.Count > 0) { 
+                StringBuilder sb = new StringBuilder();
+                foreach (Token token in ErrorBuffer)
+                {
+                    sb.Append(token.RawToken + " ");
+                }
+                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), "std::complex<double>"));
             }
 
-            string expected = "std::complex<double> ";
-
-            StringBuilder errorBuffer = new StringBuilder();
-            for (int expectedPos = 0; expectedPos < expected.Length; expectedPos++)
+            if (tokens.Count == 0)
             {
-                if (position >= code.Length)
+                if (lastToken != null)
                 {
-                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                    return code;
+                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
                 }
-
-                if (expected[expectedPos] != code[position])
-                {
-                    errorBuffer.Append(code[position]);
-                    code = code.Remove(position, 1);
-                    expectedPos--;
-                }
-                else
-                {
-                    if(errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "std::complex<double> ", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-
-                    position++;
-                }
+                return;
             }
 
             parser.State = new IdentifierState();
-            return parser.State.Handle(parser, code, position);
+            parser.State.Parse(parser, tokens);
         }
     }
 }

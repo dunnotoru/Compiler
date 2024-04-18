@@ -1,75 +1,57 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace IDE.Model.Parser.States
 {
     internal class IdentifierState : IParserState
     {
-        public string Handle(Parser parser, string code, int position)
+        public void Parse(Parser parser, List<Token> tokens)
         {
-            char c;
-
-            StringBuilder errorBuffer = new StringBuilder();
-            while (position < code.Length)
+            Token? lastToken = null;
+            List<Token> ErrorBuffer = new List<Token>();
+            foreach (Token token in tokens.ToList())
             {
-                if (position >= code.Length)
+                if (tokens.Count == 0)
                 {
-                    parser.AddError(new ParseError(position, position, "incomplete line", ""));
-                    return code;
-                }
-
-                c = code[position];
-                if(!char.IsLetter(c) && c != '_')
-                {
-                    errorBuffer.Append(c);
-                    code = code.Remove(position, 1);
-                }
-                else
-                {
-                    if(errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "identifier start", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-
-                    break;
-                }
-            }
-
-            errorBuffer.Clear();
-            while (position < code.Length)
-            {
-                c = code[position];
-
-                if(c == '(')
-                {
-                    position++;
                     break;
                 }
 
-                if(!char.IsLetter(c) && !char.IsDigit(c) && c != '_')
+                if (token.Type == TokenType.Identifier)
                 {
-                    errorBuffer.Append(c);
-                    code = code.Remove(position, 1);
+                    tokens.Remove(token);
+                    break;
                 }
-                else
+                else if (token.Type != TokenType.Whitespace)
                 {
-                    if (errorBuffer.Length > 0)
-                    {
-                        parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "identifier", errorBuffer.ToString()));
-                        errorBuffer.Clear();
-                    }
-                    position++;
+                    ErrorBuffer.Add(token);
                 }
+
+                lastToken = token;
+                tokens.Remove(token);
             }
 
-            if (errorBuffer.Length > 0)
+            if (ErrorBuffer.Count > 0)
             {
-                parser.AddError(new ParseError(position + 1, position + errorBuffer.Length, "identifier", errorBuffer.ToString()));
-                errorBuffer.Clear();
+                StringBuilder sb = new StringBuilder();
+                foreach (Token token in ErrorBuffer)
+                {
+                    sb.Append(token.RawToken + " ");
+                }
+                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), "Identifier"));
+            }
+
+            if (tokens.Count == 0)
+            {
+                if (lastToken != null)
+                {
+                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
+                }
+                return;
             }
 
             parser.State = new RealPartState();
-            return parser.State.Handle(parser, code, position);
+            parser.State.Parse(parser, tokens);
         }
     }
 }
