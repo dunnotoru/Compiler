@@ -18,7 +18,6 @@ namespace IDE.Services
             { TokenType.Assignment, "equal" }
         };
 
-
         public List<Tetrad> GetTetrads(List<Token> tokens)
         {
             return ParseTetrad(tokens, new List<Tetrad>());

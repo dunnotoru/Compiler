@@ -250,6 +250,16 @@ namespace IDE.ViewModel
                     ParseResult.Add(new ParseErrorViewModel(error));
                 }
 
+                List<Token> parenthesis = CheckParenthesis(tokens);
+                foreach (Token p in parenthesis)
+                {
+                    ParseResult.Add(new ParseErrorViewModel(new ParseError(p.StartPos,p.EndPos, "Parentesis doesn't match", "")));
+                }
+                if (parenthesis.Count > 0)
+                {
+                    return;
+                }
+
                 Tetrads.Clear();
                 List<Tetrad> tetradsBuffer = _tetradService.GetTetrads(tokens);
                 foreach (Tetrad tetrad in tetradsBuffer)
@@ -261,6 +271,35 @@ namespace IDE.ViewModel
             {
                 _messageBoxService.ShowMessage("An unknown error occured");
             }
+        }
+
+        private List<Token> CheckParenthesis(List<Token> tokens)
+        {
+            tokens = tokens.Where(_ => _.Type == TokenType.OpenRoundBracket || _.Type == TokenType.CloseRoundBracket).ToList();
+            Stack<Token> brackets = new Stack<Token>();
+            List<Token> errors = new List<Token>();
+            foreach(Token token in tokens)
+            {
+                if (token.Type == TokenType.OpenRoundBracket)
+                {
+                    brackets.Push(token);
+                }
+                else if (token.Type == TokenType.CloseRoundBracket)
+                {
+                    if (brackets.Count > 0)
+                    {
+                        brackets.Pop();
+                    }
+                    else
+                    {
+                        errors.Add(token);
+                    }
+                }
+            }
+                
+            errors.AddRange(brackets.ToList());
+
+            return errors.ToList();
         }
 
         public TabItemViewModel? SelectedTab
