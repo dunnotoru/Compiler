@@ -147,8 +147,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Model\Parser\States\" />
-  </ItemGroup>
-
 </Project>

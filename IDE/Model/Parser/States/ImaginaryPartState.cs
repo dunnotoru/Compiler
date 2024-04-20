@@ -6,108 +6,46 @@ namespace IDE.Model.Parser.States
 {
     internal class ImaginaryPartState : IParserState
     {
-        private void ParseComma(Parser parser, List<Token> tokens)
+        public bool Parse(Parser parser, List<Token> tokens, List<IParserState> states)
         {
-            Token? lastToken = null;
-            List<Token> ErrorBuffer = new List<Token>();
-            foreach (Token token in tokens.ToList())
+            if (ParserUtils.TrimWhitespaceTokens(ref tokens) == false)
             {
-                if (tokens.Count == 0)
+                return true;
+            }
+            if (states.Count == 0)
+            {
+                return false;
+            }
+            states.Remove(states.First());
+
+            List<Token> tail = new List<Token>(tokens);
+            List<Token> errorBuffer = new List<Token>();
+            foreach (Token token in tail.ToList())
+            {
+                if (token.Type != TokenType.DoubleLiteral)
+                {
+                    errorBuffer.Add(token);
+                    tail.Remove(token);
+                }
+                else
                 {
                     break;
                 }
-
-                if (token.Type == TokenType.Comma)
-                {
-                    tokens.Remove(token);
-                    break;
-                }
-                else if (token.Type != TokenType.Whitespace)
-                {
-                    ErrorBuffer.Add(token);
-                }
-
-                lastToken = token;
-                tokens.Remove(token);
             }
 
-            if (ErrorBuffer.Count > 0)
+
+            if (tail.Count > 0 && states.Count != 0)
             {
-                StringBuilder sb = new StringBuilder();
-                foreach (Token token in ErrorBuffer)
-                {
-                    sb.Append(token.RawToken + " ");
-                }
-                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), ","));
+                tail.Remove(tail.First());
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "imag");
+                return states.First().Parse(parser, tail, states);
             }
-
-            if (tokens.Count == 0)
+            else if (states.Count != 0)
             {
-                if (lastToken != null)
-                {
-                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
-                }
-                return;
+                return states.First().Parse(parser, tokens, states);
             }
 
-            ParseImaginaryPart(parser, tokens);
-        }
-
-        private void ParseImaginaryPart(Parser parser, List<Token> tokens)
-        {
-            Token? lastToken = null;
-            List<Token> ErrorBuffer = new List<Token>();
-            foreach (Token token in tokens.ToList())
-            {
-                if (tokens.Count == 0)
-                {
-                    break;
-                }
-
-                if (token.Type == TokenType.DoubleLiteral)
-                {
-                    tokens.Remove(token);
-                    break;
-                }
-                else if (token.Type != TokenType.Whitespace)
-                {
-                    if (token.Type == TokenType.CloseRoundBracket)
-                    {
-                        break;
-                    }
-                    ErrorBuffer.Add(token);
-                }
-
-                lastToken = token;
-                tokens.Remove(token);
-            }
-
-            if (ErrorBuffer.Count > 0)
-            {
-                StringBuilder sb = new StringBuilder();
-                foreach (Token token in ErrorBuffer)
-                {
-                    sb.Append(token.RawToken + " ");
-                }
-                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), "double literal"));
-            }
-
-            if (tokens.Count == 0)
-            {
-                if (lastToken != null)
-                {
-                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
-                }
-                return;
-            }
-
-            parser.State = new EndState();
-            parser.State.Parse(parser, tokens);
-        }
-
-        public void Parse(Parser parser, List<Token> tokens)
-        {
-            ParseComma(parser, tokens);
+            return false;
         }
     }
 }

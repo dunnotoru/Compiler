@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace IDE.Model.Parser.States
 {
-    internal class RealPartState : IParserState
+    internal class SemicolonState : IParserState
     {
         public bool Parse(Parser parser, List<Token> tokens, List<IParserState> states)
         {
@@ -22,7 +21,7 @@ namespace IDE.Model.Parser.States
             List<Token> errorBuffer = new List<Token>();
             foreach (Token token in tail.ToList())
             {
-                if (token.Type != TokenType.DoubleLiteral)
+                if (token.Type != TokenType.Semicolon)
                 {
                     errorBuffer.Add(token);
                     tail.Remove(token);
@@ -37,7 +36,7 @@ namespace IDE.Model.Parser.States
             if (tail.Count > 0 && states.Count != 0)
             {
                 tail.Remove(tail.First());
-                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "real");
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "semicolon");
                 return states.First().Parse(parser, tail, states);
             }
             else if (states.Count != 0)

@@ -1,58 +1,50 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace IDE.Model.Parser.States
 {
     internal class ComplexState : IParserState
     {
-        public void Parse(Parser parser, List<Token> tokens)
+        public bool Parse(Parser parser, List<Token> tokens, List<IParserState> states)
         {
-            Token? lastToken = null;
-            List<Token> ErrorBuffer = new List<Token>();
-            foreach (Token token in tokens.ToList())
+            if (ParserUtils.TrimWhitespaceTokens(ref tokens) == false)
             {
-                if (tokens.Count == 0)
-                {
-                    break;
-                }
-
-                if (token.Type == TokenType.Complex)
-                {
-                    tokens.Remove(token);
-                    break;
-                }
-                else if (token.Type != TokenType.Whitespace)
-                {
-                    ErrorBuffer.Add(token);
-                    tokens.Remove(token);
-                    break;
-                }
-
-                lastToken = token;
-                tokens.Remove(token);
+                return true;
             }
-
-            if (ErrorBuffer.Count > 0) { 
-                StringBuilder sb = new StringBuilder();
-                foreach (Token token in ErrorBuffer)
-                {
-                    sb.Append(token.RawToken + " ");
-                }
-                parser.AddError(new ParseError(ErrorBuffer.First().StartPos, sb.ToString(), "std::complex<double>"));
-            }
-
-            if (tokens.Count == 0)
+            if (states.Count == 0)
             {
-                if (lastToken != null)
+                return false;
+            }
+            states.Remove(states.First());
+
+            List<Token> tail = new List<Token>(tokens);
+            List<Token> errorBuffer = new List<Token>();
+            foreach (Token token in tail.ToList())
+            {
+                if (token.Type != TokenType.Complex)
                 {
-                    parser.AddError(new ParseError(lastToken.EndPos, "", "Unfinished string"));
+                    errorBuffer.Add(token);
+                    tail.Remove(token);
                 }
-                return;
+                else
+                {
+                    break;
+                }
             }
 
-            parser.State = new IdentifierState();
-            parser.State.Parse(parser, tokens);
+
+            if (tail.Count > 0 && states.Count != 0)
+            {
+                tail.Remove(tail.First());
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "std::complex<double>");
+                return states.First().Parse(parser, tail, states);
+            }
+            else if (states.Count != 0)
+            {
+                return states.First().Parse(parser, tokens, states);
+            }
+
+            return false;
         }
     }
 }
