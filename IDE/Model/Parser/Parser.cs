@@ -7,7 +7,7 @@ namespace IDE.Model.Parser
     internal class Parser
     {
         private List<ParseError> Errors { get; set; } = new List<ParseError>();
-
+            
 
         public List<ParseError> Parse(List<Token> tokens)
         {
@@ -24,7 +24,20 @@ namespace IDE.Model.Parser
             };
             Errors.Clear();
 
-            States.First().Parse(this, tokens, States.ToList());
+            List<Token> line = tokens.TakeWhile(t => t.Type != TokenType.Newline).ToList();
+            tokens = tokens.SkipWhile(t => t.Type != TokenType.Newline).ToList();
+            tokens = tokens.SkipWhile(t => t.Type == TokenType.Newline).ToList();
+            while (line.Count > 0)
+            {
+                States.First().Parse(this, line, States.ToList());
+                if (line.Last().Type != TokenType.Semicolon)
+                {
+                    ParserUtils.CreateError(this, line.Last().EndPos, "unfinished line");
+                }
+                line = tokens.TakeWhile(t => t.Type != TokenType.Newline).ToList();
+                tokens = tokens.SkipWhile(t => t.Type != TokenType.Newline).ToList();
+                tokens = tokens.SkipWhile(t => t.Type == TokenType.Newline).ToList();
+            }
 
             return Errors;
         }
@@ -33,7 +46,5 @@ namespace IDE.Model.Parser
         {
             Errors.Add(error);
         }
-
-
     }
 }

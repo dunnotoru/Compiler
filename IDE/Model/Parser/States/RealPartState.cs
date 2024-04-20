@@ -44,7 +44,7 @@ namespace IDE.Model.Parser.States
                 return;
             }
 
-            states.FirstOrDefault()?.Parse(parser, tail, states);
+            states.FirstOrDefault()?.Parse(parser, tokens, states);
         }
     }
 }
