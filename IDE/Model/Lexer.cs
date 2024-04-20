@@ -43,7 +43,7 @@ namespace IDE.Model
             }
             if (char.IsDigit(symbol))
             {
-                return Parse(code, position, (c) => !char.IsDigit(c) && c != '.');
+                return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && c != '.');
             }
             if (symbol == '\"')
             {
