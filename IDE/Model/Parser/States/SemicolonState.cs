@@ -44,6 +44,8 @@ namespace IDE.Model.Parser.States
                 return states.First().Parse(parser, tokens, states);
             }
 
+            ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "semicolon");
+
             return false;
         }
     }

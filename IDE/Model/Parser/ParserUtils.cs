@@ -50,5 +50,11 @@ namespace IDE.Model.Parser
                 parser.AddError(error);
             }
         }
+
+        public static void CreateError(Parser parser, int pos, string expected)
+        {
+            ParseError error = new ParseError(pos, "", expected);
+            parser.AddError(error);
+        }
     }
 }

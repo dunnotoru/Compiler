@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace IDE.Model
 {
@@ -121,7 +122,12 @@ namespace IDE.Model
             => DefaultTypes.ContainsKey(rawToken);
 
         private static bool IsIdentifier(string rawToken)
-            => rawToken.Length != 0 && (char.IsLetter(rawToken.First()) || rawToken.First() == '_') && (rawToken.StartsWith("std::") == (rawToken.Count(x => x == ':') == 2));
+        {
+            if (rawToken == "std::complex<double>")
+                return false;
+            
+            return rawToken.Length != 0 && (char.IsLetter(rawToken.First()) || rawToken.First() == '_') && Regex.IsMatch(rawToken, "^[a-zA-Z0-9_]+$");
+        }
         private static bool IsIntegerLiteral(string rawToken)
             => int.TryParse(rawToken, out int _) && !rawToken.StartsWith("0.");
         private static bool IsDoubleLiteral(string rawToken)
