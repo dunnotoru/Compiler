@@ -28,14 +28,13 @@ namespace IDE.Model.Parser.States
                 }
                 else
                 {
+                    tail.Remove(tail.First());
                     break;
                 }
             }
 
-
             if (tail.Count > 0 && states.Count != 0)
             {
-                tail.Remove(tail.First());
                 ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "semicolon");
                 return states.First().Parse(parser, tail, states);
             }

@@ -21,6 +21,14 @@ namespace IDE.Model.Parser.States
             List<Token> errorBuffer = new List<Token>();
             foreach (Token token in tail.ToList())
             {
+                if (token.Type == TokenType.Semicolon)
+                {
+                    if (token == tokens.First() && errorBuffer.Count == 0)
+                    {
+                        ParserUtils.CreateError(parser, token.StartPos, "missing close br");
+                    }
+                    break;
+                }
                 if (token.Type != TokenType.CloseRoundBracket)
                 {
                     errorBuffer.Add(token);

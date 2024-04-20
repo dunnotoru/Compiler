@@ -21,6 +21,14 @@ namespace IDE.Model.Parser.States
             List<Token> errorBuffer = new List<Token>();
             foreach (Token token in tail.ToList())
             {
+                if (token.Type == TokenType.DoubleLiteral)
+                {
+                    if (token == tokens.First() && errorBuffer.Count == 0)
+                    {
+                        ParserUtils.CreateError(parser, token.StartPos, "missing comma");
+                    }
+                    break;
+                }
                 if (token.Type != TokenType.Comma)
                 {
                     errorBuffer.Add(token);
