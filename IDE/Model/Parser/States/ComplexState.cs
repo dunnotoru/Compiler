@@ -36,6 +36,7 @@ namespace IDE.Model.Parser.States
                 }
                 else
                 {
+                    tail.Remove(tail.First());
                     break;
                 }
             }
@@ -43,7 +44,6 @@ namespace IDE.Model.Parser.States
 
             if (tail.Count > 0 && states.Count != 0)
             {
-                tail.Remove(tail.First());
                 ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "std::complex<double>");
                 return states.First().Parse(parser, tail, states);
             }
