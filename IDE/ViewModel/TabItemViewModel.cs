@@ -6,8 +6,8 @@ namespace IDE.ViewModel
 {
     internal class TabItemViewModel : ViewModelBase
     {
-		private string _content;
-		private string _fileName;
+        private string _content;
+        private string _fileName;
         private bool _isUnsaved;
         private bool _canClean;
 
@@ -33,10 +33,10 @@ namespace IDE.ViewModel
         }
 
         public string Content
-		{
-			get { return _content; }
-			set { _content = value; OnPropertyChanged(); IsUnsaved = true; }
-		}
+        {
+            get { return _content; }
+            set { _content = value; OnPropertyChanged(); IsUnsaved = true; }
+        }
 
         public bool IsUnsaved
         {
@@ -53,7 +53,7 @@ namespace IDE.ViewModel
         public string CleanedContent { get; set; }
 
         public string Header => Path.GetFileName(FileName);
-        
+
         public string FileName
         {
             get { return _fileName; }

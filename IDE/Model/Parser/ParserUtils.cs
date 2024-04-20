@@ -1,5 +1,4 @@
-﻿using ICSharpCode.AvalonEdit.CodeCompletion;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -26,8 +25,8 @@ namespace IDE.Model.Parser
                     break;
                 }
             }
-            
-            if (tokens.Count == 0 ) return false;
+
+            if (tokens.Count == 0) return false;
 
             return true;
         }

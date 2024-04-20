@@ -5,17 +5,12 @@ namespace IDE.Model.Parser.States
 {
     internal class CloseParenthesisState : IParserState
     {
-        public bool Parse(Parser parser, List<Token> tokens, List<IParserState> states)
+        public void Parse(Parser parser, List<Token> tokens, List<IParserState> states)
         {
-            if (ParserUtils.TrimWhitespaceTokens(ref tokens) == false)
+            if (ParserUtils.TrimWhitespaceTokens(ref tokens) == false || states.Count == 0)
             {
-                return true;
+                return;
             }
-            if (states.Count == 0)
-            {
-                return false;
-            }
-            states.Remove(states.First());
 
             List<Token> tail = new List<Token>(tokens);
             List<Token> errorBuffer = new List<Token>();
@@ -29,30 +24,27 @@ namespace IDE.Model.Parser.States
                     }
                     break;
                 }
-                if (token.Type != TokenType.CloseRoundBracket)
+                if (token.Type != TokenType.CloseParenthesis)
                 {
                     errorBuffer.Add(token);
                     tail.Remove(token);
                 }
                 else
                 {
+                    tail.Remove(token);
                     break;
                 }
             }
 
-
-            if (tail.Count > 0 && states.Count != 0)
+            states = states.Skip(1).ToList();
+            if (tail.Count > 0)
             {
-                tail.Remove(tail.First());
-                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "close parenthesis");
-                return states.First().Parse(parser, tail, states);
-            }
-            else if (states.Count != 0)
-            {
-                return states.First().Parse(parser, tokens, states);
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "close br");
+                states.FirstOrDefault()?.Parse(parser, tail, states);
+                return;
             }
 
-            return false;
+            states.FirstOrDefault()?.Parse(parser, tail, states);
         }
     }
 }

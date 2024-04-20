@@ -20,7 +20,7 @@ namespace IDE.Services
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "Text Files | *.txt";
             dialog.DefaultExt = "txt";
-            
+
             dialog.ShowDialog();
 
             return dialog.FileName;

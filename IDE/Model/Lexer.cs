@@ -19,7 +19,8 @@ namespace IDE.Model
 
             code = code.Replace("\t", "").Replace("\r", "");
 
-            do {
+            do
+            {
                 string rawToken = ParseToken(code, position);
                 tokens.Add(new Token(rawToken, position));
                 position += rawToken.Length;
@@ -45,11 +46,7 @@ namespace IDE.Model
             {
                 return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && c != '.');
             }
-            if (symbol == '\"')
-            {
-                return ParseString(code, position);
-            }
-            
+
             return ParseOperator(code, position);
         }
 
@@ -66,31 +63,6 @@ namespace IDE.Model
                 }
 
                 buffer.Append(symbol);
-                position++;
-            }
-
-            return buffer.ToString();
-        }
-
-        private string ParseString(string code, int position)
-        {
-            char symbol;
-            StringBuilder buffer = new StringBuilder();
-            int quotesCount = 0;
-            while (position < code.Length)
-            {
-                symbol = code[position];
-                if(symbol == '\"')
-                {
-                    quotesCount++;
-                }
-                else if(quotesCount == 2 || symbol == '\n')
-                {
-                    break;
-                }
-
-                buffer.Append(symbol);
-
                 position++;
             }
 

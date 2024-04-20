@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IDE.Services.Abstractions
+﻿namespace IDE.Services.Abstractions
 {
     enum MessageResult
     {

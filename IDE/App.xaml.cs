@@ -20,7 +20,7 @@ namespace IDE
         public static event EventHandler? LanguageChanged;
         private readonly IServiceProvider _serviceProvider;
         private NavigationStore _store = new NavigationStore();
-        
+
         public static List<CultureInfo> Languages
         {
             get { return _languages; }
@@ -50,10 +50,10 @@ namespace IDE
                 }
 
                 ResourceDictionary? oldDict = (from d in Current.Resources.MergedDictionaries
-                                              where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
-                                              select d).FirstOrDefault();
+                                               where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
+                                               select d).FirstOrDefault();
 
-                if(oldDict is not null)
+                if (oldDict is not null)
                 {
                     int index = Current.Resources.MergedDictionaries.IndexOf(oldDict);
                     Current.Resources.MergedDictionaries.Remove(oldDict);
@@ -66,7 +66,7 @@ namespace IDE
 
                 LanguageChanged?.Invoke(Current, EventArgs.Empty);
             }
-        }        
+        }
 
         public App()
         {
@@ -170,8 +170,8 @@ namespace IDE
         private string GetLocalizedString(string key)
         {
             ResourceDictionary dict = (from d in Current.Resources.MergedDictionaries
-                                          where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
-                                          select d).First();
+                                       where d.Source != null && d.Source.OriginalString.Contains("Resources/Languages/lang.")
+                                       select d).First();
 
             return dict[key] as string ?? string.Empty;
         }

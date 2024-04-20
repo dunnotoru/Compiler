@@ -1,7 +1,7 @@
 ﻿using ICSharpCode.AvalonEdit;
 using Microsoft.Xaml.Behaviors;
-using System.Windows;
 using System;
+using System.Windows;
 
 namespace IDE.Helper
 {
@@ -51,18 +51,18 @@ namespace IDE.Helper
 
             TextEditor? editor = behavior.AssociatedObject as TextEditor;
             if (editor is null) return;
-            if(editor.Document is null) return;
+            if (editor.Document is null) return;
 
             var caretOffset = editor.CaretOffset;
 
             if (dependencyPropertyChangedEventArgs.NewValue is null) return;
 
             editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-            
+
 
             if (editor.Document.Text is null) return;
 
-            if(editor.Document.Text.Length < caretOffset)
+            if (editor.Document.Text.Length < caretOffset)
                 editor.CaretOffset = 0;
             else
                 editor.CaretOffset = caretOffset;
