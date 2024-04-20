@@ -23,7 +23,11 @@ namespace IDE.Model.Parser
                 new SemicolonState(),
             };
             Errors.Clear();
-            States.First().Parse(this, tokens, States.ToList());
+            bool unfinished = States.First().Parse(this, tokens, States.ToList());
+            if (unfinished == true || tokens.Last().Type != TokenType.Semicolon)
+            {
+                ParserUtils.CreateError(this, tokens.Last().EndPos, "unfinished");
+            }
             return Errors;
         }
 

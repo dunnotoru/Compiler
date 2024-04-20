@@ -22,6 +22,14 @@ namespace IDE.Model.Parser.States
             List<Token> errorBuffer = new List<Token>();
             foreach (Token token in tail.ToList())
             {
+                if (token.Type == TokenType.CloseRoundBracket)
+                {
+                    if (token == tokens.First() && errorBuffer.Count == 0)
+                    {
+                        ParserUtils.CreateError(parser, token.StartPos, "missing double literal");
+                    }
+                    break;
+                }
                 if (token.Type != TokenType.DoubleLiteral)
                 {
                     errorBuffer.Add(token);
@@ -29,14 +37,13 @@ namespace IDE.Model.Parser.States
                 }
                 else
                 {
+                    tail.Remove(tail.First());
                     break;
                 }
             }
 
-
             if (tail.Count > 0 && states.Count != 0)
             {
-                tail.Remove(tail.First());
                 ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "imag");
                 return states.First().Parse(parser, tail, states);
             }
