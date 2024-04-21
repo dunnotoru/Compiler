@@ -27,7 +27,25 @@ namespace IDE.Model
 
             } while (position < code.Length);
 
-            return tokens;
+            List<Token> resultTokens = new List<Token>();
+            for (int i = 0; i < tokens.Count-1; i++)
+            {
+                if ((tokens[i].Type == TokenType.Plus || tokens[i].Type == TokenType.Minus)
+                    && (tokens[i+1].Type == TokenType.DoubleLiteral || tokens[i + 1].Type == TokenType.IntegerLiteral))
+                {
+                    string rawNumber = tokens[i].RawToken + tokens[i+1].RawToken;
+                    Token numberToken = new Token(rawNumber, tokens[i].StartPos);
+                    resultTokens.Add(numberToken);
+                    i++;
+                }
+                else
+                {
+                    resultTokens.Add(tokens[i]);
+                }
+            }
+            resultTokens.Add(tokens.Last());
+
+            return resultTokens;
         }
 
         private string ParseToken(string code, int position)
