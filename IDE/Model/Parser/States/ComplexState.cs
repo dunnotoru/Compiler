@@ -20,7 +20,7 @@ namespace IDE.Model.Parser.States
                 {
                     if (token == tokens.First() && errorBuffer.Count == 0)
                     {
-                        ParserUtils.CreateError(parser, token.StartPos, "missing std::complex<double>");
+                        ParserUtils.CreateError(parser, token.StartPos, "Пропущено std::complex<double>");
                     }
                     break;
                 }
@@ -39,7 +39,7 @@ namespace IDE.Model.Parser.States
             states = states.Skip(1).ToList();
             if (tail.Count > 0)
             {
-                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "std::complex<double>");
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "Ожидалось std::complex<double>");
                 states.FirstOrDefault()?.Parse(parser, tail, states);
                 return;
             }

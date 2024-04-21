@@ -32,7 +32,7 @@ namespace IDE.Model.Parser
                 States.First().Parse(this, line, States.ToList());
                 if (line.Last().Type != TokenType.Semicolon)
                 {
-                    ParserUtils.CreateError(this, line.Last().EndPos, "unfinished line");
+                    ParserUtils.CreateError(this, line.Last().EndPos, "Незаконченное выражение");
                 }
                 line = tokens.TakeWhile(t => t.Type != TokenType.Newline).ToList();
                 tokens = tokens.SkipWhile(t => t.Type != TokenType.Newline).ToList();

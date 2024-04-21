@@ -20,7 +20,7 @@ namespace IDE.Model.Parser.States
                 {
                     if (token == tokens.First() && errorBuffer.Count == 0)
                     {
-                        ParserUtils.CreateError(parser, token.StartPos, "missing identififer");
+                        ParserUtils.CreateError(parser, token.StartPos, "Пропущен идентификатор");
                     }
                     break;
                 }
@@ -39,7 +39,7 @@ namespace IDE.Model.Parser.States
             states = states.Skip(1).ToList();
             if (tail.Count > 0)
             {
-                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "id");
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "Ожидался идентификатор");
                 states.FirstOrDefault()?.Parse(parser, tail, states);
                 return;
             }

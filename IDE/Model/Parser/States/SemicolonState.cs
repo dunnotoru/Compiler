@@ -31,7 +31,7 @@ namespace IDE.Model.Parser.States
             states = states.Skip(1).ToList();
             if (tail.Count > 0)
             {
-                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "semicolon");
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "Ожидалось ;");
                 states.FirstOrDefault()?.Parse(parser, tail, states);
                 return;
             }

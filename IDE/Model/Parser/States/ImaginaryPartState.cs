@@ -20,7 +20,7 @@ namespace IDE.Model.Parser.States
                 {
                     if (token == tokens.First() && errorBuffer.Count == 0)
                     {
-                        ParserUtils.CreateError(parser, token.StartPos, "missing double literal");
+                        ParserUtils.CreateError(parser, token.StartPos, "Пропущено число с плавающей точкой");
                     }
                     break;
                 }
@@ -39,7 +39,7 @@ namespace IDE.Model.Parser.States
             states = states.Skip(1).ToList();
             if (tail.Count > 0)
             {
-                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "imaj");
+                ParserUtils.CreateErrorFromBuffer(parser, errorBuffer, "Ожидалось число с плавающей точкой");
                 states.FirstOrDefault()?.Parse(parser, tail, states);
                 return;
             }
