@@ -45,7 +45,7 @@
                 <MenuItem Header="{DynamicResource test_example}" Command="{Binding ShowTestExamplesCommand}"/>
                 <MenuItem Header="{DynamicResource reference_list}" Click="ReferenceListMenuItem_Click"/>
             </MenuItem>
-            <MenuItem Header="{DynamicResource run}"/>
+            <MenuItem Header="{DynamicResource run}" Command="{Binding RunCommand}"/>
             <MenuItem Header="{DynamicResource help}">
                 <MenuItem Header="{DynamicResource show_help}" Click="HelpMenuItem_Click"/>
                 <MenuItem Header="{DynamicResource about}" Click="AboutMenuItem_Click"/>
@@ -123,10 +123,6 @@
                 </Button>
 
                 <Separator/>
-
-                <Button Content="Clean" Command="{Binding CleanCommand}"
-                        Visibility="{Binding SelectedTab.CanClean, Converter={StaticResource BoolToVisiblity}}">
-                </Button>
             </ToolBar>
         </ToolBarTray>
 
@@ -153,7 +149,16 @@
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
 
             <TabControl Margin="10" Grid.Row="2">
-                <TabItem Header="Scan result">
+                <TabItem Header="Ошибки">
+                    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding ParseResult}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Позиция" Binding="{Binding Pos}" Width="auto"/>
+                            <DataGridTextColumn Header="Ожидалось" Binding="{Binding Expected}" Width="auto"/>
+                            <DataGridTextColumn Header="Встречено" Binding="{Binding Actual}" Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Лексемы">
                     <DataGrid IsReadOnly="True" Style="{StaticResource token_datagrid}" ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Code}" Header="{DynamicResource code}" Width="auto"/>
@@ -161,15 +166,6 @@
                             <DataGridTextColumn Binding="{Binding TokenType}" Header="{DynamicResource tokenType}" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding StartIndex}" Header="{DynamicResource startIndex}" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding EndIndex}" Header="{DynamicResource endIndex}" Width="auto"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </TabItem>
-                <TabItem Header="ParseResult">
-                    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding ParseResult}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Pos" Binding="{Binding Pos}" Width="auto"/>
-                            <DataGridTextColumn Header="Actual" Binding="{Binding Actual}" Width="auto"/>
-                            <DataGridTextColumn Header="Expected" Binding="{Binding Expected}" Width="auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
