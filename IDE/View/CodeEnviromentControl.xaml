@@ -44,7 +44,6 @@
                 <MenuItem Header="{DynamicResource error_diagnosis}" Click="ErrorDiagnosisMenuItem_Click"/>
                 <MenuItem Header="{DynamicResource test_example}" Command="{Binding ShowTestExamplesCommand}"/>
                 <MenuItem Header="{DynamicResource reference_list}" Click="ReferenceListMenuItem_Click"/>
-                <MenuItem Header="{DynamicResource source_code}" Click="SourceCodeMenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource run}"/>
             <MenuItem Header="{DynamicResource help}">
