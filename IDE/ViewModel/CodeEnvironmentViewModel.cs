@@ -23,9 +23,9 @@ namespace IDE.ViewModel
         private readonly IScanService _scanService;
         private readonly IParseService _parseService;
         private readonly ITetradService _tetradService;
-        private readonly NavigationService _navigationService; 
+        private readonly NavigationService _navigationService;
 
-		private ObservableCollection<TabItemViewModel> _tabs;
+        private ObservableCollection<TabItemViewModel> _tabs;
         private TabItemViewModel? _selectedTab;
 
         private ObservableCollection<TokenViewModel> _scanResult;
@@ -73,7 +73,7 @@ namespace IDE.ViewModel
             _parseService = parseService;
             _tetradService = semanticsService;
         }
-        
+
         private void UpdateMatched(string pattern)
         {
             if (SelectedTab is null)
@@ -110,7 +110,7 @@ namespace IDE.ViewModel
             string text = string.Empty;
             try
             {
-                using(StreamReader sr = File.OpenText(@"Resources\Docs\test_example.txt"))
+                using (StreamReader sr = File.OpenText(@"Resources\Docs\test_example.txt"))
                 {
                     text = sr.ReadToEnd();
                 }
@@ -125,7 +125,7 @@ namespace IDE.ViewModel
 
         private void Clean(object? obj)
         {
-            if(SelectedTab is null)
+            if (SelectedTab is null)
             {
                 return;
             }
@@ -145,7 +145,7 @@ namespace IDE.ViewModel
                 SelectedTab = tab;
                 return;
             }
-            
+
             string content = _fileService.LoadFile(fileName);
 
             tab = new TabItemViewModel(fileName, content);
@@ -180,7 +180,7 @@ namespace IDE.ViewModel
 
         private void SaveAll()
         {
-            foreach(TabItemViewModel tab in Tabs)
+            foreach (TabItemViewModel tab in Tabs)
                 Save(tab);
         }
 
@@ -249,7 +249,7 @@ namespace IDE.ViewModel
             switch (result)
             {
                 case MessageResult.Yes:
-                    SaveAll(); 
+                    SaveAll();
                     return true;
 
                 case MessageResult.Cancel:
@@ -289,7 +289,7 @@ namespace IDE.ViewModel
                 List<Token> parenthesis = CheckParenthesis(tokens);
                 foreach (Token p in parenthesis)
                 {
-                    ParseResult.Add(new ParseErrorViewModel(new ParseError(p.StartPos,p.EndPos, "Parentesis doesn't match", "")));
+                    ParseResult.Add(new ParseErrorViewModel(new ParseError(p.StartPos, p.EndPos, "Parentesis doesn't match", "")));
                 }
                 if (parenthesis.Count > 0)
                 {
@@ -314,7 +314,7 @@ namespace IDE.ViewModel
             tokens = tokens.Where(_ => _.Type == TokenType.OpenRoundBracket || _.Type == TokenType.CloseRoundBracket).ToList();
             Stack<Token> brackets = new Stack<Token>();
             List<Token> errors = new List<Token>();
-            foreach(Token token in tokens)
+            foreach (Token token in tokens)
             {
                 if (token.Type == TokenType.OpenRoundBracket)
                 {
@@ -332,7 +332,7 @@ namespace IDE.ViewModel
                     }
                 }
             }
-                
+
             errors.AddRange(brackets.ToList());
 
             return errors.ToList();
@@ -345,10 +345,10 @@ namespace IDE.ViewModel
         }
 
         public ObservableCollection<TabItemViewModel> Tabs
-		{
-			get { return _tabs; }
-			set { _tabs = value; OnPropertyChanged(); }
-		}
+        {
+            get { return _tabs; }
+            set { _tabs = value; OnPropertyChanged(); }
+        }
 
         public ObservableCollection<TokenViewModel> ScanResult
         {
