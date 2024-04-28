@@ -17,7 +17,7 @@
         VN = { COMPLEX, IDENTIFIER, IDENTIFIERREM, REAL, UINTREAL, UINTREALREM, REALDECIMAL,
              REALDECIMALREM, IMAGINARY, UINTINAGINARY, UINTIMAGINARYREM, IMANGINARYDECIMAL,END, letter, digit }</br></br>
         
-        COMPLEX -> 'std::complex 'IDENTIFIER</br>
+        COMPLEX -> 'std::complex<double> 'IDENTIFIER</br>
         IDENTIFIER -> (letter | '')IDENTIFIERREM</br>
         IDENTIFIERREM -> (letter | digit | '')IDENTIFIERREM | '('REAL</br>
         REAL -> ['+' | '-']UINTREAL</br>

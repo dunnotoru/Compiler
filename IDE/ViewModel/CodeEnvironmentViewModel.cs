@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace IDE.ViewModel
@@ -30,6 +31,7 @@ namespace IDE.ViewModel
         private ObservableCollection<TokenViewModel> _scanResult;
         private ObservableCollection<ParseErrorViewModel> _parseResult;
         private ObservableCollection<TetradViewModel> _tetrads;
+        private ObservableCollection<RegexMatchViewModel> _regexMatchResult;
 
         public ICommand CreateCommand => new RelayCommand(Create);
         public ICommand SaveCommand => new RelayCommand(Save, _ => SelectedTab != null);
@@ -40,7 +42,9 @@ namespace IDE.ViewModel
         public ICommand RunCommand => new RelayCommand(Run);
         public ICommand CleanCommand => new RelayCommand(Clean);
         public ICommand ShowTestExamplesCommand => new RelayCommand(ShowTextExamples);
-
+        public ICommand MatchNumbersCommand => new RelayCommand(MatchNumbers);
+        public ICommand MatchWordsCommand => new RelayCommand(MatchWords);
+        public ICommand MatchUrlsCommand => new RelayCommand(MatchUrls);
 
         public CodeEnvironmentViewModel(IDialogService dialogService,
                                     IFileService fileService,
@@ -57,6 +61,7 @@ namespace IDE.ViewModel
             _scanResult = new ObservableCollection<TokenViewModel>();
             _parseResult = new ObservableCollection<ParseErrorViewModel>();
             _tetrads = new ObservableCollection<TetradViewModel>();
+            _regexMatchResult = new ObservableCollection<RegexMatchViewModel>();
             _dialogService = dialogService;
             _fileService = fileService;
             _closeService = closeService;
@@ -67,6 +72,37 @@ namespace IDE.ViewModel
             _scanService = scanService;
             _parseService = parseService;
             _tetradService = semanticsService;
+        }
+        
+        private void UpdateMatched(string pattern)
+        {
+            if (SelectedTab is null)
+            {
+                return;
+            }
+
+            RegexMatchResult.Clear();
+
+            MatchCollection list = Regex.Matches(SelectedTab.Content, pattern);
+            foreach (Match match in list)
+            {
+                RegexMatchResult.Add(new RegexMatchViewModel(match.Value, match.Index));
+            }
+        }
+
+        private void MatchWords(object? obj)
+        {
+            UpdateMatched(@"\b(?=(?:.*кофе)+)(?=.{10}\b)\w+\b");
+        }
+
+        private void MatchNumbers(object? obj)
+        {
+            UpdateMatched(@"\b\d+(\.\d+)?\b");
+        }
+
+        private void MatchUrls(object? obj)
+        {
+            UpdateMatched(@"\b(http|https|ftp):\/\/[^\s/$.?#].[^\s]*\b");
         }
 
         private void ShowTextExamples(object? obj)
@@ -330,6 +366,12 @@ namespace IDE.ViewModel
         {
             get { return _tetrads; }
             set { _tetrads = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<RegexMatchViewModel> RegexMatchResult
+        {
+            get { return _regexMatchResult; }
+            set { _regexMatchResult = value; OnPropertyChanged(); }
         }
     }
 }

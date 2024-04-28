@@ -52,6 +52,11 @@
                 <MenuItem Header="{DynamicResource about}" Click="AboutMenuItem_Click"/>
                 <MenuItem Header="{DynamicResource settings}" Command="{Binding NavigateToSettingsCommand}"/>
             </MenuItem>
+            <MenuItem Header="Regular expressions">
+                <MenuItem Header="Find numbers" Command="{Binding MatchNumbersCommand}"/>
+                <MenuItem Header="Find coffee words" Command="{Binding MatchWordsCommand}"/>
+                <MenuItem Header="Find Urls" Command="{Binding MatchUrlsCommand}"/>
+            </MenuItem>
         </Menu>
 
         <ToolBarTray DockPanel.Dock="Top">
@@ -122,12 +127,6 @@
                         <ToolTip Content="{DynamicResource about}"/>
                     </Button.ToolTip>
                 </Button>
-
-                <Separator/>
-
-                <Button Content="Clean" Command="{Binding CleanCommand}"
-                        Visibility="{Binding SelectedTab.CanClean, Converter={StaticResource BoolToVisiblity}}">
-                </Button>
             </ToolBar>
         </ToolBarTray>
 
@@ -154,6 +153,14 @@
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
 
             <TabControl Margin="10" Grid.Row="2">
+                <TabItem Header="Scan result">
+                    <DataGrid IsReadOnly="True" Style="{StaticResource token_datagrid}" ItemsSource="{Binding RegexMatchResult}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding MatchString}" Header="Match" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding Position}" Header="Position" Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
                 <TabItem Header="Scan result">
                     <DataGrid IsReadOnly="True" Style="{StaticResource token_datagrid}" ItemsSource="{Binding ScanResult}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
