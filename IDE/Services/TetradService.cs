@@ -133,7 +133,6 @@ namespace IDE.Services
 
             if (OpenParenthesis != null && CloseParenthesis != null)
             {
-
                 if(tokens.IndexOf(CloseParenthesis) - tokens.IndexOf(OpenParenthesis) < 3)
                 {
                     tokens.Remove(CloseParenthesis);

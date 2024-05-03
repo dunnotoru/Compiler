@@ -102,7 +102,7 @@ namespace IDE.ViewModel
 
         private void MatchUrls(object? obj)
         {
-            UpdateMatched(@"\b(http|https|ftp):\/\/[^\s/$.?#].[^\s]*\b");
+            UpdateMatched(@"\b(http|https|ftp):\/\/[\w\d;,?:@&=+$\-_.!~*'()#]*\w\/\w([\w\d;,?:@&=+$\-_.!~*'()#](\w\/\w)?)*([\w\d;,/?:@&=+$\-_.!~*'()#][.\w*])\b");
         }
 
         private void ShowTextExamples(object? obj)
