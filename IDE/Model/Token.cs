@@ -14,8 +14,8 @@ namespace IDE.Model
         Whitespace,
         Less,
         Greater,
-        OpenRoundBracket,
-        CloseRoundBracket,
+        OpenParenthesis,
+        CloseParenthesis,
         Minus,
         IntegerLiteral,
         DoubleLiteral,
@@ -71,8 +71,8 @@ namespace IDE.Model
             { ";", TokenType.Semicolon },
             { "=", TokenType.Assignment },
 
-            { "(", TokenType.OpenRoundBracket },
-            { ")", TokenType.CloseRoundBracket },
+            { "(", TokenType.OpenParenthesis },
+            { ")", TokenType.CloseParenthesis },
             { "{", TokenType.OpenCurlyBracket},
             { "}", TokenType.CloseCurlyBracket },
 

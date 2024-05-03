@@ -271,13 +271,14 @@ namespace IDE.ViewModel
                 if (SelectedTab is null) return;
 
                 ScanResult.Clear();
+                Tetrads.Clear();
+                ParseResult.Clear();
+
                 List<Token> tokens = _scanService.Scan(SelectedTab.Content).ToList();
                 foreach (Token token in tokens)
                 {
                     ScanResult.Add(new TokenViewModel(token));
                 }
-
-                ParseResult.Clear();
 
                 (List<ParseError> errors, SelectedTab.CleanedContent) = _parseService.Parse(SelectedTab.Content);
                 SelectedTab.CanClean = true;
@@ -296,7 +297,6 @@ namespace IDE.ViewModel
                     return;
                 }
 
-                Tetrads.Clear();
                 List<Tetrad> tetradsBuffer = _tetradService.GetTetrads(tokens);
                 foreach (Tetrad tetrad in tetradsBuffer)
                 {
@@ -311,16 +311,16 @@ namespace IDE.ViewModel
 
         private List<Token> CheckParenthesis(List<Token> tokens)
         {
-            tokens = tokens.Where(_ => _.Type == TokenType.OpenRoundBracket || _.Type == TokenType.CloseRoundBracket).ToList();
+            tokens = tokens.Where(_ => _.Type == TokenType.OpenParenthesis || _.Type == TokenType.CloseParenthesis).ToList();
             Stack<Token> brackets = new Stack<Token>();
             List<Token> errors = new List<Token>();
             foreach (Token token in tokens)
             {
-                if (token.Type == TokenType.OpenRoundBracket)
+                if (token.Type == TokenType.OpenParenthesis)
                 {
                     brackets.Push(token);
                 }
-                else if (token.Type == TokenType.CloseRoundBracket)
+                else if (token.Type == TokenType.CloseParenthesis)
                 {
                     if (brackets.Count > 0)
                     {

@@ -1,6 +1,7 @@
 ﻿using IDE.Model;
 using IDE.Services.Abstractions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace IDE.Services
             { TokenType.Module, "mod" },
             { TokenType.Plus, "plus" },
             { TokenType.Minus, "minus" },
-            { TokenType.Assignment, "equal" }
+            { TokenType.Assignment, "assign" }
         };
 
         public List<Tetrad> GetTetrads(List<Token> tokens)
@@ -102,24 +103,26 @@ namespace IDE.Services
             Token? CloseParenthesis = null;
             foreach (Token token in tokens)
             {
-                if (token.Type == TokenType.OpenRoundBracket && stack.Count == 0)
+                if (token.Type == TokenType.OpenParenthesis)
                 {
-                    OpenParenthesis = token;
-                    stack.Push(token);
-                }
-                else if (token.Type == TokenType.OpenRoundBracket)
-                {
+                    if (stack.Count == 0)
+                    {
+                        OpenParenthesis = token;
+                    }
                     stack.Push(token);
                 }
 
-                if (token.Type == TokenType.CloseRoundBracket && stack.Count == 1)
+                if (token.Type == TokenType.CloseParenthesis)
                 {
-                    CloseParenthesis = token;
-                    stack.Pop();
-                }
-                else if (token.Type == TokenType.CloseRoundBracket && stack.Count > 1)
-                {
-                    stack.Pop();
+                    if (stack.Count == 1)
+                    {
+                        CloseParenthesis = token;
+                        stack.Pop();
+                    }
+                    else if (stack.Count > 1)
+                    {
+                        stack.Pop();
+                    }
                 }
 
                 if (OpenParenthesis != null && CloseParenthesis != null)
@@ -130,9 +133,17 @@ namespace IDE.Services
 
             if (OpenParenthesis != null && CloseParenthesis != null)
             {
+
+                if(tokens.IndexOf(CloseParenthesis) - tokens.IndexOf(OpenParenthesis) < 3)
+                {
+                    tokens.Remove(CloseParenthesis);
+                    tokens.Remove(OpenParenthesis);
+                    return tokens;
+                }
+
                 List<Token> tokensBuff = new List<Token>(tokens.Skip(tokens.IndexOf(OpenParenthesis) + 1).Take(tokens.IndexOf(CloseParenthesis) - tokens.IndexOf(OpenParenthesis) - 1));
                 ParseTetrad(tokensBuff, tetrads);
-
+                
                 int startIndex = tokens.IndexOf(OpenParenthesis);
                 int endIndex = tokens.IndexOf(CloseParenthesis) + 1;
                 tokens.RemoveRange(startIndex, endIndex - startIndex);
@@ -149,7 +160,7 @@ namespace IDE.Services
 
             foreach (Token token in tokens.ToList())
             {
-                if (token.Type == TokenType.OpenRoundBracket)
+                if (token.Type == TokenType.OpenParenthesis)
                 {
                     ParseTetrad(tokens, tetrads);
                 }
