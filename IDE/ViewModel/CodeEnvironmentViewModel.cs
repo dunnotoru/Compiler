@@ -280,32 +280,36 @@ namespace IDE.ViewModel
                     ScanResult.Add(new TokenViewModel(token));
                 }
 
-                (List<ParseError> errors, SelectedTab.CleanedContent) = _parseService.Parse(SelectedTab.Content);
+                (List<ParseError> errors, List<Token> brainfuckTokens) = _parseService.Parse(tokens);
                 SelectedTab.CanClean = true;
                 foreach (ParseError error in errors)
                 {
                     ParseResult.Add(new ParseErrorViewModel(error));
                 }
-
-                List<Token> parenthesis = CheckParenthesis(tokens);
-                foreach (Token p in parenthesis)
+                foreach (Token token in brainfuckTokens)
                 {
-                    ParseResult.Add(new ParseErrorViewModel(new ParseError(p.StartPos, p.EndPos, "Parentesis doesn't match", "")));
-                }
-                if (parenthesis.Count > 0)
-                {
-                    return;
+                    
                 }
 
-                List<Tetrad> tetradsBuffer = _tetradService.GetTetrads(tokens);
-                foreach (Tetrad tetrad in tetradsBuffer)
-                {
-                    Tetrads.Add(new TetradViewModel(tetrad));
-                }
+                //List<Token> parenthesis = CheckParenthesis(tokens);
+                //foreach (Token p in parenthesis)
+                //{
+                //    ParseResult.Add(new ParseErrorViewModel(new ParseError(p.StartPos, p.EndPos, "Parentesis doesn't match", "")));
+                //}
+                //if (parenthesis.Count > 0)
+                //{
+                //    return;
+                //}
+
+                //List<Tetrad> tetradsBuffer = _tetradService.GetTetrads(tokens);
+                //foreach (Tetrad tetrad in tetradsBuffer)
+                //{
+                //    Tetrads.Add(new TetradViewModel(tetrad));
+                //}
             }
             catch (Exception ex)
             {
-                _messageBoxService.ShowMessage("An unknown error occured");
+                _messageBoxService.ShowMessage($"An error occured {ex.Message}");
             }
         }
 

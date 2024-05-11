@@ -13,7 +13,7 @@ namespace IDE.Model.Parser
             State = new ComplexState();
         }
 
-        public (List<ParseError>,string) Parse(string code)
+        public (List<ParseError>, string) Parse(string code)
         {
             Errors.Clear();
             State = new ComplexState();

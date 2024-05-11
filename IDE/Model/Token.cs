@@ -52,6 +52,8 @@ namespace IDE.Model
         While,
         Do,
 
+        Instr,
+
         Invalid
     }
 
@@ -60,7 +62,6 @@ namespace IDE.Model
         public static Dictionary<string, TokenType> DefaultTypes { get; } 
             = new Dictionary<string, TokenType>()
         {
-            { "string", TokenType.String },
             { "int", TokenType.Integer },
             { "double", TokenType.Double },
             { "std::complex<double>", TokenType.Complex },
@@ -84,22 +85,6 @@ namespace IDE.Model
 
             { ">", TokenType.Greater},
             { "<", TokenType.Less },
-            { "==", TokenType.Equal },
-            { "!=", TokenType.NotEqual },
-            { ">=", TokenType.GreaterOrEqual },
-            { "<=", TokenType.LessOrEqual },
-            
-            { "&&", TokenType.And },
-            { "!", TokenType.Not },
-            { "||", TokenType.Or },
-            { "true", TokenType.True },
-            { "false", TokenType.False },
-
-            { "if", TokenType.If },
-            { "else", TokenType.Else },
-            { "for", TokenType.For },
-            { "while", TokenType.While },
-            { "do", TokenType.Do },
         };
 
         public TokenType Type { get; }
@@ -130,8 +115,21 @@ namespace IDE.Model
                 && (rawToken.StartsWith("0.") != !rawToken.StartsWith('0'))
                 && !rawToken.EndsWith('.');
         }
-        private static bool IsStringLiteral(string rawToken)
-            => rawToken.StartsWith("\"") && rawToken.EndsWith("\"") && !rawToken.Contains('\n') && rawToken.Length > 1;
+        
+        private static bool IsInstr(string rawToken)
+        {
+            string instrs = "+-<>,.";
+            foreach (char ch in rawToken)
+            {
+                if (!instrs.Contains(ch))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
 
         public static TokenType GetTokenType(string rawToken)
         {
@@ -151,9 +149,9 @@ namespace IDE.Model
             {
                 return TokenType.DoubleLiteral;
             }
-            if (IsStringLiteral(rawToken))
+            if (IsInstr(rawToken))
             {
-                return TokenType.StringLiteral;
+                return TokenType.Instr;
             }
 
             return TokenType.Invalid;
